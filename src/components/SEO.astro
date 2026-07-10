@@ -1,0 +1,114 @@
+---
+import { locales, defaultLocale, getLocalizedPath } from '../utils/i18n';
+
+interface Props {
+  title: string;
+  description: string;
+  canonical?: string;
+  image?: string;
+  ogType?: 'website' | 'article';
+  robots?: string;
+  locale: 'de' | 'en' | 'fr' | 'ar';
+  publishDate?: string;
+  updateDate?: string;
+  author?: string;
+}
+
+const {
+  title,
+  description,
+  canonical,
+  image = '/images/og-default.jpg',
+  ogType = 'website',
+  robots = 'index, follow',
+  locale,
+  publishDate,
+  updateDate,
+  author,
+} = Astro.props;
+
+const siteUrl = 'https://arbeitszeit-rechner.de';
+const currentPath = Astro.url.pathname;
+// Remove locale prefix for building alternates
+let cleanPath = currentPath;
+locales.forEach((loc) => {
+  if (currentPath.startsWith(`/${loc}/`)) {
+    cleanPath = currentPath.substring(loc.length + 1);
+  } else if (currentPath === `/${loc}`) {
+    cleanPath = '/';
+  }
+});
+if (!cleanPath.startsWith('/')) {
+  cleanPath = '/' + cleanPath;
+}
+
+const canonicalUrl = canonical || `${siteUrl}${currentPath}`;
+const ogImageUrl = image.startsWith('http') ? image : `${siteUrl}${image}`;
+---
+
+<!-- Primary Meta Tags -->
+<title>{title}</title>
+<meta name="title" content={title} />
+<meta name="description" content={description} />
+<meta name="robots" content={robots} />
+
+<!-- Canonical URL -->
+<link rel="canonical" href={canonicalUrl} />
+
+<!-- Language Alternates (hreflang) -->
+{locales.map((loc) => {
+  const locPath = getLocalizedPath(cleanPath, loc);
+  return (
+    <link 
+      rel="alternate" 
+      hreflang={loc === 'ar' ? 'ar-SA' : loc === 'de' ? 'de-DE' : loc === 'fr' ? 'fr-FR' : 'en-US'} 
+      href={`${siteUrl}${locPath}`} 
+    />
+  );
+})}
+<link rel="alternate" hreflang="x-default" href={`${siteUrl}${cleanPath}`} />
+
+<!-- Open Graph / Facebook -->
+<meta property="og:type" content={ogType} />
+<meta property="og:url" content={canonicalUrl} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:image" content={ogImageUrl} />
+<meta property="og:image:alt" content={title} />
+<meta property="og:site_name" content="Arbeitszeit Rechner" />
+<meta property="og:locale" content={locale === 'de' ? 'de_DE' : locale === 'fr' ? 'fr_FR' : locale === 'ar' ? 'ar_SA' : 'en_US'} />
+{locales.filter((loc) => loc !== locale).map((loc) => (
+  <meta property="og:locale:alternate" content={loc === 'de' ? 'de_DE' : loc === 'fr' ? 'fr_FR' : loc === 'ar' ? 'ar_SA' : 'en_US'} />
+))}
+
+<!-- Twitter -->
+<meta property="twitter:card" content="summary_large_image" />
+<meta property="twitter:url" content={canonicalUrl} />
+<meta property="twitter:title" content={title} />
+<meta property="twitter:description" content={description} />
+<meta property="twitter:image" content={ogImageUrl} />
+<meta property="twitter:image:alt" content={title} />
+<meta property="twitter:site" content="@ArbeitszeitRech" />
+{author && <meta property="twitter:creator" content={author} />}
+
+<!-- E-E-A-T / Publisher Meta -->
+<meta name="author" content={author || "Arbeitszeit Rechner Editorial Team"} />
+<link rel="publisher" href={siteUrl} />
+
+<!-- Theme Color / Viewport -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="theme-color" content="#1e40af" />
+<meta name="generator" content={Astro.generator} />
+
+<!-- Google Search Console Verification -->
+{import.meta.env.PUBLIC_GSC_TOKEN && (
+  <meta name="google-site-verification" content={import.meta.env.PUBLIC_GSC_TOKEN} />
+)}
+
+<!-- Article Meta Details -->
+{ogType === 'article' && publishDate && (
+  <meta property="article:published_time" content={publishDate} />
+)}
+{ogType === 'article' && updateDate && (
+  <meta property="article:modified_time" content={updateDate} />
+)}

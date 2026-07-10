@@ -1,0 +1,83 @@
+---
+import { locales, defaultLocale, getLocaleFromUrl, useTranslations } from '../../utils/i18n';
+import SEO from '../../components/SEO.astro';
+import Schema from '../../components/Schema.astro';
+import Navbar from '../../components/Navbar.astro';
+import Footer from '../../components/Footer.astro';
+import CookieConsent from '../../components/CookieConsent.astro';
+import '../../styles/global.css';
+
+export function getStaticPaths() {
+  return [
+    { params: { locale: undefined } },
+    ...locales.filter(loc => loc !== defaultLocale).map(loc => ({
+      params: { locale: loc }
+    }))
+  ];
+}
+
+const locale = getLocaleFromUrl(Astro.url);
+const t = useTranslations(locale);
+
+const faqItems = [
+  {
+    question: locale === 'de' ? 'Wie lange darf ich maximal arbeiten?' : 'What is the maximum limit of work hours?',
+    answer: locale === 'de'
+      ? 'Die maximale tägliche Arbeitszeit liegt laut § 3 ArbZG bei 8 Stunden. Sie kann unter Umständen auf bis zu 10 Stunden verlängert werden, wenn der Durchschnitt ausgeglichen wird.'
+      : 'Generally, standard working hours are capped at 8 hours per day, but can be extended up to 10 hours if balanced within a specific reference period.',
+  },
+  {
+    question: locale === 'de' ? 'Wann muss ich eine Pause machen?' : 'When am I required to take a break?',
+    answer: locale === 'de'
+      ? 'Bei einer Arbeitszeit von 6 bis 9 Stunden ist eine Pause von mindestens 30 Minuten vorgeschrieben. Ab 9 Stunden sind es mindestens 45 Minuten.'
+      : 'A rest break of at least 30 minutes is mandatory once the shift exceeds 6 hours. For shifts exceeding 9 hours, at least 45 minutes of break is required.',
+  },
+  {
+    question: locale === 'de' ? 'Sind Überstunden gesetzlich geregelt?' : 'Are overtime hours regulated by law?',
+    answer: locale === 'de'
+      ? 'Ja, Überstunden sind durch das Arbeitszeitgesetz begrenzt, damit die wöchentliche Höchstarbeitszeit von durchschnittlich 48 Stunden eingehalten wird.'
+      : 'Yes, overtime limits are governed by employment laws to ensure that weekly work hours do not exceed safe levels (typically a 48-hour weekly average in Europe).',
+  },
+];
+
+const title = locale === 'de' ? 'Häufig gestellte Fragen (FAQ) — Arbeitszeit Rechner' : 'Frequently Asked Questions (FAQ) — Work Time';
+const description = 'Hier finden Sie Antworten auf häufig gestellte Fragen zu Pausenzeiten, Höchstarbeitszeit und Zeiterfassung.';
+---
+
+<!DOCTYPE html>
+<html lang={locale} dir={t('dir')}>
+  <head>
+    <meta charset="UTF-8" />
+    <SEO title={title} description={description} locale={locale} />
+    <Schema 
+      type="faq" 
+      title={title} 
+      description={description} 
+      faqItems={faqItems} 
+    />
+  </head>
+  <body>
+    <Navbar />
+
+    <main class="page">
+      <h1 class="page-title">{t('faq.title')}</h1>
+      <p class="page-subtitle">Wissenswertes rund um Arbeitszeiten und Vorschriften.</p>
+
+      <div style="display: flex; flex-direction: column; gap: var(--sp-4); margin-top: var(--sp-6);">
+        {faqItems.map((item) => (
+          <div class="card" style="padding: var(--sp-6);">
+            <h3 style="font-size: var(--text-md); font-weight: 700; color: var(--blue-900); margin: 0 0 var(--sp-2) 0;">
+              {item.question}
+            </h3>
+            <p style="font-size: var(--text-sm); color: var(--gray-700); line-height: 1.6; margin: 0;">
+              {item.answer}
+            </p>
+          </div>
+        ))}
+      </div>
+    </main>
+
+    <Footer />
+    <CookieConsent />
+  </body>
+</html>

@@ -1,0 +1,115 @@
+---
+import { getLocaleFromUrl, useTranslations, getLocalizedPath, locales } from '../utils/i18n';
+
+const locale = getLocaleFromUrl(Astro.url);
+const t = useTranslations(locale);
+const currentPath = Astro.url.pathname;
+
+// Remove current locale from path to calculate path for switcher
+let cleanPath = currentPath;
+locales.forEach((loc) => {
+  if (currentPath.startsWith(`/${loc}/`)) {
+    cleanPath = currentPath.substring(loc.length + 1);
+  } else if (currentPath === `/${loc}`) {
+    cleanPath = '/';
+  }
+});
+if (!cleanPath.startsWith('/')) {
+  cleanPath = '/' + cleanPath;
+}
+
+const navLinks = [
+  { href: getLocalizedPath('/', locale), label: t('nav.calculator'), active: currentPath === getLocalizedPath('/', locale) },
+  { href: `${getLocalizedPath('/', locale)}#weekly`, label: t('nav.weekly'), active: false },
+  { href: getLocalizedPath('/blog', locale), label: t('nav.blog'), active: currentPath.includes('/blog') },
+  { href: getLocalizedPath('/faq', locale), label: t('nav.faq'), active: currentPath.includes('/faq') },
+  { href: getLocalizedPath('/about', locale), label: t('nav.about'), active: currentPath.includes('/about') },
+];
+---
+
+<nav class="navbar" role="navigation" aria-label={t('nav.calculator')}>
+  <div class="navbar-inner">
+    <a href={getLocalizedPath('/', locale)} class="nav-logo" aria-label="Arbeitszeit Rechner">
+      <div class="nav-logo-icon" aria-hidden="true">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      </div>
+      <span class="nav-logo-text">Arbeitszeit<span>Rechner</span></span>
+    </a>
+
+    <!-- Desktop links -->
+    <ul class="nav-links">
+      {navLinks.map((link) => (
+        <li>
+          <a href={link.href} class={`nav-link ${link.active ? 'active' : ''}`}>
+            {link.label}
+          </a>
+        </li>
+      ))}
+    </ul>
+
+    <!-- Language switcher + User info -->
+    <div style="display: flex; align-items: center; gap: var(--sp-4);">
+      <!-- Language picker dropdown -->
+      <div class="lang-switcher" style="position: relative;">
+        <select 
+          id="lang-select" 
+          aria-label="Sprache wechseln / Change Language"
+          style="padding: var(--sp-1) var(--sp-2); border: 1px solid var(--gray-300); border-radius: var(--radius-sm); font-size: var(--text-xs); font-family: var(--font); background: var(--white); cursor: pointer;"
+        >
+          {locales.map((loc) => (
+            <option value={getLocalizedPath(cleanPath, loc)} selected={loc === locale}>
+              {loc === 'de' ? 'DE' : loc === 'en' ? 'EN' : loc === 'fr' ? 'FR' : 'AR'}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      <div class="nav-user">
+        <div class="nav-avatar" aria-hidden="true">MS</div>
+        <span class="nav-user-name">M. Schmidt</span>
+      </div>
+    </div>
+
+    <button class="nav-hamburger" id="nav-toggle" aria-label="Menü öffnen" type="button" aria-expanded="false" aria-controls="mobile-menu">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+  </div>
+</nav>
+
+<!-- Mobile Menu Overlay -->
+<div id="mobile-menu" style="display: none; position: fixed; inset: var(--nav-h) 0 0 0; background: var(--white); z-index: 40; border-top: 1px solid var(--gray-200); padding: var(--sp-6);" role="dialog" aria-modal="true" aria-label="Mobile Navigation">
+  <ul style="list-style: none; display: flex; flex-direction: column; gap: var(--sp-4);">
+    {navLinks.map((link) => (
+      <li>
+        <a href={link.href} class="mobile-nav-link" style="font-size: var(--text-lg); font-weight: 600; color: var(--gray-800); text-decoration: none; display: block; padding: var(--sp-2) 0;">
+          {link.label}
+        </a>
+      </li>
+    ))}
+  </ul>
+</div>
+
+<script>
+  // Mobile menu toggle
+  const toggleBtn = document.getElementById('nav-toggle');
+  const mobileMenu = document.getElementById('mobile-menu');
+
+  if (toggleBtn && mobileMenu) {
+    toggleBtn.addEventListener('click', () => {
+      const expanded = toggleBtn.getAttribute('aria-expanded') === 'true';
+      toggleBtn.setAttribute('aria-expanded', String(!expanded));
+      mobileMenu.style.display = expanded ? 'none' : 'block';
+    });
+  }
+
+  // Language switcher redirect
+  const langSelect = document.getElementById('lang-select') as HTMLSelectElement | null;
+  if (langSelect) {
+    langSelect.addEventListener('change', (e) => {
+      const target = e.target as HTMLSelectElement;
+      if (target.value) {
+        window.location.href = target.value;
+      }
+    });
+  }
+</script>

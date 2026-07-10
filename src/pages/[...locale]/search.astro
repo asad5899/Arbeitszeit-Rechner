@@ -1,0 +1,134 @@
+---
+import { getCollection } from 'astro:content';
+import { locales, defaultLocale, getLocaleFromUrl, useTranslations, getLocalizedPath } from '../../utils/i18n';
+import SEO from '../../components/SEO.astro';
+import Schema from '../../components/Schema.astro';
+import Navbar from '../../components/Navbar.astro';
+import Footer from '../../components/Footer.astro';
+import CookieConsent from '../../components/CookieConsent.astro';
+import '../../styles/global.css';
+
+export function getStaticPaths() {
+  return [
+    { params: { locale: undefined } },
+    ...locales.filter(loc => loc !== defaultLocale).map(loc => ({
+      params: { locale: loc }
+    }))
+  ];
+}
+
+const locale = getLocaleFromUrl(Astro.url);
+const t = useTranslations(locale);
+
+// Get all posts in current locale to embed in client script
+const posts = await getCollection('blog', ({ data }) => data.locale === locale);
+const serializedPosts = posts.map(p => ({
+  id: p.id,
+  title: p.data.title,
+  description: p.data.description,
+  url: getLocalizedPath(`/blog/${p.id}`, locale),
+}));
+
+const title = locale === 'de' ? 'Suche — Arbeitszeit Rechner' : 'Search — Work Time Calculator';
+const description = 'Suchen Sie nach Artikeln, Gesetzen und Hilfestellungen rund um Arbeitszeit und Erfassung.';
+---
+
+<!DOCTYPE html>
+<html lang={locale} dir={t('dir')}>
+  <head>
+    <meta charset="UTF-8" />
+    <SEO title={title} description={description} locale={locale} />
+    <Schema type="webpage" title={title} description={description} />
+  </head>
+  <body>
+    <Navbar />
+
+    <main class="page">
+      <h1 class="page-title">{t('nav.search')}</h1>
+      
+      <div class="card" style="margin-bottom: var(--sp-6);">
+        <form id="search-form" style="display: flex; gap: var(--sp-2);">
+          <input 
+            type="search" 
+            id="search-input" 
+            placeholder={t('search.placeholder')} 
+            class="form-input" 
+            style="flex:1;"
+            required 
+          />
+          <button type="submit" class="btn-primary" style="margin-top:0; width:auto; padding: 0 var(--sp-6);">
+            {t('search.button')}
+          </button>
+        </form>
+      </div>
+
+      <h2 id="search-results-heading" style="font-size: var(--text-lg); color: var(--blue-900); margin-bottom: var(--sp-4); display:none;">
+        {t('search.results')} <span id="search-query-display" style="font-weight: 700;"></span>
+      </h2>
+
+      <div id="search-results-container" style="display: flex; flex-direction: column; gap: var(--sp-4);">
+        <!-- Results injected by client script -->
+      </div>
+    </main>
+
+    <Footer />
+    <CookieConsent />
+
+    <script is:inline define:vars={{ posts: serializedPosts, noResultsText: t('search.noResults'), locale }}>
+      const form = document.getElementById('search-form');
+      const input = document.getElementById('search-input');
+      const resultsContainer = document.getElementById('search-results-container');
+      const resultsHeading = document.getElementById('search-results-heading');
+      const queryDisplay = document.getElementById('search-query-display');
+
+      function doSearch(query) {
+        if (!query) return;
+        queryDisplay.textContent = `"${query}"`;
+        resultsHeading.style.display = 'block';
+        resultsContainer.innerHTML = '';
+
+        const normalizedQuery = query.toLowerCase().trim();
+        const filtered = posts.filter(post => 
+          post.title.toLowerCase().includes(normalizedQuery) || 
+          post.description.toLowerCase().includes(normalizedQuery)
+        );
+
+        if (filtered.length === 0) {
+          resultsContainer.innerHTML = `<p style="color:var(--gray-500); text-align:center; padding:var(--sp-6);">${noResultsText}</p>`;
+          return;
+        }
+
+        filtered.forEach(post => {
+          const div = document.createElement('div');
+          div.className = 'card';
+          div.style.padding = 'var(--sp-5)';
+          div.innerHTML = `
+            <h3 style="font-size:var(--text-md); font-weight:700; margin:0 0 var(--sp-2) 0;">
+              <a href="${post.url}" style="color:var(--gray-900); text-decoration:none;">${post.title}</a>
+            </h3>
+            <p style="font-size:var(--text-sm); color:var(--gray-600); margin:0;">${post.description}</p>
+          `;
+          resultsContainer.appendChild(div);
+        });
+      }
+
+      // Check query parameter on load
+      const urlParams = new URLSearchParams(window.location.search);
+      const initialQuery = urlParams.get('q');
+      if (initialQuery) {
+        input.value = initialQuery;
+        doSearch(initialQuery);
+      }
+
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const query = input.value;
+        // Update URL
+        const newUrl = new URL(window.location.href);
+        newUrl.searchParams.set('q', query);
+        window.history.pushState({}, '', newUrl.toString());
+        doSearch(query);
+      });
+    </script>
+  </body>
+</html>

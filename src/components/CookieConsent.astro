@@ -1,0 +1,161 @@
+---
+import { getLocaleFromUrl, useTranslations } from '../utils/i18n';
+
+const locale = getLocaleFromUrl(Astro.url);
+const t = useTranslations(locale);
+---
+
+<div id="consent-banner" class="cookie-banner" style="display: none; position: fixed; bottom: 0; left: 0; right: 0; background: var(--white); border-top: 2px solid var(--gray-300); box-shadow: var(--shadow-xl); padding: var(--sp-6); z-index: 1000; animation: slideUp 0.4s var(--ease) both;">
+  <div style="max-width: var(--max-w); margin: 0 auto; display: flex; flex-direction: column; gap: var(--sp-4);">
+    <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: var(--sp-4); flex-wrap: wrap;">
+      <div style="flex: 1; min-width: 280px;">
+        <h3 style="font-size: var(--text-md); font-weight: 700; color: var(--gray-900); margin-bottom: var(--sp-2);">
+          {t('cookie.title')}
+        </h3>
+        <p style="font-size: var(--text-sm); color: var(--gray-600); line-height: 1.5; margin: 0;">
+          {t('cookie.text')}
+        </p>
+      </div>
+      <div style="display: flex; gap: var(--sp-3); flex-wrap: wrap; align-items: center; margin-top: var(--sp-2);">
+        <button id="btn-consent-deny" class="btn-outline" style="height: 40px; padding: 0 var(--sp-4);">
+          {t('cookie.deny')}
+        </button>
+        <button id="btn-consent-settings" class="btn-outline" style="height: 40px; padding: 0 var(--sp-4);">
+          Einstellungen
+        </button>
+        <button id="btn-consent-accept" class="btn-primary" style="height: 40px; padding: 0 var(--sp-4); margin-top: 0;">
+          {t('cookie.accept')}
+        </button>
+      </div>
+    </div>
+
+    <!-- Collapsible Settings Panel -->
+    <div id="consent-settings-panel" style="display: none; padding-top: var(--sp-4); border-top: 1px solid var(--gray-200); margin-top: var(--sp-2);">
+      <div style="display: flex; flex-direction: column; gap: var(--sp-4);">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <div>
+            <h4 style="font-size: var(--text-sm); font-weight: 600; color: var(--gray-800);">Essentielle Cookies</h4>
+            <p style="font-size: var(--text-xs); color: var(--gray-500); margin: 0;">Erforderlich für den Betrieb der Website.</p>
+          </div>
+          <input type="checkbox" checked disabled style="width: 20px; height: 20px;" />
+        </div>
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <div>
+            <h4 style="font-size: var(--text-sm); font-weight: 600; color: var(--gray-800);">Analytische Cookies</h4>
+            <p style="font-size: var(--text-xs); color: var(--gray-500); margin: 0;">Helfen uns, Website-Besuche und Leistung zu messen.</p>
+          </div>
+          <input type="checkbox" id="check-consent-analytics" checked style="width: 20px; height: 20px;" />
+        </div>
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <div>
+            <h4 style="font-size: var(--text-sm); font-weight: 600; color: var(--gray-800);">Marketing- und Werbecookies</h4>
+            <p style="font-size: var(--text-xs); color: var(--gray-500); margin: 0;">Personalisierung von Anzeigen und Marketingmessungen.</p>
+          </div>
+          <input type="checkbox" id="check-consent-ads" checked style="width: 20px; height: 20px;" />
+        </div>
+        <button id="btn-consent-save-settings" class="btn-primary" style="height: 36px; padding: 0 var(--sp-4); align-self: flex-end; margin-top: var(--sp-2);">
+          {t('cookie.save')}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script is:inline>
+  // Google Consent Mode v2 Default Initialization
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+
+  const savedConsent = localStorage.getItem('google_consent_settings');
+  if (savedConsent) {
+    try {
+      const consent = JSON.parse(savedConsent);
+      gtag('consent', 'default', {
+        'ad_storage': consent.ads ? 'granted' : 'denied',
+        'analytics_storage': consent.analytics ? 'granted' : 'denied',
+        'ad_user_data': consent.ads ? 'granted' : 'denied',
+        'ad_personalization': consent.ads ? 'granted' : 'denied',
+        'wait_for_update': 500
+      });
+    } catch (e) {
+      // fallback default
+      gtag('consent', 'default', {
+        'ad_storage': 'denied',
+        'analytics_storage': 'denied',
+        'ad_user_data': 'denied',
+        'ad_personalization': 'denied'
+      });
+    }
+  } else {
+    gtag('consent', 'default', {
+      'ad_storage': 'denied',
+      'analytics_storage': 'denied',
+      'ad_user_data': 'denied',
+      'ad_personalization': 'denied'
+    });
+  }
+</script>
+
+<script>
+  // Consent Banner Logic
+  const banner = document.getElementById('consent-banner');
+  const btnAccept = document.getElementById('btn-consent-accept');
+  const btnDeny = document.getElementById('btn-consent-deny');
+  const btnSettings = document.getElementById('btn-consent-settings');
+  const btnSaveSettings = document.getElementById('btn-consent-save-settings');
+  const settingsPanel = document.getElementById('consent-settings-panel');
+
+  const checkAnalytics = document.getElementById('check-consent-analytics') as HTMLInputElement | null;
+  const checkAds = document.getElementById('check-consent-ads') as HTMLInputElement | null;
+
+  // Show banner if not accepted/denied yet
+  if (banner && !localStorage.getItem('google_consent_settings')) {
+    setTimeout(() => {
+      banner.style.display = 'block';
+    }, 1000);
+  }
+
+  function setConsentState(analytics: boolean, ads: boolean) {
+    const consent = { analytics, ads };
+    localStorage.setItem('google_consent_settings', JSON.stringify(consent));
+
+    // Update Google Consent Mode v2
+    // @ts-ignore
+    if (typeof window.gtag === 'function') {
+      // @ts-ignore
+      window.gtag('consent', 'update', {
+        'ad_storage': ads ? 'granted' : 'denied',
+        'analytics_storage': analytics ? 'granted' : 'denied',
+        'ad_user_data': ads ? 'granted' : 'denied',
+        'ad_personalization': ads ? 'granted' : 'denied'
+      });
+    }
+
+    if (banner) banner.style.display = 'none';
+  }
+
+  if (btnAccept) {
+    btnAccept.addEventListener('click', () => {
+      setConsentState(true, true);
+    });
+  }
+
+  if (btnDeny) {
+    btnDeny.addEventListener('click', () => {
+      setConsentState(false, false);
+    });
+  }
+
+  if (btnSettings && settingsPanel) {
+    btnSettings.addEventListener('click', () => {
+      const isVisible = settingsPanel.style.display === 'block';
+      settingsPanel.style.display = isVisible ? 'none' : 'block';
+    });
+  }
+
+  if (btnSaveSettings && checkAnalytics && checkAds) {
+    btnSaveSettings.addEventListener('click', () => {
+      setConsentState(checkAnalytics.checked, checkAds.checked);
+    });
+  }
+</script>

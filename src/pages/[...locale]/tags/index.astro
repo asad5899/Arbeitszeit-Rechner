@@ -1,0 +1,67 @@
+---
+import { getCollection } from 'astro:content';
+import { locales, defaultLocale, getLocaleFromUrl, useTranslations, getLocalizedPath } from '../../../utils/i18n';
+import SEO from '../../../components/SEO.astro';
+import Schema from '../../../components/Schema.astro';
+import Navbar from '../../../components/Navbar.astro';
+import Footer from '../../../components/Footer.astro';
+import CookieConsent from '../../../components/CookieConsent.astro';
+import '../../../styles/global.css';
+
+export function getStaticPaths() {
+  return [
+    { params: { locale: undefined } },
+    ...locales.filter(loc => loc !== defaultLocale).map(loc => ({
+      params: { locale: loc }
+    }))
+  ];
+}
+
+const locale = getLocaleFromUrl(Astro.url);
+const t = useTranslations(locale);
+
+const posts = await getCollection('blog', ({ data }) => data.locale === locale);
+const tags = [...new Set(posts.flatMap((p) => p.data.tags))];
+
+const title = locale === 'de' ? 'Tags & Schlagworte — Arbeitszeit Rechner' : 'Tags & Keywords — Work Time Calculator';
+const description = 'Navigieren Sie durch alle Themengebiete des Arbeitszeit Rechners über Tags.';
+---
+
+<!DOCTYPE html>
+<html lang={locale} dir={t('dir')}>
+  <head>
+    <meta charset="UTF-8" />
+    <SEO title={title} description={description} locale={locale} />
+    <Schema type="webpage" title={title} description={description} />
+  </head>
+  <body>
+    <Navbar />
+
+    <main class="page">
+      <h1 class="page-title">Schlagworte</h1>
+      <p class="page-subtitle">Suchen Sie nach spezifischen Schlagworten und Themengebieten.</p>
+      
+      <div class="card" style="display: flex; flex-wrap: wrap; gap: var(--sp-3); margin-top: var(--sp-6);">
+        {tags.map((tag) => (
+          <a 
+            href={getLocalizedPath(`/tags/${tag.toLowerCase().replace(/\s+/g, '-')}`, locale)}
+            style="font-size: var(--text-sm); background: var(--gray-200); color: var(--gray-700); padding: var(--sp-2) var(--sp-3); border-radius: var(--radius-md); text-decoration: none; font-weight: 500;"
+            class="tag-pill-hover"
+          >
+            #{tag} ({posts.filter(p => p.data.tags.includes(tag)).length})
+          </a>
+        ))}
+      </div>
+    </main>
+
+    <Footer />
+    <CookieConsent />
+  </body>
+</html>
+
+<style>
+  .tag-pill-hover:hover {
+    background: var(--blue-100) !important;
+    color: var(--blue-700) !important;
+  }
+</style>

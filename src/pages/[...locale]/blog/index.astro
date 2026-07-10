@@ -1,0 +1,150 @@
+---
+import { getCollection } from 'astro:content';
+import { locales, defaultLocale, getLocaleFromUrl, useTranslations, getLocalizedPath } from '../../../utils/i18n';
+import SEO from '../../../components/SEO.astro';
+import Schema from '../../../components/Schema.astro';
+import Navbar from '../../../components/Navbar.astro';
+import Footer from '../../../components/Footer.astro';
+import CookieConsent from '../../../components/CookieConsent.astro';
+import '../../../styles/global.css';
+
+export function getStaticPaths() {
+  return [
+    { params: { locale: undefined } },
+    ...locales.filter(loc => loc !== defaultLocale).map(loc => ({
+      params: { locale: loc }
+    }))
+  ];
+}
+
+const locale = getLocaleFromUrl(Astro.url);
+const t = useTranslations(locale);
+
+// Get blog posts matching current locale
+const posts = await getCollection('blog', ({ data }) => {
+  return data.locale === locale && !data.draft;
+});
+
+// Sort by date descending
+posts.sort((a, b) => b.data.publishDate.getTime() - a.data.publishDate.getTime());
+
+// Get unique categories and tags for listing
+const categories = [...new Set(posts.map((p) => p.data.category))];
+const tags = [...new Set(posts.flatMap((p) => p.data.tags))];
+
+const title = locale === 'de' ? 'Fachbeiträge & Ratgeber — Arbeitszeit Rechner' : 'Articles & Guides — Work Time Calculator';
+const description = 'Aktuelle Artikel zu Arbeitsrecht, Pausenregelungen, Zeiterfassung und Überstunden in Ihrem Land.';
+---
+
+<!DOCTYPE html>
+<html lang={locale} dir={t('dir')}>
+  <head>
+    <meta charset="UTF-8" />
+    <SEO title={title} description={description} locale={locale} />
+    <Schema type="webpage" title={title} description={description} />
+  </head>
+  <body>
+    <Navbar />
+
+    <main class="page">
+      <h1 class="page-title">{t('nav.blog')}</h1>
+      <p class="page-subtitle">Aktuelle Leitfäden und Informationen unserer Fachredaktion.</p>
+
+      <div class="main-grid">
+        <!-- Main Listing -->
+        <div style="display: flex; flex-direction: column; gap: var(--sp-6);">
+          {posts.length === 0 ? (
+            <p style="color: var(--gray-500);">Keine Beiträge gefunden.</p>
+          ) : (
+            posts.map((post) => (
+              <article class="card" style="padding: var(--sp-6); display: flex; flex-direction: column; gap: var(--sp-4);">
+                <div>
+                  <div style="display: flex; gap: var(--sp-3); font-size: var(--text-xs); color: var(--blue-600); font-weight: 600; margin-bottom: var(--sp-2);">
+                    <span>{post.data.category}</span>
+                    <span>&bull;</span>
+                    <span>{post.data.readingTime}</span>
+                  </div>
+                  <h2 style="font-size: var(--text-lg); font-weight: 700; color: var(--gray-900); margin: 0 0 var(--sp-2) 0;">
+                    <a href={getLocalizedPath(`/blog/${post.id}`, locale)} style="color: var(--gray-900); text-decoration: none;" class="post-title">
+                      {post.data.title}
+                    </a>
+                  </h2>
+                  <p style="font-size: var(--text-sm); color: var(--gray-600); line-height: 1.6; margin-bottom: var(--sp-4);">
+                    {post.data.description}
+                  </p>
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--gray-200); padding-top: var(--sp-4);">
+                  <span style="font-size: var(--text-xs); color: var(--gray-400);">
+                    {post.data.publishDate.toLocaleDateString(locale)}
+                  </span>
+                  <a href={getLocalizedPath(`/blog/${post.id}`, locale)} style="font-size: var(--text-sm); font-weight: 600; text-decoration: none;">
+                    {t('blog.readMore')} &rarr;
+                  </a>
+                </div>
+              </article>
+            ))
+          )}
+        </div>
+
+        <!-- Sidebar with Categories and Tags -->
+        <div style="display: flex; flex-direction: column; gap: var(--sp-6);">
+          <!-- Categories -->
+          <div class="card" style="padding: var(--sp-5);">
+            <h3 style="font-size: var(--text-sm); font-weight: 700; color: var(--gray-900); margin-bottom: var(--sp-4); text-transform: uppercase;">
+              Kategorien
+            </h3>
+            <ul style="list-style: none; display: flex; flex-direction: column; gap: var(--sp-2);">
+              {categories.map((cat) => (
+                <li>
+                  <a 
+                    href={getLocalizedPath(`/categories/${cat.toLowerCase().replace(/\s+/g, '-')}`, locale)}
+                    style="font-size: var(--text-sm); color: var(--gray-600); text-decoration: none;"
+                    class="sidebar-link"
+                  >
+                    {cat}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <!-- Tags -->
+          <div class="card" style="padding: var(--sp-5);">
+            <h3 style="font-size: var(--text-sm); font-weight: 700; color: var(--gray-900); margin-bottom: var(--sp-4); text-transform: uppercase;">
+              Schlagworte
+            </h3>
+            <div style="display: flex; flex-wrap: wrap; gap: var(--sp-2);">
+              {tags.map((tag) => (
+                <a 
+                  href={getLocalizedPath(`/tags/${tag.toLowerCase().replace(/\s+/g, '-')}`, locale)}
+                  style="font-size: var(--text-xs); background: var(--gray-200); color: var(--gray-700); padding: 4px var(--sp-2); border-radius: var(--radius-sm); text-decoration: none;"
+                  class="tag-link"
+                >
+                  #{tag}
+                </a>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <Footer />
+    <CookieConsent />
+  </body>
+</html>
+
+<style>
+  .post-title:hover {
+    color: var(--blue-600) !important;
+    text-decoration: underline !important;
+  }
+  .sidebar-link:hover {
+    color: var(--blue-600) !important;
+    text-decoration: underline !important;
+  }
+  .tag-link:hover {
+    background: var(--blue-100) !important;
+    color: var(--blue-700) !important;
+  }
+</style>

@@ -1,0 +1,201 @@
+---
+interface BreadcrumbItem {
+  name: string;
+  item: string;
+}
+
+interface FAQItem {
+  question: string;
+  answer: string;
+}
+
+interface Props {
+  type?: 'website' | 'webpage' | 'article' | 'faq' | 'author' | 'organization';
+  title?: string;
+  description?: string;
+  url?: string;
+  breadcrumbs?: BreadcrumbItem[];
+  // For article schemas
+  articleData?: {
+    headline: string;
+    description: string;
+    image: string;
+    authorName: string;
+    authorUrl?: string;
+    datePublished: string;
+    dateModified?: string;
+    wordCount?: number;
+    category?: string;
+  };
+  // For FAQ schema
+  faqItems?: FAQItem[];
+  // For Author / Person schema
+  authorData?: {
+    name: string;
+    bio: string;
+    image: string;
+    sameAs: string[];
+    jobTitle?: string;
+  };
+}
+
+const {
+  type = 'webpage',
+  title = 'Arbeitszeit Rechner',
+  description = 'Kostenloser online Arbeitszeit Rechner',
+  url,
+  breadcrumbs = [],
+  articleData,
+  faqItems = [],
+  authorData,
+} = Astro.props;
+
+const siteUrl = 'https://arbeitszeit-rechner.de';
+const currentUrl = url || Astro.url.href;
+
+// Standard Organization Schema
+const orgSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  '@id': `${siteUrl}/#organization`,
+  name: 'Arbeitszeit Rechner',
+  url: siteUrl,
+  logo: {
+    '@type': 'ImageObject',
+    url: `${siteUrl}/favicon.svg`,
+    width: '32',
+    height: '32',
+  },
+  description: 'Enterprise Work Time calculation platforms.',
+  sameAs: [
+    'https://twitter.com/ArbeitszeitRech',
+    'https://www.linkedin.com/company/arbeitszeit-rechner',
+  ],
+};
+
+// Website Schema (with Sitelinks Searchbox)
+const websiteSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  '@id': `${siteUrl}/#website`,
+  name: 'Arbeitszeit Rechner',
+  url: siteUrl,
+  description: 'Berechne deine tägliche Netto-Arbeitszeit abzüglich Pausen.',
+  publisher: {
+    '@id': `${siteUrl}/#organization`,
+  },
+  potentialAction: {
+    '@type': 'SearchAction',
+    target: {
+      '@type': 'EntryPoint',
+      urlTemplate: `${siteUrl}/search?q={search_term_string}`,
+    },
+    'query-input': 'required name=search_term_string',
+  },
+};
+
+// WebPage Schema
+const webpageSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebPage',
+  '@id': `${currentUrl}/#webpage`,
+  url: currentUrl,
+  name: title,
+  description: description,
+  isPartOf: {
+    '@id': `${siteUrl}/#website`,
+  },
+  publisher: {
+    '@id': `${siteUrl}/#organization`,
+  },
+};
+
+// Breadcrumb Schema
+const breadcrumbListSchema = breadcrumbs.length > 0 ? {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: breadcrumbs.map((b, index) => ({
+    '@type': 'ListItem',
+    position: index + 1,
+    name: b.name,
+    item: b.item.startsWith('http') ? b.item : `${siteUrl}${b.item}`,
+  })),
+} : null;
+
+// Article Schema
+const articleSchema = type === 'article' && articleData ? {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  '@id': `${currentUrl}/#article`,
+  isPartOf: {
+    '@id': `${currentUrl}/#webpage`,
+  },
+  mainEntityOfPage: currentUrl,
+  headline: articleData.headline,
+  description: articleData.description,
+  image: {
+    '@type': 'ImageObject',
+    url: articleData.image.startsWith('http') ? articleData.image : `${siteUrl}${articleData.image}`,
+  },
+  datePublished: articleData.datePublished,
+  dateModified: articleData.dateModified || articleData.datePublished,
+  author: {
+    '@type': 'Person',
+    name: articleData.authorName,
+    url: articleData.authorUrl || `${siteUrl}/authors/${articleData.authorName.toLowerCase().replace(/\s+/g, '-')}`,
+  },
+  publisher: {
+    '@id': `${siteUrl}/#organization`,
+  },
+  wordCount: articleData.wordCount,
+  articleSection: articleData.category,
+} : null;
+
+// FAQ Schema
+const faqSchema = type === 'faq' && faqItems.length > 0 ? {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqItems.map((item) => ({
+    '@type': 'Question',
+    name: item.question,
+    acceptedAnswer: {
+      '@type': 'Answer',
+      text: item.answer,
+    },
+  })),
+} : null;
+
+// Person/Author Schema
+const personSchema = type === 'author' && authorData ? {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  '@id': `${siteUrl}/authors/${authorData.name.toLowerCase().replace(/\s+/g, '-')}/#person`,
+  name: authorData.name,
+  description: authorData.bio,
+  image: {
+    '@type': 'ImageObject',
+    url: authorData.image.startsWith('http') ? authorData.image : `${siteUrl}${authorData.image}`,
+  },
+  sameAs: authorData.sameAs,
+  jobTitle: authorData.jobTitle || 'Expert Author',
+  worksFor: {
+    '@id': `${siteUrl}/#organization`,
+  },
+} : null;
+---
+
+<script type="application/ld+json" is:raw set:html={JSON.stringify(orgSchema)} />
+<script type="application/ld+json" is:raw set:html={JSON.stringify(websiteSchema)} />
+<script type="application/ld+json" is:raw set:html={JSON.stringify(webpageSchema)} />
+{breadcrumbListSchema && (
+  <script type="application/ld+json" is:raw set:html={JSON.stringify(breadcrumbListSchema)} />
+)}
+{articleSchema && (
+  <script type="application/ld+json" is:raw set:html={JSON.stringify(articleSchema)} />
+)}
+{faqSchema && (
+  <script type="application/ld+json" is:raw set:html={JSON.stringify(faqSchema)} />
+)}
+{personSchema && (
+  <script type="application/ld+json" is:raw set:html={JSON.stringify(personSchema)} />
+)}

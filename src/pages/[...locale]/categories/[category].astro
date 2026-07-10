@@ -1,0 +1,80 @@
+---
+import { getCollection } from 'astro:content';
+import { locales, defaultLocale, getLocaleFromUrl, useTranslations, getLocalizedPath } from '../../../utils/i18n';
+import SEO from '../../../components/SEO.astro';
+import Schema from '../../../components/Schema.astro';
+import Navbar from '../../../components/Navbar.astro';
+import Footer from '../../../components/Footer.astro';
+import CookieConsent from '../../../components/CookieConsent.astro';
+import '../../../styles/global.css';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog');
+  const paths = [];
+
+  for (const loc of locales) {
+    const localeParam = loc === defaultLocale ? undefined : loc;
+    const locPosts = posts.filter(p => p.data.locale === loc);
+    const categories = [...new Set(locPosts.map(p => p.data.category))];
+
+    for (const cat of categories) {
+      const catSlug = cat.toLowerCase().replace(/\s+/g, '-');
+      paths.push({
+        params: { locale: localeParam, category: catSlug },
+        props: { categoryName: cat, posts: locPosts.filter(p => p.data.category === cat) }
+      });
+    }
+  }
+  return paths;
+}
+
+const { categoryName, posts } = Astro.props;
+const locale = getLocaleFromUrl(Astro.url);
+const t = useTranslations(locale);
+
+const title = `Kategorie: ${categoryName} — Arbeitszeit Rechner`;
+const description = `Entdecken Sie alle Fachbeiträge rund um das Thema ${categoryName}.`;
+---
+
+<!DOCTYPE html>
+<html lang={locale} dir={t('dir')}>
+  <head>
+    <meta charset="UTF-8" />
+    <SEO title={title} description={description} locale={locale} />
+    <Schema type="webpage" title={title} description={description} />
+  </head>
+  <body>
+    <Navbar />
+
+    <main class="page">
+      <h1 class="page-title">Kategorie: {categoryName}</h1>
+      <p class="page-subtitle">Alle Beiträge zu {categoryName}.</p>
+
+      <div style="display: grid; grid-template-columns: 1fr; gap: var(--sp-4); margin-top: var(--sp-6);">
+        {posts.map((post) => (
+          <div class="card" style="padding: var(--sp-5);">
+            <h2 style="font-size: var(--text-md); font-weight: 700; margin: 0 0 var(--sp-2) 0;">
+              <a href={getLocalizedPath(`/blog/${post.id}`, locale)} style="color: var(--gray-900); text-decoration: none;" class="post-link">
+                {post.data.title}
+              </a>
+            </h2>
+            <p style="font-size: var(--text-sm); color: var(--gray-600); margin-bottom: var(--sp-3);">{post.data.description}</p>
+            <span style="font-size: var(--text-xs); color: var(--gray-400);">
+              {new Date(post.data.publishDate).toLocaleDateString(locale)}
+            </span>
+          </div>
+        ))}
+      </div>
+    </main>
+
+    <Footer />
+    <CookieConsent />
+  </body>
+</html>
+
+<style>
+  .post-link:hover {
+    color: var(--blue-600) !important;
+    text-decoration: underline !important;
+  }
+</style>

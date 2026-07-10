@@ -1,0 +1,128 @@
+---
+import { getCollection, getEntry } from 'astro:content';
+import { locales, defaultLocale, getLocaleFromUrl, useTranslations, getLocalizedPath } from '../../../utils/i18n';
+import SEO from '../../../components/SEO.astro';
+import Schema from '../../../components/Schema.astro';
+import Navbar from '../../../components/Navbar.astro';
+import Footer from '../../../components/Footer.astro';
+import CookieConsent from '../../../components/CookieConsent.astro';
+import '../../../styles/global.css';
+
+export async function getStaticPaths() {
+  const authors = await getCollection('authors');
+  const paths = [];
+
+  for (const loc of locales) {
+    const localeParam = loc === defaultLocale ? undefined : loc;
+    for (const author of authors) {
+      paths.push({
+        params: { locale: localeParam, author: author.id },
+        props: { author }
+      });
+    }
+  }
+  return paths;
+}
+
+const { author } = Astro.props;
+const locale = getLocaleFromUrl(Astro.url);
+const t = useTranslations(locale);
+
+// Get all posts by this author in the current locale
+const allPosts = await getCollection('blog', ({ data }) => {
+  return data.author === author.id && data.locale === locale;
+});
+
+const title = `${author.data.name} — Redaktionsprofil & Beiträge`;
+const description = `${author.data.name} ist Experte für ${author.data.expertise}. Hier finden Sie alle Veröffentlichungen und Beiträge.`;
+---
+
+<!DOCTYPE html>
+<html lang={locale} dir={t('dir')}>
+  <head>
+    <meta charset="UTF-8" />
+    <SEO title={title} description={description} locale={locale} />
+    <Schema 
+      type="author" 
+      title={title} 
+      description={description} 
+      authorData={{
+        name: author.data.name,
+        bio: author.data.bio,
+        image: author.data.image,
+        sameAs: author.data.sameAs,
+        jobTitle: author.data.jobTitle,
+      }}
+    />
+  </head>
+  <body>
+    <Navbar />
+
+    <main class="page">
+      <div class="card" style="display: flex; gap: var(--sp-6); align-items: flex-start; flex-wrap: wrap; margin-bottom: var(--sp-8);">
+        <img src={author.data.image} alt={author.data.name} style="width: 100px; height: 100px; border-radius: var(--radius-full); object-fit: cover; border: 3px solid var(--blue-200);" />
+        <div style="flex: 1; min-width: 280px;">
+          <h1 style="font-size: var(--text-2xl); font-weight: 700; color: var(--gray-900); margin: 0 0 var(--sp-1) 0;">
+            {author.data.name}
+          </h1>
+          <p style="font-size: var(--text-sm); color: var(--blue-600); font-weight: 600; margin-bottom: var(--sp-3);">
+            {author.data.jobTitle || 'Experte'}
+          </p>
+          <p style="font-size: var(--text-sm); color: var(--gray-500); margin-bottom: var(--sp-3);">
+            <strong>Fachbereich:</strong> {author.data.expertise}
+          </p>
+          <p style="font-size: var(--text-md); color: var(--gray-700); line-height: 1.6; margin-bottom: var(--sp-4);">
+            {author.data.bio}
+          </p>
+          
+          <div style="display: flex; gap: var(--sp-3); align-items: center;">
+            {author.data.socials.twitter && (
+              <a href={author.data.socials.twitter} target="_blank" rel="noopener noreferrer" style="color: var(--gray-400); hover: color: var(--blue-500);" aria-label="Twitter">
+                <svg style="width: 16px; height: 16px;" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+              </a>
+            )}
+            {author.data.socials.linkedin && (
+              <a href={author.data.socials.linkedin} target="_blank" rel="noopener noreferrer" style="color: var(--gray-400); hover: color: var(--blue-500);" aria-label="LinkedIn">
+                <svg style="width: 16px; height: 16px;" fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.779-1.75-1.75s.784-1.75 1.75-1.75 1.75.779 1.75 1.75-.784 1.75-1.75 1.75zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+              </a>
+            )}
+          </div>
+        </div>
+      </div>
+
+      <h2 style="font-size: var(--text-xl); font-weight: 700; color: var(--blue-900); margin-bottom: var(--sp-4);">
+        Beiträge von {author.data.name}
+      </h2>
+
+      {allPosts.length === 0 ? (
+        <p style="color: var(--gray-500);">Noch keine Beiträge in dieser Sprache veröffentlicht.</p>
+      ) : (
+        <div style="display: grid; grid-template-columns: 1fr; gap: var(--sp-4);">
+          {allPosts.map((post) => (
+            <div class="card" style="padding: var(--sp-5);">
+              <h3 style="font-size: var(--text-md); font-weight: 700; margin: 0 0 var(--sp-2) 0;">
+                <a href={getLocalizedPath(`/blog/${post.id}`, locale)} style="color: var(--gray-900); text-decoration: none;" class="post-title-link">
+                  {post.data.title}
+                </a>
+              </h3>
+              <p style="font-size: var(--text-sm); color: var(--gray-600); margin-bottom: var(--sp-3);">{post.data.description}</p>
+              <div style="font-size: var(--text-xs); color: var(--gray-400);">
+                {new Date(post.data.publishDate).toLocaleDateString(locale)}
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+    </main>
+
+    <Footer />
+    <CookieConsent />
+  </body>
+</html>
+
+<style>
+  .post-title-link:hover {
+    color: var(--blue-600) !important;
+    text-decoration: underline !important;
+  }
+</style>

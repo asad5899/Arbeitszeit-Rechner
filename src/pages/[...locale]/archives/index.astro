@@ -1,0 +1,94 @@
+---
+import { getCollection } from 'astro:content';
+import { locales, defaultLocale, getLocaleFromUrl, useTranslations, getLocalizedPath } from '../../../utils/i18n';
+import SEO from '../../../components/SEO.astro';
+import Schema from '../../../components/Schema.astro';
+import Navbar from '../../../components/Navbar.astro';
+import Footer from '../../../components/Footer.astro';
+import CookieConsent from '../../../components/CookieConsent.astro';
+import '../../../styles/global.css';
+
+export function getStaticPaths() {
+  return [
+    { params: { locale: undefined } },
+    ...locales.filter(loc => loc !== defaultLocale).map(loc => ({
+      params: { locale: loc }
+    }))
+  ];
+}
+
+const locale = getLocaleFromUrl(Astro.url);
+const t = useTranslations(locale);
+
+const posts = await getCollection('blog', ({ data }) => data.locale === locale);
+
+// Group by Year and Month
+const grouped = posts.reduce((acc: any, post) => {
+  const date = new Date(post.data.publishDate);
+  const year = date.getFullYear();
+  const monthName = date.toLocaleString(locale, { month: 'long' });
+
+  if (!acc[year]) acc[year] = {};
+  if (!acc[year][monthName]) acc[year][monthName] = [];
+  acc[year][monthName].push(post);
+  return acc;
+}, {});
+
+const years = Object.keys(grouped).sort((a, b) => Number(b) - Number(a));
+
+const title = locale === 'de' ? 'Archiv — Arbeitszeit Rechner' : 'Archives — Work Time Calculator';
+const description = 'Entdecken Sie ältere Beiträge und Fachleitfäden in unserem zeitlichen Archiv.';
+---
+
+<!DOCTYPE html>
+<html lang={locale} dir={t('dir')}>
+  <head>
+    <meta charset="UTF-8" />
+    <SEO title={title} description={description} locale={locale} />
+    <Schema type="webpage" title={title} description={description} />
+  </head>
+  <body>
+    <Navbar />
+
+    <main class="page">
+      <h1 class="page-title">Artikelarchiv</h1>
+      <p class="page-subtitle">Alle Fachbeiträge sortiert nach Erscheinungsdatum.</p>
+
+      <div style="display: flex; flex-direction: column; gap: var(--sp-6); margin-top: var(--sp-6);">
+        {years.map((year) => (
+          <div class="card" style="padding: var(--sp-6);">
+            <h2 style="font-size: var(--text-lg); font-weight: 700; color: var(--blue-900); border-bottom: 2px solid var(--blue-100); padding-bottom: 4px; margin-bottom: var(--sp-4);">
+              {year}
+            </h2>
+            {Object.keys(grouped[year]).map((month) => (
+              <div style="margin-bottom: var(--sp-4);">
+                <h3 style="font-size: var(--text-md); font-weight: 600; color: var(--gray-700); margin-bottom: var(--sp-2);">
+                  {month}
+                </h3>
+                <ul style="list-style: none; display: flex; flex-direction: column; gap: var(--sp-2); padding-inline-start: var(--sp-4);">
+                  {grouped[year][month].map((post: any) => (
+                    <li>
+                      <a href={getLocalizedPath(`/blog/${post.id}`, locale)} style="font-size: var(--text-sm); color: var(--gray-800); text-decoration: none;" class="archive-link">
+                        {post.data.title}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+        ))}
+      </div>
+    </main>
+
+    <Footer />
+    <CookieConsent />
+  </body>
+</html>
+
+<style>
+  .archive-link:hover {
+    color: var(--blue-600) !important;
+    text-decoration: underline !important;
+  }
+</style>

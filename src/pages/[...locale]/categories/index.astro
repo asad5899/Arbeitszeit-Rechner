@@ -1,0 +1,71 @@
+---
+import { getCollection } from 'astro:content';
+import { locales, defaultLocale, getLocaleFromUrl, useTranslations, getLocalizedPath } from '../../../utils/i18n';
+import SEO from '../../../components/SEO.astro';
+import Schema from '../../../components/Schema.astro';
+import Navbar from '../../../components/Navbar.astro';
+import Footer from '../../../components/Footer.astro';
+import CookieConsent from '../../../components/CookieConsent.astro';
+import '../../../styles/global.css';
+
+export function getStaticPaths() {
+  return [
+    { params: { locale: undefined } },
+    ...locales.filter(loc => loc !== defaultLocale).map(loc => ({
+      params: { locale: loc }
+    }))
+  ];
+}
+
+const locale = getLocaleFromUrl(Astro.url);
+const t = useTranslations(locale);
+
+const posts = await getCollection('blog', ({ data }) => data.locale === locale);
+const categories = [...new Set(posts.map((p) => p.data.category))];
+
+const title = locale === 'de' ? 'Kategorien — Arbeitszeit Rechner' : 'Categories — Work Time Calculator';
+const description = 'Entdecken Sie Beiträge sortiert nach Themen und Kategorien.';
+---
+
+<!DOCTYPE html>
+<html lang={locale} dir={t('dir')}>
+  <head>
+    <meta charset="UTF-8" />
+    <SEO title={title} description={description} locale={locale} />
+    <Schema type="webpage" title={title} description={description} />
+  </head>
+  <body>
+    <Navbar />
+
+    <main class="page">
+      <h1 class="page-title">Kategorien</h1>
+      <p class="page-subtitle">Entdecken Sie alle Fachbereiche.</p>
+      
+      <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: var(--sp-4); margin-top: var(--sp-6);">
+        {categories.map((cat) => {
+          const count = posts.filter(p => p.data.category === cat).length;
+          return (
+            <div class="card" style="padding: var(--sp-5); text-align: center;">
+              <h2 style="font-size: var(--text-md); font-weight: 700; margin: 0 0 var(--sp-2) 0;">
+                {cat}
+              </h2>
+              <p style="font-size: var(--text-xs); color: var(--gray-500); margin-bottom: var(--sp-4);">
+                {count} {count === 1 ? 'Beitrag' : 'Beiträge'}
+              </p>
+              <a 
+                href={getLocalizedPath(`/categories/${cat.toLowerCase().replace(/\s+/g, '-')}`, locale)}
+                class="btn-outline"
+                style="height:36px; text-decoration:none;"
+              >
+                Durchsuchen
+              </a>
+            </div>
+          );
+        })}
+      </div>
+    </main>
+
+    <Footer />
+    <CookieConsent />
+  </body>
+</html>

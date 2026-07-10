@@ -1,0 +1,65 @@
+---
+import { locales, defaultLocale, getLocaleFromUrl, useTranslations } from '../../utils/i18n';
+import SEO from '../../components/SEO.astro';
+import Schema from '../../components/Schema.astro';
+import Navbar from '../../components/Navbar.astro';
+import Footer from '../../components/Footer.astro';
+import CookieConsent from '../../components/CookieConsent.astro';
+import '../../styles/global.css';
+
+export function getStaticPaths() {
+  return [
+    { params: { locale: undefined } },
+    ...locales.filter(loc => loc !== defaultLocale).map(loc => ({
+      params: { locale: loc }
+    }))
+  ];
+}
+
+const locale = getLocaleFromUrl(Astro.url);
+const t = useTranslations(locale);
+
+const title = locale === 'de' ? 'Datenschutzerklärung — Arbeitszeit Rechner' : 'Privacy Policy — Work Time Calculator';
+const description = 'Unsere Datenschutzerklärung erklärt transparent, wie wir mit Daten umgehen und die Privatsphäre wahren.';
+---
+
+<!DOCTYPE html>
+<html lang={locale} dir={t('dir')}>
+  <head>
+    <meta charset="UTF-8" />
+    <SEO title={title} description={description} locale={locale} />
+    <Schema type="webpage" title={title} description={description} />
+  </head>
+  <body>
+    <Navbar />
+
+    <main class="page">
+      <h1 class="page-title">{t('nav.privacy')}</h1>
+      
+      <div class="card" style="margin-top: var(--sp-6); line-height: 1.8;">
+        <h2 style="font-size: var(--text-xl); color: var(--blue-900); margin-bottom: var(--sp-4);">1. Datenschutz auf einen Blick</h2>
+        <p style="margin-bottom: var(--sp-4);">
+          Die Betreiber dieser Seiten nehmen den Schutz Ihrer persönlichen Daten sehr ernst. Wir behandeln Ihre personenbezogenen Daten vertraulich und entsprechend den gesetzlichen Datenschutzvorschriften (DSGVO) sowie dieser Datenschutzerklärung.
+        </p>
+
+        <h2 style="font-size: var(--text-xl); color: var(--blue-900); margin-top: var(--sp-6); margin-bottom: var(--sp-4);">2. Datenerfassung auf unserer Website</h2>
+        <p style="margin-bottom: var(--sp-4);">
+          Unser Arbeitszeitrechner arbeitet zu 100 % clientseitig. Das bedeutet: Alle Eingaben (Arbeitsbeginn, Arbeitsende, Pausen) verbleiben ausschließlich auf Ihrem Endgerät und werden zu keinem Zeitpunkt an unsere Server übertragen.
+        </p>
+
+        <h2 style="font-size: var(--text-xl); color: var(--blue-900); margin-top: var(--sp-6); margin-bottom: var(--sp-4);">3. Cookies und Google Consent Mode v2</h2>
+        <p style="margin-bottom: var(--sp-4);">
+          Wir nutzen Cookies ausschließlich nach Ihrer expliziten Zustimmung über unseren Zustimmungs-Banner. Wenn Sie analytische oder Werbecookies aktivieren, werden diese Informationen verschlüsselt verarbeitet. Wir unterstützen den Google Consent Mode v2 für eine datenschutzkonforme Traffic-Messung.
+        </p>
+
+        <h2 style="font-size: var(--text-xl); color: var(--blue-900); margin-top: var(--sp-6); margin-bottom: var(--sp-4);">4. Ihre Rechte</h2>
+        <p style="margin-bottom: var(--sp-4);">
+          Sie haben jederzeit das Recht, unentgeltlich Auskunft über Herkunft, Empfänger und Zweck Ihrer gespeicherten personenbezogenen Daten zu erhalten. Sie haben außerdem ein Recht auf Berichtigung oder Löschung dieser Daten.
+        </p>
+      </div>
+    </main>
+
+    <Footer />
+    <CookieConsent />
+  </body>
+</html>

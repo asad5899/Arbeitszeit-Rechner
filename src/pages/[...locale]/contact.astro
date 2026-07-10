@@ -1,0 +1,101 @@
+---
+import { locales, defaultLocale, getLocaleFromUrl, useTranslations } from '../../utils/i18n';
+import SEO from '../../components/SEO.astro';
+import Schema from '../../components/Schema.astro';
+import Navbar from '../../components/Navbar.astro';
+import Footer from '../../components/Footer.astro';
+import CookieConsent from '../../components/CookieConsent.astro';
+import '../../styles/global.css';
+
+export function getStaticPaths() {
+  return [
+    { params: { locale: undefined } },
+    ...locales.filter(loc => loc !== defaultLocale).map(loc => ({
+      params: { locale: loc }
+    }))
+  ];
+}
+
+const locale = getLocaleFromUrl(Astro.url);
+const t = useTranslations(locale);
+
+const title = locale === 'de' ? 'Kontakt — Arbeitszeit Rechner' : 'Contact — Work Time Calculator';
+const description = 'Nehmen Sie Kontakt mit unserem Redaktions- und Support-Team auf.';
+---
+
+<!DOCTYPE html>
+<html lang={locale} dir={t('dir')}>
+  <head>
+    <meta charset="UTF-8" />
+    <SEO title={title} description={description} locale={locale} />
+    <Schema 
+      type="webpage" 
+      title={title} 
+      description={description} 
+    />
+  </head>
+  <body>
+    <Navbar />
+
+    <main class="page">
+      <h1 class="page-title">{t('nav.contact')}</h1>
+      
+      <div class="main-grid">
+        <!-- Contact Form -->
+        <div class="card">
+          <h2 style="font-size: var(--text-xl); color: var(--blue-900); margin-bottom: var(--sp-4);">Schreiben Sie uns</h2>
+          <form id="contact-form" style="display: flex; flex-direction: column; gap: var(--sp-4);">
+            <div class="form-group" style="margin-bottom:0;">
+              <label class="form-label" for="contact-name">Name</label>
+              <input type="text" id="contact-name" required class="form-input" />
+            </div>
+            <div class="form-group" style="margin-bottom:0;">
+              <label class="form-label" for="contact-email">E-Mail</label>
+              <input type="email" id="contact-email" required class="form-input" />
+            </div>
+            <div class="form-group" style="margin-bottom:0;">
+              <label class="form-label" for="contact-message">Nachricht</label>
+              <textarea id="contact-message" required class="form-input" style="height: 120px; padding: var(--sp-3) var(--sp-4); resize: vertical;"></textarea>
+            </div>
+            <button type="submit" class="btn-primary" style="margin-top: var(--sp-2);">Nachricht senden</button>
+          </form>
+          <div id="contact-success" style="display: none; color: var(--success-600); font-weight: 600; margin-top: var(--sp-4); text-align: center;">
+            Vielen Dank! Ihre Nachricht wurde gesendet.
+          </div>
+        </div>
+
+        <!-- Corporate Address / Info -->
+        <div class="card">
+          <h2 style="font-size: var(--text-xl); color: var(--blue-900); margin-bottom: var(--sp-4);">Herausgeber</h2>
+          <p style="font-size: var(--text-sm); color: var(--gray-700); line-height: 1.8; margin-bottom: var(--sp-4);">
+            <strong>Arbeitszeit Rechner Media GmbH</strong><br />
+            Musterstraße 42<br />
+            10117 Berlin, Deutschland
+          </p>
+          <p style="font-size: var(--text-sm); color: var(--gray-700); line-height: 1.8; margin-bottom: var(--sp-4);">
+            <strong>Telefon:</strong> +49 (0) 30 12345678<br />
+            <strong>E-Mail:</strong> info@arbeitszeit-rechner.de
+          </p>
+          <div style="margin-top: var(--sp-6); height: 150px; background: var(--gray-200); border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; color: var(--gray-500); font-size: var(--text-xs); border: 1px solid var(--gray-300);">
+            Kartenansicht (Musterstadt Berlin)
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <Footer />
+    <CookieConsent />
+
+    <script>
+      const form = document.getElementById('contact-form') as HTMLFormElement | null;
+      const success = document.getElementById('contact-success');
+      if (form && success) {
+        form.addEventListener('submit', (e) => {
+          e.preventDefault();
+          form.style.display = 'none';
+          success.style.display = 'block';
+        });
+      }
+    </script>
+  </body>
+</html>

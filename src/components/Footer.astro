@@ -1,0 +1,46 @@
+---
+import { getLocaleFromUrl, useTranslations, getLocalizedPath } from '../utils/i18n';
+
+const locale = getLocaleFromUrl(Astro.url);
+const t = useTranslations(locale);
+
+const links = [
+  { href: getLocalizedPath('/about', locale), label: t('nav.about') },
+  { href: getLocalizedPath('/contact', locale), label: t('nav.contact') },
+  { href: getLocalizedPath('/blog', locale), label: t('nav.blog') },
+  { href: getLocalizedPath('/authors', locale), label: t('nav.authors') },
+  { href: getLocalizedPath('/faq', locale), label: t('nav.faq') },
+  { href: getLocalizedPath('/privacy', locale), label: t('nav.privacy') },
+  { href: getLocalizedPath('/terms', locale), label: t('nav.terms') },
+  { href: getLocalizedPath('/cookie-policy', locale), label: t('nav.cookie') },
+  { href: getLocalizedPath('/disclaimer', locale), label: t('nav.disclaimer') },
+  { href: getLocalizedPath('/accessibility', locale), label: t('nav.accessibility') },
+  { href: getLocalizedPath('/editorial', locale), label: t('nav.editorial') },
+];
+---
+
+<footer class="footer" role="contentinfo" style="margin-top: var(--sp-12); padding: var(--sp-8) var(--sp-6) var(--sp-12); border-top: 1px solid var(--gray-200); text-align: center;">
+  <div style="max-width: var(--max-w); margin: 0 auto; display: flex; flex-direction: column; gap: var(--sp-6);">
+    <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: var(--sp-4) var(--sp-6); list-style: none;">
+      {links.map((link) => (
+        <a href={link.href} style="font-size: var(--text-sm); color: var(--gray-600); text-decoration: none;" class="footer-link-hover">
+          {link.label}
+        </a>
+      ))}
+    </div>
+    <div style="height: 1px; background: var(--gray-200); width: 100%;"></div>
+    <p class="footer-text" style="font-size: var(--text-xs); color: var(--gray-500); line-height: 1.6;">
+      {t('footer.text')}
+    </p>
+    <p style="font-size: 10px; color: var(--gray-400); margin-top: -10px;">
+      &copy; {new Date().getFullYear()} Arbeitszeit Rechner. All rights reserved.
+    </p>
+  </div>
+</footer>
+
+<style>
+  .footer-link-hover:hover {
+    color: var(--blue-600) !important;
+    text-decoration: underline !important;
+  }
+</style>

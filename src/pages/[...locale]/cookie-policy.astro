@@ -1,0 +1,62 @@
+---
+import { locales, defaultLocale, getLocaleFromUrl, useTranslations } from '../../utils/i18n';
+import SEO from '../../components/SEO.astro';
+import Schema from '../../components/Schema.astro';
+import Navbar from '../../components/Navbar.astro';
+import Footer from '../../components/Footer.astro';
+import CookieConsent from '../../components/CookieConsent.astro';
+import '../../styles/global.css';
+
+export function getStaticPaths() {
+  return [
+    { params: { locale: undefined } },
+    ...locales.filter(loc => loc !== defaultLocale).map(loc => ({
+      params: { locale: loc }
+    }))
+  ];
+}
+
+const locale = getLocaleFromUrl(Astro.url);
+const t = useTranslations(locale);
+
+const title = locale === 'de' ? 'Cookie-Richtlinie — Arbeitszeit Rechner' : 'Cookie Policy — Work Time Calculator';
+const description = 'Transparente Informationen über den Einsatz von Cookies auf dem Arbeitszeit Rechner.';
+---
+
+<!DOCTYPE html>
+<html lang={locale} dir={t('dir')}>
+  <head>
+    <meta charset="UTF-8" />
+    <SEO title={title} description={description} locale={locale} />
+    <Schema type="webpage" title={title} description={description} />
+  </head>
+  <body>
+    <Navbar />
+
+    <main class="page">
+      <h1 class="page-title">{t('nav.cookie')}</h1>
+      
+      <div class="card" style="margin-top: var(--sp-6); line-height: 1.8;">
+        <h2 style="font-size: var(--text-xl); color: var(--blue-900); margin-bottom: var(--sp-4);">Was sind Cookies?</h2>
+        <p style="margin-bottom: var(--sp-4);">
+          Cookies sind kleine Textdateien, die auf Ihrem Endgerät gespeichert werden, wenn Sie eine Website besuchen. Sie dienen dazu, die Webseite benutzerfreundlicher und effektiver zu gestalten.
+        </p>
+
+        <h2 style="font-size: var(--text-xl); color: var(--blue-900); margin-top: var(--sp-6); margin-bottom: var(--sp-4);">Eingesetzte Cookie-Arten</h2>
+        <ul style="margin-left: var(--sp-6); margin-bottom: var(--sp-4);">
+          <li><strong>Notwendige Cookies:</strong> Speichern Ihre Cookie-Zustimmungseinstellungen und Ihre wöchentlich lokal gesicherten Zeiterfassungseinträge (über das `localStorage` Ihres Browsers).</li>
+          <li><strong>Analytische Cookies:</strong> Werden nur nach Aktivierung über Google Analytics geladen, um anonymisierte Nutzerstatistiken zu erheben.</li>
+          <li><strong>Marketing-Cookies:</strong> Ermöglichen personalisierte Werbeeinblendungen (falls zugestimmt).</li>
+        </ul>
+
+        <h2 style="font-size: var(--text-xl); color: var(--blue-900); margin-top: var(--sp-6); margin-bottom: var(--sp-4);">Cookie-Einwilligung widerrufen</h2>
+        <p style="margin-bottom: var(--sp-4);">
+          Sie können Ihre Einwilligung in den Einsatz von Cookies jederzeit über das Cookie-Zustimmungs-Banner am Ende der Seite anpassen oder widerrufen.
+        </p>
+      </div>
+    </main>
+
+    <Footer />
+    <CookieConsent />
+  </body>
+</html>
