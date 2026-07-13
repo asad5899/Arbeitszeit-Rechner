@@ -5,6 +5,7 @@ import Schema from '../../components/Schema.astro';
 import Navbar from '../../components/Navbar.astro';
 import Footer from '../../components/Footer.astro';
 import CookieConsent from '../../components/CookieConsent.astro';
+import TrendingSidebar from '../../components/TrendingSidebar.astro';
 import '../../styles/global.css';
 
 export function getStaticPaths() {
@@ -36,21 +37,24 @@ const description = 'Erfahren Sie mehr über unsere redaktionelle Transparenz un
     <main class="page">
       <h1 class="page-title">{t('nav.about')}</h1>
       
-      <div class="card" style="margin-top: var(--sp-6); line-height: 1.8;">
-        <h2 style="font-size: var(--text-2xl); color: var(--blue-900); margin-bottom: var(--sp-4);">Unsere Mission</h2>
-        <p style="margin-bottom: var(--sp-4);">
-          Der <strong>Arbeitszeit Rechner</strong> wurde mit der Vision entwickelt, Arbeitnehmern und Arbeitgebern ein einfaches, präzises und vollkommen kostenfreies Werkzeug zur täglichen Zeiterfassung bereitzustellen. In Zeiten von gesetzlichen Pflichten zur Arbeitszeiterfassung ist Transparenz wichtiger denn je.
-        </p>
-        
-        <h2 style="font-size: var(--text-xl); color: var(--blue-900); margin-top: var(--sp-6); margin-bottom: var(--sp-4);">E-E-A-T & Qualitätssicherung</h2>
-        <p style="margin-bottom: var(--sp-4);">
-          Unser Service basiert auf fundiertem Wissen. Alle Artikel, Rechentools und Anleitungen werden von Fachanwälten für Arbeitsrecht und HR-Experten verfasst, geprüft und regelmäßig aktualisiert. Wir stützen unsere Angaben direkt auf das deutsche Arbeitszeitgesetz (ArbZG), europäische Richtlinien und aktuelle Gerichtsurteile.
-        </p>
+      <div class="main-grid" style="margin-top: var(--sp-6);">
+        <div class="card" style="line-height: 1.8;">
+          <h2 style="font-size: var(--text-2xl); color: var(--blue-900); margin-bottom: var(--sp-4);">Unsere Mission</h2>
+          <p style="margin-bottom: var(--sp-4);">
+            Der <strong>Arbeitszeit Rechner</strong> wurde mit der Vision entwickelt, Arbeitnehmern und Arbeitgebern ein einfaches, präzises und vollkommen kostenfreies Werkzeug zur täglichen Zeiterfassung bereitzustellen. In Zeiten von gesetzlichen Pflichten zur Arbeitszeiterfassung ist Transparenz wichtiger denn je.
+          </p>
+          
+          <h2 style="font-size: var(--text-xl); color: var(--blue-900); margin-top: var(--sp-6); margin-bottom: var(--sp-4);">E-E-A-T & Qualitätssicherung</h2>
+          <p style="margin-bottom: var(--sp-4);">
+            Unser Service basiert auf fundiertem Wissen. Alle Artikel, Rechentools und Anleitungen werden von Fachanwälten für Arbeitsrecht und HR-Experten verfasst, geprüft und regelmäßig aktualisiert. Wir stützen unsere Angaben direkt auf das deutsche Arbeitszeitgesetz (ArbZG), europäische Richtlinien und aktuelle Gerichtsurteile.
+          </p>
 
-        <h2 style="font-size: var(--text-xl); color: var(--blue-900); margin-top: var(--sp-6); margin-bottom: var(--sp-4);">Datenschutz & Sicherheit</h2>
-        <p style="margin-bottom: var(--sp-4);">
-          Ihre Privatsphäre steht für uns an oberster Stelle. Alle Berechnungen auf dieser Webseite finden ausschließlich lokal in Ihrem Browser statt. Es werden zu keinem Zeitpunkt persönliche Daten wie Arbeitszeiten, Standorte oder Profile an einen Server gesendet oder an Dritte weitergegeben.
-        </p>
+          <h2 style="font-size: var(--text-xl); color: var(--blue-900); margin-top: var(--sp-6); margin-bottom: var(--sp-4);">Datenschutz & Sicherheit</h2>
+          <p style="margin-bottom: var(--sp-4);">
+            Ihre Privatsphäre steht für uns an oberster Stelle. Alle Berechnungen auf dieser Webseite finden ausschließlich lokal in Ihrem Browser statt. Es werden zu keinem Zeitpunkt persönliche Daten wie Arbeitszeiten, Standorte oder Profile an einen Server gesendet oder an Dritte weitergegeben.
+          </p>
+        </div>
+        <TrendingSidebar />
       </div>
     </main>
 

@@ -6,6 +6,7 @@ import Schema from '../../../components/Schema.astro';
 import Navbar from '../../../components/Navbar.astro';
 import Footer from '../../../components/Footer.astro';
 import CookieConsent from '../../../components/CookieConsent.astro';
+import TrendingSidebar from '../../../components/TrendingSidebar.astro';
 import '../../../styles/global.css';
 
 export function getStaticPaths() {
@@ -125,6 +126,9 @@ const description = 'Aktuelle Artikel zu Arbeitsrecht, Pausenregelungen, Zeiterf
               ))}
             </div>
           </div>
+
+          <!-- Trending Tools Sidebar -->
+          <TrendingSidebar />
         </div>
       </div>
     </main>

@@ -5,6 +5,7 @@ import Schema from '../../components/Schema.astro';
 import Navbar from '../../components/Navbar.astro';
 import Footer from '../../components/Footer.astro';
 import CookieConsent from '../../components/CookieConsent.astro';
+import TrendingSidebar from '../../components/TrendingSidebar.astro';
 import '../../styles/global.css';
 
 export function getStaticPaths() {
@@ -36,21 +37,22 @@ const description = 'Allgemeine Geschäftsbedingungen zur Nutzung des kostenlose
     <main class="page">
       <h1 class="page-title">{t('nav.terms')}</h1>
       
-      <div class="card" style="margin-top: var(--sp-6); line-height: 1.8;">
-        <h2 style="font-size: var(--text-xl); color: var(--blue-900); margin-bottom: var(--sp-4);">1. Geltungsbereich</h2>
-        <p style="margin-bottom: var(--sp-4);">
-          Diese Allgemeinen Geschäftsbedingungen gelten für die Nutzung der Webseite Arbeitszeit Rechner und aller angebotenen Berechnungsdienste.
-        </p>
-
-        <h2 style="font-size: var(--text-xl); color: var(--blue-900); margin-top: var(--sp-6); margin-bottom: var(--sp-4);">2. Kostenfreie Bereitstellung</h2>
-        <p style="margin-bottom: var(--sp-4);">
-          Unser Dienst wird vollkommen kostenfrei und ohne Notwendigkeit einer Registrierung zur Verfügung gestellt. Es besteht kein Rechtsanspruch auf dauerhafte Verfügbarkeit der Webseiten oder Tools.
-        </p>
-
-        <h2 style="font-size: var(--text-xl); color: var(--blue-900); margin-top: var(--sp-6); margin-bottom: var(--sp-4);">3. Haftungsausschluss</h2>
-        <p style="margin-bottom: var(--sp-4);">
-          Die Berechnungen des Arbeitszeit Rechners dienen der privaten und unverbindlichen Information des Nutzers. Wir übernehmen keine Haftung für die Richtigkeit, Genauigkeit oder Vollständigkeit der Ergebnisse, insbesondere nicht für rechtliche Streitigkeiten oder arbeitsrechtliche Auseinandersetzungen.
-        </p>
+      <div class="main-grid" style="margin-top: var(--sp-6);">
+        <div class="card" style="line-height: 1.8;">
+          <h2 style="font-size: var(--text-xl); color: var(--blue-900); margin-bottom: var(--sp-4);">1. Geltungsbereich</h2>
+          <p style="margin-bottom: var(--sp-4);">
+            Diese Allgemeinen Geschäftsbedingungen gelten für die Nutzung der Webseite Arbeitszeit Rechner und aller angebotenen Berechnungsdienste.
+          </p>
+          <h2 style="font-size: var(--text-xl); color: var(--blue-900); margin-top: var(--sp-6); margin-bottom: var(--sp-4);">2. Kostenfreie Bereitstellung</h2>
+          <p style="margin-bottom: var(--sp-4);">
+            Unser Dienst wird vollkommen kostenfrei und ohne Notwendigkeit einer Registrierung zur Verfügung gestellt. Es besteht kein Rechtsanspruch auf dauerhafte Verfügbarkeit der Webseiten oder Tools.
+          </p>
+          <h2 style="font-size: var(--text-xl); color: var(--blue-900); margin-top: var(--sp-6); margin-bottom: var(--sp-4);">3. Haftungsausschluss</h2>
+          <p style="margin-bottom: var(--sp-4);">
+            Die Berechnungen des Arbeitszeit Rechners dienen der privaten und unverbindlichen Information des Nutzers. Wir übernehmen keine Haftung für die Richtigkeit, Genauigkeit oder Vollständigkeit der Ergebnisse, insbesondere nicht für rechtliche Streitigkeiten oder arbeitsrechtliche Auseinandersetzungen.
+          </p>
+        </div>
+        <TrendingSidebar />
       </div>
     </main>
 

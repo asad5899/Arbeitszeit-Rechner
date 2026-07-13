@@ -6,6 +6,7 @@ import Schema from '../../../components/Schema.astro';
 import Navbar from '../../../components/Navbar.astro';
 import Footer from '../../../components/Footer.astro';
 import CookieConsent from '../../../components/CookieConsent.astro';
+import TrendingSidebar from '../../../components/TrendingSidebar.astro';
 import '../../../styles/global.css';
 
 export async function getStaticPaths() {
@@ -50,20 +51,23 @@ const description = `Entdecken Sie alle Fachbeiträge rund um das Thema ${catego
       <h1 class="page-title">Kategorie: {categoryName}</h1>
       <p class="page-subtitle">Alle Beiträge zu {categoryName}.</p>
 
-      <div style="display: grid; grid-template-columns: 1fr; gap: var(--sp-4); margin-top: var(--sp-6);">
-        {posts.map((post) => (
-          <div class="card" style="padding: var(--sp-5);">
-            <h2 style="font-size: var(--text-md); font-weight: 700; margin: 0 0 var(--sp-2) 0;">
-              <a href={getLocalizedPath(`/blog/${post.id}`, locale)} style="color: var(--gray-900); text-decoration: none;" class="post-link">
-                {post.data.title}
-              </a>
-            </h2>
-            <p style="font-size: var(--text-sm); color: var(--gray-600); margin-bottom: var(--sp-3);">{post.data.description}</p>
-            <span style="font-size: var(--text-xs); color: var(--gray-400);">
-              {new Date(post.data.publishDate).toLocaleDateString(locale)}
-            </span>
-          </div>
-        ))}
+      <div class="main-grid" style="margin-top: var(--sp-6);">
+        <div style="display: grid; grid-template-columns: 1fr; gap: var(--sp-4);">
+          {posts.map((post) => (
+            <div class="card" style="padding: var(--sp-5);">
+              <h2 style="font-size: var(--text-md); font-weight: 700; margin: 0 0 var(--sp-2) 0;">
+                <a href={getLocalizedPath(`/blog/${post.id}`, locale)} style="color: var(--gray-900); text-decoration: none;" class="post-link">
+                  {post.data.title}
+                </a>
+              </h2>
+              <p style="font-size: var(--text-sm); color: var(--gray-600); margin-bottom: var(--sp-3);">{post.data.description}</p>
+              <span style="font-size: var(--text-xs); color: var(--gray-400);">
+                {new Date(post.data.publishDate).toLocaleDateString(locale)}
+              </span>
+            </div>
+          ))}
+        </div>
+        <TrendingSidebar />
       </div>
     </main>
 

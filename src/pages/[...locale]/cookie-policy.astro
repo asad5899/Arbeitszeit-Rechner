@@ -5,6 +5,7 @@ import Schema from '../../components/Schema.astro';
 import Navbar from '../../components/Navbar.astro';
 import Footer from '../../components/Footer.astro';
 import CookieConsent from '../../components/CookieConsent.astro';
+import TrendingSidebar from '../../components/TrendingSidebar.astro';
 import '../../styles/global.css';
 
 export function getStaticPaths() {
@@ -36,7 +37,8 @@ const description = 'Transparente Informationen über den Einsatz von Cookies au
     <main class="page">
       <h1 class="page-title">{t('nav.cookie')}</h1>
       
-      <div class="card" style="margin-top: var(--sp-6); line-height: 1.8;">
+      <div class="main-grid" style="margin-top: var(--sp-6);">
+        <div class="card" style="line-height: 1.8;">
         <h2 style="font-size: var(--text-xl); color: var(--blue-900); margin-bottom: var(--sp-4);">Was sind Cookies?</h2>
         <p style="margin-bottom: var(--sp-4);">
           Cookies sind kleine Textdateien, die auf Ihrem Endgerät gespeichert werden, wenn Sie eine Website besuchen. Sie dienen dazu, die Webseite benutzerfreundlicher und effektiver zu gestalten.
@@ -53,6 +55,8 @@ const description = 'Transparente Informationen über den Einsatz von Cookies au
         <p style="margin-bottom: var(--sp-4);">
           Sie können Ihre Einwilligung in den Einsatz von Cookies jederzeit über das Cookie-Zustimmungs-Banner am Ende der Seite anpassen oder widerrufen.
         </p>
+        </div>
+        <TrendingSidebar />
       </div>
     </main>
 

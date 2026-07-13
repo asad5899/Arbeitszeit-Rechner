@@ -6,6 +6,7 @@ import Schema from '../../../components/Schema.astro';
 import Navbar from '../../../components/Navbar.astro';
 import Footer from '../../../components/Footer.astro';
 import CookieConsent from '../../../components/CookieConsent.astro';
+import TrendingSidebar from '../../../components/TrendingSidebar.astro';
 import '../../../styles/global.css';
 
 export function getStaticPaths() {
@@ -41,16 +42,19 @@ const description = 'Navigieren Sie durch alle Themengebiete des Arbeitszeit Rec
       <h1 class="page-title">Schlagworte</h1>
       <p class="page-subtitle">Suchen Sie nach spezifischen Schlagworten und Themengebieten.</p>
       
-      <div class="card" style="display: flex; flex-wrap: wrap; gap: var(--sp-3); margin-top: var(--sp-6);">
-        {tags.map((tag) => (
-          <a 
-            href={getLocalizedPath(`/tags/${tag.toLowerCase().replace(/\s+/g, '-')}`, locale)}
-            style="font-size: var(--text-sm); background: var(--gray-200); color: var(--gray-700); padding: var(--sp-2) var(--sp-3); border-radius: var(--radius-md); text-decoration: none; font-weight: 500;"
-            class="tag-pill-hover"
-          >
-            #{tag} ({posts.filter(p => p.data.tags.includes(tag)).length})
-          </a>
-        ))}
+      <div class="main-grid" style="margin-top: var(--sp-6);">
+        <div class="card" style="display: flex; flex-wrap: wrap; gap: var(--sp-3);">
+          {tags.map((tag) => (
+            <a 
+              href={getLocalizedPath(`/tags/${tag.toLowerCase().replace(/\s+/g, '-')}`, locale)}
+              style="font-size: var(--text-sm); background: var(--gray-200); color: var(--gray-700); padding: var(--sp-2) var(--sp-3); border-radius: var(--radius-md); text-decoration: none; font-weight: 500;"
+              class="tag-pill-hover"
+            >
+              #{tag} ({posts.filter(p => p.data.tags.includes(tag)).length})
+            </a>
+          ))}
+        </div>
+        <TrendingSidebar />
       </div>
     </main>
 

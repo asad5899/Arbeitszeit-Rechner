@@ -6,6 +6,8 @@ import Navbar from '../../components/Navbar.astro';
 import Footer from '../../components/Footer.astro';
 import Calculator from '../../components/Calculator.astro';
 import WeeklyTable from '../../components/WeeklyTable.astro';
+import HomepageContent from '../../components/HomepageContent.astro';
+import ToolsGrid from '../../components/ToolsGrid.astro';
 import CookieConsent from '../../components/CookieConsent.astro';
 import '../../styles/global.css';
 
@@ -22,7 +24,7 @@ const locale = getLocaleFromUrl(Astro.url);
 const t = useTranslations(locale);
 
 const title = locale === 'de'
-  ? 'Arbeitszeit Rechner — Netto-Arbeitszeit bequem berechnen'
+  ? 'Arbeitszeit Rechner — Arbeitszeit kostenlos online berechnen'
   : locale === 'fr'
   ? 'Calculateur de Temps de Travail — Calculez votre temps net'
   : locale === 'ar'
@@ -30,12 +32,20 @@ const title = locale === 'de'
   : 'Work Time Calculator — Calculate net working hours';
 
 const description = locale === 'de'
-  ? 'Berechne deine tägliche Netto-Arbeitszeit abzüglich Pausen. Kostenlos, werbefrei, offline und sofort nutzbar.'
+  ? 'Arbeitszeit Rechner: Brutto- und Nettoarbeitszeit, Überstunden und Dezimalstunden kostenlos berechnen. Ohne Anmeldung, werbefrei und mit Pausenregelung nach ArbZG.'
   : locale === 'fr'
   ? 'Calculez votre temps de travail quotidien net moins les pauses. Gratuit, sans publicité et hors ligne.'
   : locale === 'ar'
   ? 'احسب صافي ساعات عملك اليومية بعد خصم الاستراحات. مجاني تماماً وبدون إعلانات.'
   : 'Calculate your daily net working hours minus breaks. 100% free, ad-free, offline and instant.';
+
+// FAQ items for Schema.org FAQPage markup (all locales)
+import { getHomeContent } from '../../utils/homeContent';
+const homeContent = getHomeContent(locale);
+const faqSchemaItems = [
+  ...homeContent.faqItems.map(item => ({ question: item.q, answer: item.a })),
+  ...homeContent.faq2Items.map(item => ({ question: item.q, answer: item.a })),
+];
 ---
 
 <!DOCTYPE html>
@@ -53,7 +63,8 @@ const description = locale === 'de'
     <Schema 
       type="website" 
       title={title} 
-      description={description} 
+      description={description}
+      faqItems={faqSchemaItems}
     />
   </head>
   <body>
@@ -71,6 +82,12 @@ const description = locale === 'de'
       <!-- Weekly Log Table -->
       <WeeklyTable />
     </main>
+
+    <!-- All 21 Tools Grid -->
+    <ToolsGrid />
+
+    <!-- SEO Content Sections -->
+    <HomepageContent />
 
     <!-- Footer -->
     <Footer />

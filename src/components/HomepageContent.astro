@@ -1,0 +1,326 @@
+---
+import { getLocaleFromUrl } from '../utils/i18n';
+import { getHomeContent } from '../utils/homeContent';
+
+const locale = getLocaleFromUrl(Astro.url);
+const c = getHomeContent(locale);
+
+// Decimal conversion table data (same for all locales)
+const decimalRows = [
+  ['5', '0,08', '35', '0,58'],
+  ['10', '0,17', '40', '0,67'],
+  ['15', '0,25', '45', '0,75'],
+  ['20', '0,33', '50', '0,83'],
+  ['25', '0,42', '55', '0,92'],
+  ['30', '0,50', '60', '1,00'],
+];
+---
+
+<div class="content-area" id="content-sections">
+
+  <!-- Introduction -->
+  <section class="content-section" id="mehr-zum-thema">
+    <h2 class="content-h2">{c.introTitle}</h2>
+    <p class="content-intro">{c.introText}</p>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- How it works (3 Steps) -->
+  <section class="content-section" id="so-funktionierts">
+    <h2 class="content-h2">{c.howTitle}</h2>
+    <p class="content-p"><strong>{c.howSubtitle}</strong></p>
+
+    <div class="steps-grid">
+      <div class="step-card">
+        <div class="step-number">1</div>
+        <h3>{c.step1Title}</h3>
+        <p>{c.step1Text}</p>
+      </div>
+      <div class="step-card">
+        <div class="step-number">2</div>
+        <h3>{c.step2Title}</h3>
+        <p>{c.step2Text}</p>
+      </div>
+      <div class="step-card">
+        <div class="step-number">3</div>
+        <h3>{c.step3Title}</h3>
+        <p>{c.step3Text}</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- Detailed functionality -->
+  <section class="content-section" id="funktionsweise">
+    <h2 class="content-h2">{c.funcTitle}</h2>
+
+    <h3 class="content-h3">{c.funcH3a}</h3>
+    <p class="content-p"><strong>{c.funcH3aText}</strong></p>
+
+    <h3 class="content-h3">{c.funcH3b}</h3>
+    <p class="content-p">{c.funcH3bText}</p>
+
+    <h3 class="content-h3">{c.funcH3c}</h3>
+    <p class="content-p">{c.funcH3cText}</p>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- Legal break times -->
+  <section class="content-section" id="pausenzeiten">
+    <h2 class="content-h2">{c.breakTitle}</h2>
+    <p class="content-p">{c.breakIntro}</p>
+
+    <h3 class="content-h3">{c.break30Title}</h3>
+    <p class="content-p"><strong>{c.break30Text}</strong></p>
+
+    <h3 class="content-h3">{c.break45Title}</h3>
+    <p class="content-p"><strong>{c.break45Text}</strong></p>
+
+    <h3 class="content-h3">{c.breakTableTitle}</h3>
+    <div class="info-table-wrapper">
+      <table class="info-table">
+        <thead>
+          <tr>
+            <th>{c.breakTableHeaders[0]}</th>
+            <th>{c.breakTableHeaders[1]}</th>
+            <th>{c.breakTableHeaders[2]}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {c.breakTableRows.map((row) => (
+            <tr>
+              <td>{row[0]}</td>
+              <td>{row[1]}</td>
+              <td>{row[2]}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- Applications -->
+  <section class="content-section" id="anwendungen">
+    <h2 class="content-h2">{c.appTitle}</h2>
+
+    <h3 class="content-h3">{c.appDailyTitle}</h3>
+    <p class="content-p">{c.appDailyText}</p>
+
+    <h4 class="content-h4">{c.appDailyExTitle}</h4>
+    <div class="example-box">
+      <div class="example-title">{c.appDailyExLabel}</div>
+      <p>{c.appDailyExLine1}</p>
+      <p>{c.appDailyExLine2}</p>
+      <p><strong>{c.appDailyExLine3}</strong></p>
+    </div>
+
+    <h3 class="content-h3">{c.appWeeklyTitle}</h3>
+    <p class="content-p">{c.appWeeklyText}</p>
+
+    <h4 class="content-h4">{c.appOvertimeTitle}</h4>
+    <div class="example-box">
+      <div class="example-title">{c.appOvertimeLabel}</div>
+      <p>{c.appOvertimeLine1}</p>
+      <p>{c.appOvertimeLine2}</p>
+      <p><strong>{c.appOvertimeLine3}</strong></p>
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- Decimal -->
+  <section class="content-section" id="dezimal">
+    <h2 class="content-h2">{c.decTitle}</h2>
+    <p class="content-p"><strong>{c.decIntro}</strong></p>
+
+    <h3 class="content-h3">{c.decConvertTitle}</h3>
+    <p class="content-p">{c.decConvertText}</p>
+
+    <h4 class="content-h4">{c.decTableTitle}</h4>
+    <div class="info-table-wrapper">
+      <table class="info-table">
+        <thead>
+          <tr>
+            <th>{c.decTableHeaders[0]}</th>
+            <th>{c.decTableHeaders[1]}</th>
+            <th>{c.decTableHeaders[2]}</th>
+            <th>{c.decTableHeaders[3]}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {decimalRows.map((row) => (
+            <tr>
+              <td>{row[0]}</td>
+              <td>{row[1]}</td>
+              <td>{row[2]}</td>
+              <td>{row[3]}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+
+    <h3 class="content-h3">{c.decIndustrialTitle}</h3>
+    <p class="content-p">{c.decIndustrialText}</p>
+
+    <h4 class="content-h4">{c.decIndustrialExTitle}</h4>
+    <div class="example-box">
+      <div class="example-title">{c.decIndustrialExTitle}</div>
+      <p>{c.decIndustrialExLine1}</p>
+      <p>{c.decIndustrialExLine2}</p>
+      <p><strong>{c.decIndustrialExLine3}</strong></p>
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- Salary -->
+  <section class="content-section" id="gehaltsabrechnung">
+    <h2 class="content-h2">{c.salaryTitle}</h2>
+
+    <h3 class="content-h3">{c.salaryMonthTitle}</h3>
+    <p class="content-p"><strong>{c.salaryMonthText}</strong></p>
+
+    <h4 class="content-h4">{c.salaryFormulaTitle}</h4>
+    <div class="example-box">
+      <div class="example-title">{c.salaryFormulaLabel}</div>
+      <p><code>{c.salaryFormulaLine1}</code></p>
+      {c.salaryFormulaLines.map((line) => (
+        <p><strong>{line}</strong></p>
+      ))}
+    </div>
+
+    <h3 class="content-h3">{c.salaryTvodTitle}</h3>
+    <p class="content-p">{c.salaryTvodText}</p>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- Main FAQ -->
+  <section class="content-section" id="faq-section">
+    <h2 class="content-h2">{c.faqTitle}</h2>
+
+    <div class="faq-list">
+      {c.faqItems.map((item) => (
+        <details class="faq-item">
+          <summary class="faq-question">
+            <span>{item.q}</span>
+            <svg class="faq-chevron" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </summary>
+          <div class="faq-answer">
+            <p>{item.a}</p>
+          </div>
+        </details>
+      ))}
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- Why us -->
+  <section class="content-section" id="warum-unser-rechner">
+    <h2 class="content-h2">{c.whyTitle}</h2>
+
+    <div class="feature-grid">
+      {c.whyCards.map((card) => (
+        <div class="feature-card">
+          <div class="feature-icon">{card.icon}</div>
+          <h3>{card.title}</h3>
+          <p>{card.text}</p>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- Country info -->
+  <section class="content-section" id="arbeitszeit-deutschland">
+    <h2 class="content-h2">{c.countryTitle}</h2>
+
+    <div class="info-cards">
+      {c.countryCards.map((card) => (
+        <div class="info-card">
+          <h3>{card.title}</h3>
+          <p>{card.text1}</p>
+          <p>{card.text2}</p>
+        </div>
+      ))}
+    </div>
+
+    <div class="legal-notice">
+      <h4>{c.legalTitle}</h4>
+      <p>{c.legalText}</p>
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- Legal regulation -->
+  <section class="content-section" id="gesetzliche-regelung">
+    <h2 class="content-h2">{c.regTitle}</h2>
+    <p class="content-p">{c.regIntro}</p>
+
+    <h3 class="content-h3">{c.regBreakTitle}</h3>
+    <p class="content-p"><strong>{c.regBreakText}</strong></p>
+    <ul class="content-list">
+      {c.regBreakList.map((item) => (
+        <li>{item}</li>
+      ))}
+    </ul>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- Supplementary FAQ -->
+  <section class="content-section" id="faq-zusatz">
+    <h2 class="content-h2">{c.faq2Title}</h2>
+
+    <div class="faq-list">
+      {c.faq2Items.map((item) => (
+        <details class="faq-item">
+          <summary class="faq-question">
+            <span>{item.q}</span>
+            <svg class="faq-chevron" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </summary>
+          <div class="faq-answer">
+            <p>{item.a}</p>
+          </div>
+        </details>
+      ))}
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- Yearly -->
+  <section class="content-section" id="jahresarbeitszeit">
+    <h3 class="content-h3">{c.yearlyTitle}</h3>
+    <p class="content-p"><strong>{c.yearlyText}</strong></p>
+    <div class="example-box">
+      <div class="example-title">{c.yearlyExTitle}</div>
+      <p><code>{c.yearlyExLine1}</code></p>
+      <p><strong>{c.yearlyExLine2}</strong></p>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <div class="cta-section">
+    <h2>{c.ctaTitle}</h2>
+    <p>{c.ctaText}</p>
+    <a href="#calculator-form" class="cta-btn">
+      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      {c.ctaBtn}
+    </a>
+  </div>
+
+</div>

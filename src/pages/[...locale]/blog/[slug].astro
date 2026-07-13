@@ -8,6 +8,7 @@ import Footer from '../../../components/Footer.astro';
 import Breadcrumbs from '../../../components/Breadcrumbs.astro';
 import AuthorBox from '../../../components/AuthorBox.astro';
 import CookieConsent from '../../../components/CookieConsent.astro';
+import TrendingSidebar from '../../../components/TrendingSidebar.astro';
 import '../../../styles/global.css';
 
 export async function getStaticPaths() {
@@ -201,6 +202,9 @@ const wordCount = post.body ? post.body.split(/\s+/).length : 200;
               <button type="submit" class="btn-primary" style="height:36px; font-size:var(--text-xs); margin-top:0;">Abonnieren</button>
             </form>
           </div>
+
+          <!-- Trending Tools Sidebar -->
+          <TrendingSidebar />
         </div>
       </div>
     </main>

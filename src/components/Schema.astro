@@ -151,8 +151,8 @@ const articleSchema = type === 'article' && articleData ? {
   articleSection: articleData.category,
 } : null;
 
-// FAQ Schema
-const faqSchema = type === 'faq' && faqItems.length > 0 ? {
+// FAQ Schema (can be included on any page type)
+const faqSchema = faqItems.length > 0 ? {
   '@context': 'https://schema.org',
   '@type': 'FAQPage',
   mainEntity: faqItems.map((item) => ({

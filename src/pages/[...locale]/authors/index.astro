@@ -6,6 +6,7 @@ import Schema from '../../../components/Schema.astro';
 import Navbar from '../../../components/Navbar.astro';
 import Footer from '../../../components/Footer.astro';
 import CookieConsent from '../../../components/CookieConsent.astro';
+import TrendingSidebar from '../../../components/TrendingSidebar.astro';
 import '../../../styles/global.css';
 
 export function getStaticPaths() {
@@ -40,7 +41,8 @@ const description = 'Lernen Sie das Expertenteam hinter dem Arbeitszeit Rechner 
       <h1 class="page-title">{t('nav.authors')}</h1>
       <p class="page-subtitle">Die Experten hinter unseren Artikeln und Tools.</p>
       
-      <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: var(--sp-6); margin-top: var(--sp-6);">
+      <div class="main-grid" style="margin-top: var(--sp-6);">
+        <div style="display: grid; grid-template-columns: 1fr; gap: var(--sp-6);">
         {authors.map((author) => (
           <div class="card" style="display: flex; flex-direction: column; justify-content: space-between; height: 100%;">
             <div>
@@ -69,6 +71,8 @@ const description = 'Lernen Sie das Expertenteam hinter dem Arbeitszeit Rechner 
             </a>
           </div>
         ))}
+        </div>
+        <TrendingSidebar />
       </div>
     </main>
 
