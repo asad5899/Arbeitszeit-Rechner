@@ -23,23 +23,23 @@ export const GET: APIRoute = async () => {
 
   let urlNodes = '';
 
-  // 1. CORE PAGES (Home, About, FAQ, etc.)
+  // 1. CORE PAGES (Home, About, FAQ, and legal pages)
   const corePages = [
     { path: '/', priority: '1.0', changefreq: 'daily' },
-    { path: '/about', priority: '0.6', changefreq: 'weekly' },
-    { path: '/contact', priority: '0.6', changefreq: 'weekly' },
-    { path: '/faq', priority: '0.6', changefreq: 'weekly' },
-    { path: '/blog', priority: '0.7', changefreq: 'weekly' },
-    { path: '/authors', priority: '0.6', changefreq: 'weekly' },
-    { path: '/categories', priority: '0.8', changefreq: 'weekly' },
-    { path: '/tags', priority: '0.6', changefreq: 'weekly' },
-    { path: '/archives', priority: '0.6', changefreq: 'weekly' },
-    { path: '/privacy', priority: '0.4', changefreq: 'yearly' },
-    { path: '/terms', priority: '0.4', changefreq: 'yearly' },
-    { path: '/cookie-policy', priority: '0.4', changefreq: 'yearly' },
-    { path: '/disclaimer', priority: '0.4', changefreq: 'yearly' },
-    { path: '/accessibility', priority: '0.4', changefreq: 'yearly' },
-    { path: '/editorial', priority: '0.4', changefreq: 'yearly' },
+    { path: '/about', priority: '0.5', changefreq: 'yearly' },
+    { path: '/contact', priority: '0.5', changefreq: 'yearly' },
+    { path: '/faq', priority: '0.5', changefreq: 'yearly' },
+    { path: '/blog', priority: '0.5', changefreq: 'weekly' },
+    { path: '/authors', priority: '0.5', changefreq: 'yearly' },
+    { path: '/categories', priority: '0.5', changefreq: 'weekly' },
+    { path: '/tags', priority: '0.5', changefreq: 'weekly' },
+    { path: '/archives', priority: '0.5', changefreq: 'yearly' },
+    { path: '/privacy', priority: '0.5', changefreq: 'yearly' },
+    { path: '/terms', priority: '0.5', changefreq: 'yearly' },
+    { path: '/cookie-policy', priority: '0.5', changefreq: 'yearly' },
+    { path: '/disclaimer', priority: '0.5', changefreq: 'yearly' },
+    { path: '/accessibility', priority: '0.5', changefreq: 'yearly' },
+    { path: '/editorial', priority: '0.5', changefreq: 'yearly' },
   ];
 
   for (const page of corePages) {
@@ -188,8 +188,8 @@ ${xDefault}
       urlNodes += `  <url>
     <loc>${locUrl}</loc>
     <lastmod>${today}</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <changefreq>yearly</changefreq>
+    <priority>0.5</priority>
 ${alternates}
 ${xDefault}
     <image:image>
