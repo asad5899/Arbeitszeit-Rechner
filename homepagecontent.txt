@@ -1,8 +1,8 @@
-Arbeitszeit Rechner
+Arbeitszeit Rechner Pro
 # CONTENT WRITING ASSIGNMENT
 
 ## PRIMARY KEYWORD
-"Arbeitszeit Rechner"
+"Arbeitszeit Rechner Pro"
 
 ---
 
@@ -11,7 +11,7 @@ Arbeitszeit Rechner
 ## Heading Outline (Follow this structure exactly)
 H1: Arbeitszeit-Rechner
 H2: Mehr zum Thema Zeit & Arbeit
-H2: Arbeitszeit Rechner: So funktioniert's
+H2: Arbeitszeit Rechner Pro: So funktioniert's
 H3: Arbeitszeiten eingeben
 H3: Automatische Berechnung
 H3: Export für Buchhaltung
@@ -96,7 +96,7 @@ Arbeitszeit-Rechner, Arbeitszeitrechner, Arbeitszeitgesetz, ArbZG, TVöD, Deutsc
 None selected
 
 ### AI-Generated Phrases
-Arbeitszeit Rechner kostenlos, Arbeitszeit berechnen online, Arbeitszeit Stunden Rechner, Arbeitszeit Rechner Excel, Arbeitszeit Rechner App, Arbeitszeit Rechner Tool, Arbeitszeit Rechner einfach, Arbeitszeit Rechner Monat, Arbeitszeit Rechner Woche, Arbeitszeit Rechner Pause, Arbeitszeit Rechner Vorlage, Arbeitszeit Rechner Formel, Arbeitszeit Rechner Arbeitgeber, Arbeitszeit Rechner Arbeitnehmer, Arbeitszeit Rechner Steuer, Arbeitszeit Rechner Brutto, Arbeitszeit Rechner Netto, Arbeitszeit Rechner Minijob, Arbeitszeit Rechner Teilzeit, Arbeitszeit Rechner Vollzeit
+Arbeitszeit Rechner Pro kostenlos, Arbeitszeit berechnen online, Arbeitszeit Stunden Rechner, Arbeitszeit Rechner Pro Excel, Arbeitszeit Rechner Pro App, Arbeitszeit Rechner Pro Tool, Arbeitszeit Rechner Pro einfach, Arbeitszeit Rechner Pro Monat, Arbeitszeit Rechner Pro Woche, Arbeitszeit Rechner Pro Pause, Arbeitszeit Rechner Pro Vorlage, Arbeitszeit Rechner Pro Formel, Arbeitszeit Rechner Pro Arbeitgeber, Arbeitszeit Rechner Pro Arbeitnehmer, Arbeitszeit Rechner Pro Steuer, Arbeitszeit Rechner Pro Brutto, Arbeitszeit Rechner Pro Netto, Arbeitszeit Rechner Pro Minijob, Arbeitszeit Rechner Pro Teilzeit, Arbeitszeit Rechner Pro Vollzeit
 
 ### Unique N-Grams (Stand Out Phrases)
 during night shifts, for part-time freelancers, with overtime tracking, across multiple timezones, including break deductions, for hourly contractors, without manual errors, using flexible schedules, with shift swapping, for remote teams, during public holidays, with payroll integration, for project-based work, excluding lunch pauses, with automatic rounding, for seasonal employees, under collective agreements, with real-time updates, for on-call duties, including travel time
@@ -106,7 +106,7 @@ None extracted
 
 
 ## NLP Keywords (Topic Vocabulary)
-Arbeitszeit berechnen, Arbeitszeit Rechner kostenlos, Arbeitszeit erfassen, Arbeitszeit Rechner Excel, Arbeitszeit Rechner online, Stunden Rechner, Arbeitszeit Rechner App, Arbeitszeit Rechner 2024, Arbeitszeit Rechner mit Pause, Arbeitszeit Rechner Schichtarbeit, Arbeitszeit Rechner Teilzeit, Arbeitszeit Rechner Vollzeit, Arbeitszeit Rechner Minijob, Arbeitszeit Rechner Überstunden, Arbeitszeit Rechner Steuer, Arbeitszeit Rechner Brutto Netto, Arbeitszeit Rechner Urlaub, Arbeitszeit Rechner Krankenkasse, Arbeitszeit Rechner Arbeitsvertrag, Arbeitszeit Rechner Arbeitsrecht
+Arbeitszeit berechnen, Arbeitszeit Rechner Pro kostenlos, Arbeitszeit erfassen, Arbeitszeit Rechner Pro Excel, Arbeitszeit Rechner Pro online, Stunden Rechner, Arbeitszeit Rechner Pro App, Arbeitszeit Rechner Pro 2024, Arbeitszeit Rechner Pro mit Pause, Arbeitszeit Rechner Pro Schichtarbeit, Arbeitszeit Rechner Pro Teilzeit, Arbeitszeit Rechner Pro Vollzeit, Arbeitszeit Rechner Pro Minijob, Arbeitszeit Rechner Pro Überstunden, Arbeitszeit Rechner Pro Steuer, Arbeitszeit Rechner Pro Brutto Netto, Arbeitszeit Rechner Pro Urlaub, Arbeitszeit Rechner Pro Krankenkasse, Arbeitszeit Rechner Pro Arbeitsvertrag, Arbeitszeit Rechner Pro Arbeitsrecht
 
 ## Skip-Gram Dominant Word Pairs
 These word pairs frequently appear together when discussing this topic:
@@ -143,7 +143,7 @@ Cover these user search intents:
 Use these semantic variations for vocabulary richness:
 
 ### Proper Nouns (Brands/Names)
-Arbeitszeit Rechner, Arbeitszeitrechner, Zeiterfassung Pro, TimeTrack, Clockify, Toggl
+Arbeitszeit Rechner Pro, Arbeitszeitrechner, Zeiterfassung Pro, TimeTrack, Clockify, Toggl
 
 ### Common Nouns
 Arbeitszeit, Rechner, Zeiterfassung, Stundenzettel, Arbeitsstunden, Berechnung
@@ -152,7 +152,7 @@ Arbeitszeit, Rechner, Zeiterfassung, Stundenzettel, Arbeitsstunden, Berechnung
 Arbeitszeitrechner, Stundenrechner, Arbeitszeitberechner, Zeitrechner, Arbeitszeitkalkulator
 
 ### Hyponyms (More Specific Terms)
-Arbeitszeit Rechner für Minijob, Arbeitszeit Rechner für Schichtarbeit, Arbeitszeit Rechner mit Pausenabzug, Arbeitszeit Rechner für Teilzeit, Arbeitszeit Rechner für Überstunden
+Arbeitszeit Rechner Pro für Minijob, Arbeitszeit Rechner Pro für Schichtarbeit, Arbeitszeit Rechner Pro mit Pausenabzug, Arbeitszeit Rechner Pro für Teilzeit, Arbeitszeit Rechner Pro für Überstunden
 
 ### Hypernyms (Broader Terms)
 Rechner, Berechnungstool, Zeiterfassungstool, Software, Tool
@@ -348,16 +348,16 @@ Summarize the whole document (heading vectors) in a representative way by follow
 ## Instructions for Introduction
 
 ### 1. Implicit Definition
-Provide an implicit definition of "Arbeitszeit Rechner" and explain how it works in a representative way
+Provide an implicit definition of "Arbeitszeit Rechner Pro" and explain how it works in a representative way
 
 ### 2. Main Benefits
-Highlight the main benefits of "Arbeitszeit Rechner"
+Highlight the main benefits of "Arbeitszeit Rechner Pro"
 
 ### 3. Main Uses
-Describe the main uses and applications of "Arbeitszeit Rechner"
+Describe the main uses and applications of "Arbeitszeit Rechner Pro"
 
 ### 4. Main Parts/Components
-Outline the main parts or components of "Arbeitszeit Rechner"
+Outline the main parts or components of "Arbeitszeit Rechner Pro"
 
 ## Best Practices
 - Use the same n-grams in both the introduction (intro) and conclusion (outro)

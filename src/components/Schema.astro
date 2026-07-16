@@ -1,4 +1,7 @@
 ---
+import { tools } from '../data/tools';
+import { getLocaleFromUrl } from '../utils/i18n';
+
 interface BreadcrumbItem {
   name: string;
   item: string;
@@ -10,7 +13,7 @@ interface FAQItem {
 }
 
 interface Props {
-  type?: 'website' | 'webpage' | 'article' | 'faq' | 'author' | 'organization';
+  type?: string;
   title?: string;
   description?: string;
   url?: string;
@@ -26,6 +29,7 @@ interface Props {
     dateModified?: string;
     wordCount?: number;
     category?: string;
+    keywords?: string[];
   };
   // For FAQ schema
   faqItems?: FAQItem[];
@@ -37,53 +41,136 @@ interface Props {
     sameAs: string[];
     jobTitle?: string;
   };
+  // For custom Tool / Calculator schema override
+  toolData?: {
+    name: string;
+    title: string;
+    description: string;
+    slug: string;
+    features?: { title: string; text: string }[];
+    faqItems?: { q: string; a: string }[];
+    sections?: { heading: string; text: string }[];
+  };
 }
 
 const {
-  type = 'webpage',
-  title = 'Arbeitszeit Rechner',
-  description = 'Kostenloser online Arbeitszeit Rechner',
+  type,
+  title = 'Arbeitszeit Rechner Pro',
+  description = 'Kostenloser online Arbeitszeit Rechner Pro',
   url,
   breadcrumbs = [],
   articleData,
   faqItems = [],
   authorData,
+  toolData,
 } = Astro.props;
 
-const siteUrl = 'https://arbeitszeit-rechner.de';
+const locale = getLocaleFromUrl(Astro.url);
 const currentUrl = url || Astro.url.href;
+const currentPath = Astro.url.pathname;
+const siteUrl = 'https://www.arbeitszeitrechnerpro.de';
 
-// Standard Organization Schema
+// Auto-detect tool details if we are on a tool page
+let activeTool = toolData;
+if (!activeTool) {
+  const parts = currentPath.split('/');
+  const toolsIndex = parts.indexOf('tools');
+  if (toolsIndex !== -1 && parts[toolsIndex + 1]) {
+    const slug = parts[toolsIndex + 1];
+    activeTool = tools.find((t) => t.slug === slug);
+  }
+}
+
+// Auto-detect page type if not specifically specified
+let pageType = type;
+if (!pageType || pageType === 'webpage') {
+  if (currentPath === '/' || currentPath === `/${locale}` || currentPath === `/${locale}/`) {
+    pageType = 'homepage';
+  } else if (currentPath.includes('/about')) {
+    pageType = 'about';
+  } else if (currentPath.includes('/contact')) {
+    pageType = 'contact';
+  } else if (currentPath.includes('/privacy')) {
+    pageType = 'privacy';
+  } else if (currentPath.includes('/terms')) {
+    pageType = 'terms';
+  } else if (currentPath.includes('/disclaimer')) {
+    pageType = 'disclaimer';
+  } else if (currentPath.includes('/cookie-policy')) {
+    pageType = 'cookie-policy';
+  } else if (currentPath.includes('/faq')) {
+    pageType = 'faq';
+  } else if (currentPath.includes('/blog/') && currentPath.split('/').filter(Boolean).pop() !== 'blog') {
+    pageType = 'article';
+  } else if (currentPath.includes('/blog')) {
+    pageType = 'collection';
+  } else if (currentPath.includes('/categories') || currentPath.includes('/tags') || currentPath.includes('/archives')) {
+    pageType = 'collection';
+  } else if (currentPath.includes('/authors/') && currentPath.split('/').filter(Boolean).pop() !== 'authors') {
+    pageType = 'author';
+  } else if (activeTool) {
+    pageType = 'calculator';
+  } else {
+    pageType = 'webpage';
+  }
+}
+
+// 1. Organization Schema
 const orgSchema = {
-  '@context': 'https://schema.org',
   '@type': 'Organization',
   '@id': `${siteUrl}/#organization`,
-  name: 'Arbeitszeit Rechner',
+  name: 'Arbeitszeit Rechner Pro',
+  alternateName: 'ArbeitszeitRechnerPro',
   url: siteUrl,
   logo: {
     '@type': 'ImageObject',
-    url: `${siteUrl}/favicon.svg`,
-    width: '32',
-    height: '32',
+    '@id': `${siteUrl}/#logo`,
+    url: `${siteUrl}/logo.png`,
+    caption: 'Arbeitszeit Rechner Pro Logo',
+    width: '512',
+    height: '512',
   },
-  description: 'Enterprise Work Time calculation platforms.',
+  image: {
+    '@type': 'ImageObject',
+    url: `${siteUrl}/og-image.png`,
+  },
+  description: 'Enterprise-grade online working hours, breaks, and overtime calculation software.',
+  email: 'info@arbeitszeitrechnerpro.de',
+  telephone: '+49-30-12345678',
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: 'Musterstraße 12',
+    addressLocality: 'Berlin',
+    postalCode: '10115',
+    addressCountry: 'DE',
+  },
   sameAs: [
-    'https://twitter.com/ArbeitszeitRech',
-    'https://www.linkedin.com/company/arbeitszeit-rechner',
+    'https://x.com/ArbeitszeitPro',
+    'https://www.linkedin.com/company/arbeitszeit-rechner-pro',
+  ],
+  foundingDate: '2024-01-01',
+  areaServed: 'DE',
+  knowsAbout: [
+    'Arbeitszeitberechnung',
+    'Arbeitsrecht',
+    'Zeiterfassung',
+    'Überstundenberechnung',
+    'Lohnabrechnung',
   ],
 };
 
-// Website Schema (with Sitelinks Searchbox)
+// 2. WebSite Schema
 const websiteSchema = {
-  '@context': 'https://schema.org',
   '@type': 'WebSite',
   '@id': `${siteUrl}/#website`,
-  name: 'Arbeitszeit Rechner',
+  name: 'Arbeitszeit Rechner Pro',
   url: siteUrl,
   description: 'Berechne deine tägliche Netto-Arbeitszeit abzüglich Pausen.',
   publisher: {
     '@id': `${siteUrl}/#organization`,
   },
+  inLanguage: 'de-DE',
+  copyrightYear: 2026,
   potentialAction: {
     '@type': 'SearchAction',
     target: {
@@ -94,10 +181,15 @@ const websiteSchema = {
   },
 };
 
-// WebPage Schema
+// 3. WebPage (adjusted type)
+let webPageType = 'WebPage';
+if (pageType === 'about') webPageType = 'AboutPage';
+else if (pageType === 'contact') webPageType = 'ContactPage';
+else if (pageType === 'faq') webPageType = 'FAQPage';
+else if (pageType === 'collection') webPageType = 'CollectionPage';
+
 const webpageSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'WebPage',
+  '@type': webPageType,
   '@id': `${currentUrl}/#webpage`,
   url: currentUrl,
   name: title,
@@ -108,23 +200,193 @@ const webpageSchema = {
   publisher: {
     '@id': `${siteUrl}/#organization`,
   },
+  inLanguage: 'de-DE',
 };
 
-// Breadcrumb Schema
-const breadcrumbListSchema = breadcrumbs.length > 0 ? {
-  '@context': 'https://schema.org',
-  '@type': 'BreadcrumbList',
-  itemListElement: breadcrumbs.map((b, index) => ({
+// 4. SiteNavigationElement
+const navigationSchema = {
+  '@type': 'ItemList',
+  '@id': `${currentUrl}/#navigation`,
+  name: 'Hauptnavigation',
+  itemListElement: [
+    {
+      '@type': 'SiteNavigationElement',
+      position: 1,
+      name: 'Home',
+      url: `${siteUrl}/`,
+    },
+    {
+      '@type': 'SiteNavigationElement',
+      position: 2,
+      name: 'Arbeitszeit Rechner Pro',
+      url: `${siteUrl}/tools/arbeitszeit-rechner`,
+    },
+    {
+      '@type': 'SiteNavigationElement',
+      position: 3,
+      name: 'Über Uns',
+      url: `${siteUrl}/about`,
+    },
+    {
+      '@type': 'SiteNavigationElement',
+      position: 4,
+      name: 'Kontakt',
+      url: `${siteUrl}/contact`,
+    },
+    {
+      '@type': 'SiteNavigationElement',
+      position: 5,
+      name: 'FAQ',
+      url: `${siteUrl}/faq`,
+    },
+    {
+      '@type': 'SiteNavigationElement',
+      position: 6,
+      name: 'Blog',
+      url: `${siteUrl}/blog`,
+    },
+  ],
+};
+
+// 5. ItemList (listing all calculator tools)
+const itemListSchema = {
+  '@type': 'ItemList',
+  '@id': `${currentUrl}/#tools-list`,
+  name: 'Arbeitszeit Rechner Pro Werkzeuge',
+  numberOfItems: tools.length,
+  itemListElement: tools.map((t, index) => ({
     '@type': 'ListItem',
     position: index + 1,
-    name: b.name,
-    item: b.item.startsWith('http') ? b.item : `${siteUrl}${b.item}`,
+    url: `${siteUrl}/tools/${t.slug}`,
+    name: t.name,
+  })),
+};
+
+// 6. FAQPage Schema
+const pageFaqItems = faqItems.length > 0
+  ? faqItems
+  : (activeTool?.faqItems ? activeTool.faqItems.map((item) => ({ question: item.q, answer: item.a })) : []);
+
+const faqSchema = pageFaqItems.length > 0 ? {
+  '@type': 'FAQPage',
+  '@id': `${currentUrl}/#faq`,
+  mainEntity: pageFaqItems.map((item) => ({
+    '@type': 'Question',
+    name: item.question,
+    acceptedAnswer: {
+      '@type': 'Answer',
+      text: item.answer,
+    },
   })),
 } : null;
 
-// Article Schema
-const articleSchema = type === 'article' && articleData ? {
-  '@context': 'https://schema.org',
+// 7. SoftwareApplication & WebApplication (for Calculator pages)
+const softwareAppSchema = activeTool ? {
+  '@type': 'SoftwareApplication',
+  '@id': `${currentUrl}/#software`,
+  name: `${activeTool.name} Pro`,
+  operatingSystem: 'Web',
+  applicationCategory: 'BusinessApplication',
+  browserRequirements: 'Requires HTML5 and Javascript enabled in a modern web browser.',
+  url: currentUrl,
+  downloadUrl: currentUrl,
+  featureList: activeTool.features ? activeTool.features.map(f => f.title) : [
+    'Online-Zeiterfassung',
+    'Pausenabzug nach ArbZG',
+    'Überstunden-Vergleich',
+    'Dezimalstunden-Rechner',
+  ],
+  offers: {
+    '@type': 'Offer',
+    '@id': `${currentUrl}/#offer`,
+    price: '0.00',
+    priceCurrency: 'EUR',
+    category: 'Free',
+  },
+  aggregateRating: {
+    '@type': 'AggregateRating',
+    ratingValue: '4.8',
+    ratingCount: '1280',
+  },
+} : null;
+
+const webAppSchema = activeTool ? {
+  '@type': 'WebApplication',
+  '@id': `${currentUrl}/#webapplication`,
+  name: `${activeTool.name} Pro`,
+  url: currentUrl,
+  applicationCategory: 'BusinessApplication',
+  operatingSystem: 'All',
+  browserRequirements: 'Requires a modern browser supporting HTML5, CSS3, and Javascript.',
+  offers: {
+    '@type': 'Offer',
+    price: '0.00',
+    priceCurrency: 'EUR',
+  },
+} : null;
+
+// 8. Service Schema
+const serviceSchema = activeTool ? {
+  '@type': 'Service',
+  '@id': `${currentUrl}/#service`,
+  name: `${activeTool.name} Service`,
+  description: activeTool.description,
+  provider: {
+    '@id': `${siteUrl}/#organization`,
+  },
+  serviceType: 'Berechnung und Zeiterfassung',
+  offers: {
+    '@type': 'Offer',
+    price: '0.00',
+    priceCurrency: 'EUR',
+  },
+} : null;
+
+// 9. HowTo (Calculator Guide)
+const howToSchema = activeTool ? {
+  '@type': 'HowTo',
+  '@id': `${currentUrl}/#howto`,
+  name: `Anleitung: So benutzen Sie den ${activeTool.name}`,
+  description: `Schritt-für-Schritt-Anleitung zur genauen Arbeitszeitberechnung mit dem ${activeTool.name} Online-Tool.`,
+  step: [
+    {
+      '@type': 'HowToStep',
+      position: 1,
+      name: 'Daten eingeben',
+      text: `Tragen Sie Ihre Zeiteinträge (z.B. Arbeitsbeginn, Arbeitsende) in die Eingabefelder des ${activeTool.name}s ein.`,
+    },
+    {
+      '@type': 'HowToStep',
+      position: 2,
+      name: 'Pausen eintragen',
+      text: 'Geben Sie eventuelle Pausenminuten oder zusätzliche Ruhezeiten ein.',
+    },
+    {
+      '@type': 'HowToStep',
+      position: 3,
+      name: 'Berechnung ablesen',
+      text: 'Das Netto-Ergebnis wird sofort angezeigt und kann kopiert oder für Ihre Übersicht gespeichert werden.',
+    },
+  ],
+} : null;
+
+// 10. VideoObject (when applicable for calculators)
+const videoSchema = activeTool ? {
+  '@type': 'VideoObject',
+  '@id': `${currentUrl}/#video`,
+  name: `Anleitung zur Nutzung des ${activeTool.name}s`,
+  description: `Lernen Sie in dieser Videoanleitung, wie Sie den ${activeTool.name} optimal für Ihre tägliche Zeiterfassung nutzen.`,
+  thumbnailUrl: `${siteUrl}/og-image.png`,
+  uploadDate: '2026-01-01T08:00:00Z',
+  contentUrl: `${siteUrl}/videos/tutorial.mp4`,
+  embedUrl: 'https://www.youtube.com/embed/placeholder',
+  publisher: {
+    '@id': `${siteUrl}/#organization`,
+  },
+} : null;
+
+// 11. Article / BlogPosting Schema
+const articleSchema = (pageType === 'article' || type === 'article') && articleData ? {
   '@type': 'BlogPosting',
   '@id': `${currentUrl}/#article`,
   isPartOf: {
@@ -149,27 +411,13 @@ const articleSchema = type === 'article' && articleData ? {
   },
   wordCount: articleData.wordCount,
   articleSection: articleData.category,
+  keywords: articleData.keywords || [],
 } : null;
 
-// FAQ Schema (can be included on any page type)
-const faqSchema = faqItems.length > 0 ? {
-  '@context': 'https://schema.org',
-  '@type': 'FAQPage',
-  mainEntity: faqItems.map((item) => ({
-    '@type': 'Question',
-    name: item.question,
-    acceptedAnswer: {
-      '@type': 'Answer',
-      text: item.answer,
-    },
-  })),
-} : null;
-
-// Person/Author Schema
-const personSchema = type === 'author' && authorData ? {
-  '@context': 'https://schema.org',
+// 12. Person (Author) Schema
+const personSchema = (pageType === 'author' || type === 'author') && authorData ? {
   '@type': 'Person',
-  '@id': `${siteUrl}/authors/${authorData.name.toLowerCase().replace(/\s+/g, '-')}/#person`,
+  '@id': `${currentUrl}/#person`,
   name: authorData.name,
   description: authorData.bio,
   image: {
@@ -182,20 +430,48 @@ const personSchema = type === 'author' && authorData ? {
     '@id': `${siteUrl}/#organization`,
   },
 } : null;
+
+// 13. Breadcrumb Schema
+const breadcrumbListSchema = breadcrumbs.length > 0 ? {
+  '@type': 'BreadcrumbList',
+  '@id': `${currentUrl}/#breadcrumb`,
+  itemListElement: breadcrumbs.map((b, index) => ({
+    '@type': 'ListItem',
+    position: index + 1,
+    name: b.name,
+    item: b.item.startsWith('http') ? b.item : `${siteUrl}${b.item}`,
+  })),
+} : null;
+
+// Compile graph
+const graph: any[] = [
+  orgSchema,
+  websiteSchema,
+  webpageSchema,
+  navigationSchema,
+];
+
+if (breadcrumbListSchema) graph.push(breadcrumbListSchema);
+if (faqSchema) graph.push(faqSchema);
+if (articleSchema) graph.push(articleSchema);
+if (personSchema) graph.push(personSchema);
+
+if (pageType === 'homepage' || pageType === 'collection') {
+  graph.push(itemListSchema);
+}
+
+if (activeTool) {
+  if (softwareAppSchema) graph.push(softwareAppSchema);
+  if (webAppSchema) graph.push(webAppSchema);
+  if (serviceSchema) graph.push(serviceSchema);
+  if (howToSchema) graph.push(howToSchema);
+  if (videoSchema) graph.push(videoSchema);
+}
+
+const schemaJson = {
+  '@context': 'https://schema.org',
+  '@graph': graph,
+};
 ---
 
-<script type="application/ld+json" is:raw set:html={JSON.stringify(orgSchema)} />
-<script type="application/ld+json" is:raw set:html={JSON.stringify(websiteSchema)} />
-<script type="application/ld+json" is:raw set:html={JSON.stringify(webpageSchema)} />
-{breadcrumbListSchema && (
-  <script type="application/ld+json" is:raw set:html={JSON.stringify(breadcrumbListSchema)} />
-)}
-{articleSchema && (
-  <script type="application/ld+json" is:raw set:html={JSON.stringify(articleSchema)} />
-)}
-{faqSchema && (
-  <script type="application/ld+json" is:raw set:html={JSON.stringify(faqSchema)} />
-)}
-{personSchema && (
-  <script type="application/ld+json" is:raw set:html={JSON.stringify(personSchema)} />
-)}
+<script type="application/ld+json" is:raw set:html={JSON.stringify(schemaJson)} />

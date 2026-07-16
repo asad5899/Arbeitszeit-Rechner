@@ -127,7 +127,7 @@ const de: HomeContent = {
   introTitle: 'Mehr zum Thema Zeit & Arbeit',
   introText: 'Der Arbeitszeit-Rechner berechnet tägliche, wöchentliche und monatliche Arbeitszeiten in Stunden, Minuten und Dezimalformat. Arbeitsbeginn und Arbeitsende eingeben, Pausenzeiten festlegen — Brutto- und Nettoarbeitszeit, Überstunden und Dezimalstunden werden sofort berechnet. Der Rechner eignet sich für Arbeitnehmer, Selbstständige und Unternehmen in Deutschland, die Arbeitszeiten nach dem Arbeitszeitgesetz (ArbZG) dokumentieren.',
 
-  howTitle: 'Arbeitszeit Rechner: So funktioniert\'s',
+  howTitle: 'Arbeitszeit Rechner Pro: So funktioniert\'s',
   howSubtitle: 'Der Arbeitszeitrechner berechnet Nettoarbeitszeit in 3 Schritten. Keine Anmeldung, keine Installation — direkt im Browser nutzbar.',
   step1Title: 'Arbeitszeiten eingeben',
   step1Text: 'Arbeitsbeginn und Arbeitsende im Zeitformat (HH:MM) eingeben. Das heutige Datum wird automatisch vorgeschlagen. Mehrere Pausen mit individueller Dauer hinzufügen.',
@@ -273,7 +273,7 @@ const en: HomeContent = {
   introTitle: 'More About Time & Work',
   introText: 'The work time calculator computes daily, weekly, and monthly working hours in hours, minutes, and decimal format. Enter start and end times, set break durations — gross and net working hours, overtime, and decimal hours are calculated instantly. The calculator is suitable for employees, freelancers, and businesses that need to document working hours.',
 
-  howTitle: 'Work Time Calculator: How It Works',
+  howTitle: 'Work Time Calculator Pro: How It Works',
   howSubtitle: 'The calculator computes net working hours in 3 steps. No registration, no installation — works directly in the browser.',
   step1Title: 'Enter Working Hours',
   step1Text: 'Enter start and end times in HH:MM format. Today\'s date is automatically suggested. Add multiple breaks with individual durations.',
@@ -282,7 +282,7 @@ const en: HomeContent = {
   step3Title: 'Export for Accounting',
   step3Text: 'Save results to the weekly overview and copy with a single click. The weekly overview shows all entries with gross, net, breaks, and overtime at a glance.',
 
-  funcTitle: 'How the Work Time Calculator Works',
+  funcTitle: 'How the Work Time Calculator Pro Works',
   funcH3a: 'Working Hours in Hours and Minutes',
   funcH3aText: 'Net working time equals the difference between end time and start time, minus all break times. With a start time of 08:00, an end time of 17:00, and a 30-minute break, gross working time is 9 hours (9:00) and net working time is 8 hours 30 minutes (8:30).',
   funcH3b: 'Create Reports',
@@ -304,7 +304,7 @@ const en: HomeContent = {
     ['Over 9 hours', '45 minutes', 'Labor Law'],
   ],
 
-  appTitle: 'Work Time Calculator for Various Applications',
+  appTitle: 'Work Time Calculator Pro for Various Applications',
   appDailyTitle: 'Daily Working Time',
   appDailyText: 'Daily working time equals end time minus start time minus break time. For precise documentation, multiple breaks can be entered individually.',
   appDailyExTitle: 'Practical Example:',
@@ -320,7 +320,7 @@ const en: HomeContent = {
   appOvertimeLine2: 'Actual working time: 42 hours 30 minutes',
   appOvertimeLine3: '+2 hours 30 minutes (+2.50 decimal hours)',
 
-  decTitle: 'Work Time Calculator with Decimal Display',
+  decTitle: 'Work Time Calculator Pro with Decimal Display',
   decIntro: 'Decimal hours (industrial hours) simplify payroll and salary calculations. Instead of 7 hours 45 minutes, 7.75 hours is entered in accounting. The calculator shows results in both formats simultaneously.',
   decConvertTitle: 'Convert Hours to Decimal',
   decConvertText: 'Divide the minutes by 60 and add to the hours. The calculator performs this conversion with a click on "Decimal" in the results section.',
@@ -364,7 +364,7 @@ const en: HomeContent = {
     { q: 'How many hours do I work per year?', a: 'With a 40-hour week and 30 vacation days, annual working time is approximately 1,840 hours. Calculation: (52 weeks × 40 hours) – (30 vacation days × 8 hours) = 1,840 hours. Public holidays reduce this further.' },
   ],
 
-  whyTitle: 'Why Our Work Time Calculator Is the Best Choice',
+  whyTitle: 'Why Our Work Time Calculator Pro Is the Best Choice',
   whyCards: [
     { icon: '🎯', title: 'Complete Features', text: 'Gross/net working time, overtime calculation, decimal conversion, weekly overview, and chart analysis — all in one tool without limitations.' },
     { icon: '⚡', title: 'Simple & Secure', text: 'No registration, no ads, no data transfer. All calculations run locally in the browser. Data stays exclusively on your own device.' },
@@ -394,7 +394,7 @@ const en: HomeContent = {
     'Rest period between 2 workdays: at least 11 hours',
   ],
 
-  faq2Title: 'FAQs About the Work Time Calculator',
+  faq2Title: 'FAQs About the Work Time Calculator Pro',
   faq2Items: [
     { q: 'Is time tracking legally required?', a: 'Yes, the European Court of Justice (ECJ) ruled in 2019 that employers must set up a system for recording daily working time. The Federal Labor Court confirmed in 2022 that this obligation applies. Employers must record the start, end, and duration of daily working hours.' },
     { q: 'Do breaks count as working time?', a: 'No, rest breaks do not count as paid working time. Breaks are deducted from gross working time. Net working time (= paid time) equals gross time minus break time. The calculator shows this automatically.' },

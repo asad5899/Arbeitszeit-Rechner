@@ -20,8 +20,8 @@ export function getStaticPaths() {
 const locale = getLocaleFromUrl(Astro.url);
 const t = useTranslations(locale);
 
-const title = locale === 'de' ? 'Allgemeine Geschäftsbedingungen — Arbeitszeit Rechner' : 'Terms & Conditions — Work Time Calculator';
-const description = 'Allgemeine Geschäftsbedingungen zur Nutzung des kostenlosen Arbeitszeit Rechners.';
+const title = locale === 'de' ? 'Allgemeine Geschäftsbedingungen — Arbeitszeit Rechner Pro' : 'Terms & Conditions — Work Time Calculator Pro';
+const description = 'Allgemeine Geschäftsbedingungen zur Nutzung des kostenlosen Arbeitszeit Rechner Pros.';
 ---
 
 <!DOCTYPE html>
@@ -41,7 +41,7 @@ const description = 'Allgemeine Geschäftsbedingungen zur Nutzung des kostenlose
         <div class="card" style="line-height: 1.8;">
           <h2 style="font-size: var(--text-xl); color: var(--blue-900); margin-bottom: var(--sp-4);">1. Geltungsbereich</h2>
           <p style="margin-bottom: var(--sp-4);">
-            Diese Allgemeinen Geschäftsbedingungen gelten für die Nutzung der Webseite Arbeitszeit Rechner und aller angebotenen Berechnungsdienste.
+            Diese Allgemeinen Geschäftsbedingungen gelten für die Nutzung der Webseite Arbeitszeit Rechner Pro und aller angebotenen Berechnungsdienste.
           </p>
           <h2 style="font-size: var(--text-xl); color: var(--blue-900); margin-top: var(--sp-6); margin-bottom: var(--sp-4);">2. Kostenfreie Bereitstellung</h2>
           <p style="margin-bottom: var(--sp-4);">
@@ -49,7 +49,7 @@ const description = 'Allgemeine Geschäftsbedingungen zur Nutzung des kostenlose
           </p>
           <h2 style="font-size: var(--text-xl); color: var(--blue-900); margin-top: var(--sp-6); margin-bottom: var(--sp-4);">3. Haftungsausschluss</h2>
           <p style="margin-bottom: var(--sp-4);">
-            Die Berechnungen des Arbeitszeit Rechners dienen der privaten und unverbindlichen Information des Nutzers. Wir übernehmen keine Haftung für die Richtigkeit, Genauigkeit oder Vollständigkeit der Ergebnisse, insbesondere nicht für rechtliche Streitigkeiten oder arbeitsrechtliche Auseinandersetzungen.
+            Die Berechnungen des Arbeitszeit Rechner Pros dienen der privaten und unverbindlichen Information des Nutzers. Wir übernehmen keine Haftung für die Richtigkeit, Genauigkeit oder Vollständigkeit der Ergebnisse, insbesondere nicht für rechtliche Streitigkeiten oder arbeitsrechtliche Auseinandersetzungen.
           </p>
         </div>
         <TrendingSidebar />

@@ -10,6 +10,6 @@ sameAs:
 socials:
   twitter: "https://twitter.com/marcus_arbeitsrecht"
   linkedin: "https://www.linkedin.com/in/marcus-schmidt-arbeitsrecht"
-  website: "https://arbeitszeit-rechner.de/authors/m-schmidt"
+  website: "https://www.arbeitszeitrechnerpro.de/authors/m-schmidt"
 ---
 Marcus Schmidt ist ein renommierter Experte für deutsches Arbeitszeitrecht.

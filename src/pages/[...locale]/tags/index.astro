@@ -24,8 +24,8 @@ const t = useTranslations(locale);
 const posts = await getCollection('blog', ({ data }) => data.locale === locale);
 const tags = [...new Set(posts.flatMap((p) => p.data.tags))];
 
-const title = locale === 'de' ? 'Tags & Schlagworte — Arbeitszeit Rechner' : 'Tags & Keywords — Work Time Calculator';
-const description = 'Navigieren Sie durch alle Themengebiete des Arbeitszeit Rechners über Tags.';
+const title = locale === 'de' ? 'Tags & Schlagworte — Arbeitszeit Rechner Pro' : 'Tags & Keywords — Work Time Calculator Pro';
+const description = 'Navigieren Sie durch alle Themengebiete des Arbeitszeit Rechner Pros über Tags.';
 ---
 
 <!DOCTYPE html>

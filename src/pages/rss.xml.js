@@ -4,7 +4,7 @@ import { getCollection } from 'astro:content';
 export async function GET(context) {
   const blog = await getCollection('blog');
   return rss({
-    title: 'Arbeitszeit Rechner Blog',
+    title: 'Arbeitszeit Rechner Pro Blog',
     description: 'Berechne deine tägliche Netto-Arbeitszeit abzüglich Pausen.',
     site: context.site,
     items: blog.map((post) => ({

@@ -38,17 +38,17 @@ export const tools: ToolDef[] = [
   // ──────────────────────────────────────────
   {
     slug: 'arbeitszeit-rechner',
-    name: 'Arbeitszeit Rechner',
-    title: 'Arbeitszeit Rechner — Netto-Arbeitszeit berechnen',
+    name: 'Arbeitszeit Rechner Pro',
+    title: 'Arbeitszeit Rechner Pro — Netto-Arbeitszeit berechnen',
     description: 'Tägliche Netto-Arbeitszeit aus Arbeitsbeginn, Arbeitsende und Pausen berechnen. Ergebnis in HH:MM und Dezimal. Kostenlos und ohne Anmeldung.',
     subtitle: 'Trage Arbeitsbeginn, Arbeitsende und Pausen ein — die Netto-Arbeitszeit wird sofort berechnet.',
     sections: [
-      { heading: 'Netto-Arbeitszeit auf die Minute genau', text: 'Der Arbeitszeit Rechner zieht sämtliche Pausenminuten von der Anwesenheitsdauer ab und liefert die vergütungsfähige Nettozeit. Bei einem Schichtbeginn um 06:15 Uhr, einem Schichtende um 14:45 Uhr und einer 30-Minuten-Pause ergibt sich eine Bruttozeit von 8 Stunden 30 Minuten und eine Nettozeit von 8 Stunden (8,00 Dezimal).' },
+      { heading: 'Netto-Arbeitszeit auf die Minute genau', text: 'Der Arbeitszeit Rechner Pro zieht sämtliche Pausenminuten von der Anwesenheitsdauer ab und liefert die vergütungsfähige Nettozeit. Bei einem Schichtbeginn um 06:15 Uhr, einem Schichtende um 14:45 Uhr und einer 30-Minuten-Pause ergibt sich eine Bruttozeit von 8 Stunden 30 Minuten und eine Nettozeit von 8 Stunden (8,00 Dezimal).' },
       { heading: 'Automatische Erkennung von Nachtarbeit', text: 'Sobald das eingetragene Arbeitsende zeitlich vor dem Arbeitsbeginn liegt, schaltet der Rechner automatisch in den Nachtmodus. Ein Krankenpfleger, der um 21:30 Uhr anfängt und um 05:45 Uhr aufhört, erhält korrekt 8 Stunden 15 Minuten Bruttozeit — der Tageswechsel um Mitternacht wird intern berücksichtigt.' },
       { heading: 'Wochenübersicht mit Soll-Ist-Vergleich', text: 'Jeder gespeicherte Tageseintrag fließt in die Wochenübersicht. Dort stehen Brutto, Netto, Pausen und die Abweichung zur Soll-Arbeitszeit nebeneinander. Der integrierte Balkenchart vergleicht Ist- und Soll-Stunden visuell und macht Überstunden oder Fehlzeiten auf einen Blick sichtbar.' },
     ],
     faqItems: [
-      { q: 'Welches Zeitformat akzeptiert der Arbeitszeit Rechner?', a: '24-Stunden-Format im Muster HH:MM. Eingaben wie 08:00, 17:30 oder 23:45 sind gültig. Das heutige Datum wird automatisch vorausgefüllt.' },
+      { q: 'Welches Zeitformat akzeptiert der Arbeitszeit Rechner Pro?', a: '24-Stunden-Format im Muster HH:MM. Eingaben wie 08:00, 17:30 oder 23:45 sind gültig. Das heutige Datum wird automatisch vorausgefüllt.' },
       { q: 'Wie viele Pausen kann ich gleichzeitig erfassen?', a: 'Beliebig viele. Über „Pause hinzufügen" entsteht ein neues Feld pro Pause. Alle Einzelpausen werden summiert und von der Bruttodauer abgezogen.' },
       { q: 'Funktioniert der Rechner auch bei Schichtarbeit über Mitternacht?', a: 'Ja. Liegt das Arbeitsende vor dem Arbeitsbeginn, wird automatisch ein Tageswechsel berücksichtigt. Beginn 22:00, Ende 06:30 ergibt 8,50 Bruttostunden.' },
       { q: 'Wo werden meine eingegebenen Daten gespeichert?', a: 'Ausschließlich im lokalen Speicher des Browsers (localStorage). Kein Server, kein Account, kein Cookie-Tracking.' },

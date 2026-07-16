@@ -24,7 +24,7 @@ const t = useTranslations(locale);
 const posts = await getCollection('blog', ({ data }) => data.locale === locale);
 const categories = [...new Set(posts.map((p) => p.data.category))];
 
-const title = locale === 'de' ? 'Kategorien — Arbeitszeit Rechner' : 'Categories — Work Time Calculator';
+const title = locale === 'de' ? 'Kategorien — Arbeitszeit Rechner Pro' : 'Categories — Work Time Calculator Pro';
 const description = 'Entdecken Sie Beiträge sortiert nach Themen und Kategorien.';
 ---
 

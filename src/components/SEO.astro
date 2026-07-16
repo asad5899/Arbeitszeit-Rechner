@@ -27,7 +27,7 @@ const {
   author,
 } = Astro.props;
 
-const siteUrl = 'https://arbeitszeit-rechner.de';
+const siteUrl = 'https://www.arbeitszeitrechnerpro.de';
 const currentPath = Astro.url.pathname;
 // Remove locale prefix for building alternates
 let cleanPath = currentPath;
@@ -86,7 +86,7 @@ const ogImageUrl = image.startsWith('http') ? image : `${siteUrl}${image}`;
 <meta property="og:description" content={description} />
 <meta property="og:image" content={ogImageUrl} />
 <meta property="og:image:alt" content={title} />
-<meta property="og:site_name" content="Arbeitszeit Rechner" />
+<meta property="og:site_name" content="Arbeitszeit Rechner Pro Pro" />
 <meta property="og:locale" content={locale === 'de' ? 'de_DE' : locale === 'fr' ? 'fr_FR' : locale === 'ar' ? 'ar_SA' : 'en_US'} />
 {locales.filter((loc) => loc !== locale).map((loc) => (
   <meta property="og:locale:alternate" content={loc === 'de' ? 'de_DE' : loc === 'fr' ? 'fr_FR' : loc === 'ar' ? 'ar_SA' : 'en_US'} />
@@ -99,11 +99,11 @@ const ogImageUrl = image.startsWith('http') ? image : `${siteUrl}${image}`;
 <meta property="twitter:description" content={description} />
 <meta property="twitter:image" content={ogImageUrl} />
 <meta property="twitter:image:alt" content={title} />
-<meta property="twitter:site" content="@ArbeitszeitRech" />
+<meta property="twitter:site" content="@ArbeitszeitPro" />
 {author && <meta property="twitter:creator" content={author} />}
 
 <!-- E-E-A-T / Publisher Meta -->
-<meta name="author" content={author || "Arbeitszeit Rechner Editorial Team"} />
+<meta name="author" content={author || "Arbeitszeit Rechner Pro Pro Editorial Team"} />
 <link rel="publisher" href={siteUrl} />
 
 <!-- Theme Color / Viewport -->

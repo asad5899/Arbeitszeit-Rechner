@@ -33,7 +33,7 @@ posts.sort((a, b) => b.data.publishDate.getTime() - a.data.publishDate.getTime()
 const categories = [...new Set(posts.map((p) => p.data.category))];
 const tags = [...new Set(posts.flatMap((p) => p.data.tags))];
 
-const title = locale === 'de' ? 'Fachbeiträge & Ratgeber — Arbeitszeit Rechner' : 'Articles & Guides — Work Time Calculator';
+const title = locale === 'de' ? 'Fachbeiträge & Ratgeber — Arbeitszeit Rechner Pro' : 'Articles & Guides — Work Time Calculator Pro';
 const description = 'Aktuelle Artikel zu Arbeitsrecht, Pausenregelungen, Zeiterfassung und Überstunden in Ihrem Land.';
 ---
 
