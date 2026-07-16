@@ -1,4 +1,98 @@
+# robots.txt for Arbeitszeit Rechner Pro (https://www.arbeitszeitrechnerpro.de/)
+# Last updated: 2026-07-16
+
+# ==========================================
+# CRAWLER RULES
+# ==========================================
+
+# General rules for all crawlers
 User-agent: *
 Allow: /
+
+# Private, administrative, or non-public areas
+Disallow: /admin/
+Disallow: /administrator/
+Disallow: /login/
+Disallow: /signin/
+Disallow: /signup/
+Disallow: /dashboard/
+Disallow: /account/
+Disallow: /profile/
+Disallow: /checkout/
+Disallow: /cart/
+Disallow: /wp-admin/
+Disallow: /wp-includes/
+Disallow: /cgi-bin/
+Disallow: /private/
+Disallow: /temp/
+Disallow: /tmp/
+Disallow: /cache/
+Disallow: /logs/
+Disallow: /backup/
+Disallow: /backups/
+Disallow: /test/
+Disallow: /testing/
+Disallow: /staging/
+Disallow: /dev/
+Disallow: /api/
+Disallow: /preview/
+Disallow: /search?*
+Disallow: /?preview=*
+Disallow: /?replytocom=*
+Disallow: /404
+Disallow: /404.html
+
+# Explicitly allow access to critical assets and resources
+Allow: /assets/
+Allow: /images/
+Allow: /img/
+Allow: /icons/
+Allow: /fonts/
+Allow: /css/
+Allow: /js/
+Allow: /public/
+Allow: /uploads/
+Allow: /favicon.ico
+Allow: /robots.txt
+Allow: /sitemap.xml
+
+# Special rules for major crawler bots to ensure optimal indexation
+User-agent: Googlebot
+Allow: /
+Disallow: /admin/
+Disallow: /api/
+Disallow: /temp/
+Disallow: /tmp/
+Disallow: /search?*
+
+User-agent: Googlebot-Image
+Allow: /images/
+Allow: /img/
+Allow: /uploads/
+
+User-agent: Googlebot-Video
+Allow: /videos/
+
+User-agent: Bingbot
+Allow: /
+Disallow: /admin/
+Disallow: /api/
+Disallow: /search?*
+
+User-agent: YandexBot
+Allow: /
+Disallow: /admin/
+Disallow: /api/
+Disallow: /search?*
+
+User-agent: Baiduspider
+Allow: /
+Disallow: /admin/
+Disallow: /api/
+Disallow: /search?*
+
+# ==========================================
+# SITEMAP REFERENCES
+# ==========================================
 
 Sitemap: https://www.arbeitszeitrechnerpro.de/sitemap.xml
