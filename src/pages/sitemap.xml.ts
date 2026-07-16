@@ -67,7 +67,7 @@ export const GET: APIRoute = async () => {
     <priority>${page.priority}</priority>
 ${alternates}
 ${xDefault}
-  </url>\n`;
+  </url>\n\n`;
     }
   }
 
@@ -111,7 +111,7 @@ ${xDefault}
       <video:duration>180</video:duration>
       <video:publication_date>2026-01-01T08:00:00Z</video:publication_date>
     </video:video>
-  </url>\n`;
+  </url>\n\n`;
     }
   }
 
@@ -153,7 +153,7 @@ ${xDefault}
       <news:publication_date>${publishDate}</news:publication_date>
       <news:title>${escapedTitle}</news:title>
     </news:news>
-  </url>\n`;
+  </url>\n\n`;
   }
 
   // 4. AUTHOR PROFILE PAGES (with image sitemap details)
@@ -197,7 +197,7 @@ ${xDefault}
       <image:title>${escapedName}</image:title>
       <image:caption>${escapedBio}</image:caption>
     </image:image>
-  </url>\n`;
+  </url>\n\n`;
     }
   }
 
@@ -217,7 +217,7 @@ ${xDefault}
     <lastmod>${today}</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
-  </url>\n`;
+  </url>\n\n`;
     }
   }
 
