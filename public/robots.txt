@@ -2,4 +2,3 @@ User-agent: *
 Allow: /
 
 Sitemap: https://www.arbeitszeitrechnerpro.de/sitemap.xml
-Sitemap: https://www.arbeitszeitrechnerpro.de/sitemap-index.xml
