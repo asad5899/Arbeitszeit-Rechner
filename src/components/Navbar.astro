@@ -30,10 +30,36 @@ const navLinks = [
 <nav class="navbar" role="navigation" aria-label={t('nav.calculator')}>
   <div class="navbar-inner">
     <a href={getLocalizedPath('/', locale)} class="nav-logo" aria-label="Arbeitszeit Rechner">
-      <div class="nav-logo-icon" aria-hidden="true">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      <div class="nav-logo-icon" aria-hidden="true" style="background: transparent;">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 512 512" style="width: 100%; height: 100%;">
+          <defs>
+            <linearGradient id="bgGradIcon" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#3b82f6" />
+              <stop offset="100%" stop-color="#1e40af" />
+            </linearGradient>
+          </defs>
+          <circle cx="256" cy="256" r="236" fill="url(#bgGradIcon)" />
+          <rect x="128" y="148" width="256" height="240" rx="24" fill="#ffffff" />
+          <path d="M128 172c0-13.25 10.75-24 24-24h208c13.25 0 24 10.75 24 24v32H128v-32Z" fill="#eff6ff" />
+          <line x1="168" y1="260" x2="344" y2="260" stroke="#cbd5e1" stroke-width="6" stroke-linecap="round" />
+          <line x1="168" y1="300" x2="344" y2="300" stroke="#cbd5e1" stroke-width="6" stroke-linecap="round" />
+          <line x1="168" y1="340" x2="260" y2="340" stroke="#cbd5e1" stroke-width="6" stroke-linecap="round" />
+          <rect x="176" y="116" width="16" height="48" rx="8" fill="#cbd5e1" />
+          <rect x="179" y="116" width="10" height="48" rx="5" fill="#e2e8f0" />
+          <rect x="320" y="116" width="16" height="48" rx="8" fill="#cbd5e1" />
+          <rect x="329" y="116" width="10" height="48" rx="5" fill="#e2e8f0" />
+          <circle cx="316" cy="324" r="76" fill="#3b82f6" stroke="#ffffff" stroke-width="12" />
+          <circle cx="316" cy="324" r="64" fill="#eff6ff" />
+          <line x1="316" y1="268" x2="316" y2="274" stroke="#1e3a8a" stroke-width="4" stroke-linecap="round" />
+          <line x1="372" y1="324" x2="366" y2="324" stroke="#1e3a8a" stroke-width="4" stroke-linecap="round" />
+          <line x1="316" y1="380" x2="316" y2="374" stroke="#1e3a8a" stroke-width="4" stroke-linecap="round" />
+          <line x1="260" y1="324" x2="266" y2="324" stroke="#1e3a8a" stroke-width="4" stroke-linecap="round" />
+          <line x1="316" y1="324" x2="316" y2="290" stroke="#1e3a8a" stroke-width="6" stroke-linecap="round" />
+          <line x1="316" y1="324" x2="344" y2="336" stroke="#2563eb" stroke-width="6" stroke-linecap="round" />
+          <circle cx="316" cy="324" r="8" fill="#1e2a5e" />
+        </svg>
       </div>
-      <span class="nav-logo-text">Arbeitszeit<span>Rechner</span></span>
+      <span class="nav-logo-text">Arbeitszeit <span>Rechner</span></span>
     </a>
 
     <!-- Desktop links -->
