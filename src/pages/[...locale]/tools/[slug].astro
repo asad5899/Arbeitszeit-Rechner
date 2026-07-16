@@ -51,6 +51,8 @@ const breadcrumbs = [
   { name: 'Tools', item: `${siteUrl}${localePath}/tools/` },
   { name: tool.name, item: `${siteUrl}${localePath}/tools/${tool.slug}/` },
 ];
+
+const toolKeywords = `${tool.name}, ${tool.name} online, ${tool.name} kostenlos, zeiterfassung, arbeitszeitrechner`;
 ---
 
 <!DOCTYPE html>
@@ -61,6 +63,7 @@ const breadcrumbs = [
     <SEO 
       title={title} 
       description={description} 
+      keywords={toolKeywords}
       locale={locale} 
     />
     

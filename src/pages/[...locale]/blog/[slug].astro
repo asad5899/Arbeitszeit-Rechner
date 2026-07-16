@@ -62,6 +62,8 @@ const wordCount = post.body ? post.body.split(/\s+/).length : 200;
       publishDate={post.data.publishDate.toISOString()}
       updateDate={post.data.updateDate?.toISOString()}
       author={authorEntry?.data.name}
+      section={post.data.category}
+      tags={post.data.tags}
     />
     <Schema 
       type="article"
