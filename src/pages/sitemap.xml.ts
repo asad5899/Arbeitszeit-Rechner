@@ -107,7 +107,7 @@ ${xDefault}
       <video:title>${videoTitle}</video:title>
       <video:description>${videoDesc}</video:description>
       <video:content_loc>${siteUrl}/videos/tutorial.mp4</video:content_loc>
-      <video:embed_loc>https://www.youtube.com/embed/placeholder</video:embed_loc>
+      <video:player_loc>https://www.youtube.com/embed/placeholder</video:player_loc>
       <video:duration>180</video:duration>
       <video:publication_date>2026-01-01T08:00:00Z</video:publication_date>
     </video:video>
