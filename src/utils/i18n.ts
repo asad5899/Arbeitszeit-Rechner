@@ -21,7 +21,7 @@ export const i18n = {
     'nav.blog': 'Blog',
     'nav.faq': 'FAQ',
     'nav.search': 'Suche',
-    'hero.title': 'Deine Arbeitszeit auf den Punkt.',
+    'hero.title': 'Arbeitszeit Rechner – Arbeitszeit einfach online berechnen',
     'hero.subtitle': 'Netto-Arbeitszeit berechnen — sofort, präzise und ohne Anmeldung.',
     'hero.badge': 'Kostenlos & Werbefrei',
     'calc.title': 'Zeiterfassung',
