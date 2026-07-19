@@ -1,5 +1,4 @@
 /* Standard CSS Design System from backup merged with blog and list views styles */
-@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
 
 :root {
   --blue-900: #1e2a5e;
@@ -41,7 +40,9 @@
   --info-600: #2563eb;
   --info-100: #dbeafe;
 
-  --font: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  /* Use the platform UI font. It is available immediately, unlike a remote
+     Google Fonts stylesheet which blocks first paint on mobile networks. */
+  --font: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
   --text-xs: 0.75rem;
   --text-sm: 0.8125rem;
   --text-base: 0.9375rem;
@@ -824,6 +825,24 @@ a:hover { color: var(--blue-700); text-decoration: underline; }
 
 .content-section:last-child {
   margin-bottom: 0;
+}
+
+/*
+ * The homepage intentionally contains a substantial set of calculators and
+ * reference content. On phones, none of it is visible during the initial
+ * render. Skipping its style, layout and paint work until it approaches the
+ * viewport keeps the calculator responsive and reduces main-thread work.
+ */
+@media (max-width: 900px) {
+  .tools-grid-section {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 3600px;
+  }
+
+  .content-area {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 6200px;
+  }
 }
 
 /* Content Headings */
