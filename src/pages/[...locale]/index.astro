@@ -42,10 +42,7 @@ const description = locale === 'de'
 // FAQ items for Schema.org FAQPage markup (all locales)
 import { getHomeContent } from '../../utils/homeContent';
 const homeContent = getHomeContent(locale);
-const faqSchemaItems = [
-  ...homeContent.faqItems.map(item => ({ question: item.q, answer: item.a })),
-  ...homeContent.faq2Items.map(item => ({ question: item.q, answer: item.a })),
-];
+const faqSchemaItems = homeContent.faqItems.map(item => ({ question: item.q, answer: item.a }));
 ---
 
 <!DOCTYPE html>

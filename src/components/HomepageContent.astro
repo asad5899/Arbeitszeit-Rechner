@@ -5,33 +5,41 @@ import { getHomeContent } from '../utils/homeContent';
 const locale = getLocaleFromUrl(Astro.url);
 const c = getHomeContent(locale);
 
-// Decimal conversion table data (same for all locales)
-const decimalRows = [
-  ['5', '0,08', '35', '0,58'],
-  ['10', '0,17', '40', '0,67'],
-  ['15', '0,25', '45', '0,75'],
-  ['20', '0,33', '50', '0,83'],
-  ['25', '0,42', '55', '0,92'],
-  ['30', '0,50', '60', '1,00'],
+// Entity tags for Section 1 — SEO entities
+const entityTags = [
+  'Arbeitszeit', 'Arbeitsstunden', 'Pausen', 'Überstunden',
+  'Sollstunden', 'Nettoarbeitszeit', 'Bruttoarbeitszeit',
+  'Zeiterfassung', 'Teilzeit', 'Vollzeit', 'Schichtarbeit',
+  'Nachtarbeit', 'Arbeitsvertrag', 'Arbeitstage', 'Arbeitswoche',
+  'Monatliche Arbeitszeit', 'Jährliche Arbeitszeit', 'Arbeitszeitkonto',
+  'Arbeitszeiterfassung', 'ArbZG', 'TVöD', 'Dezimalstunden',
 ];
 ---
 
 <div class="content-area" id="content-sections">
 
-  <!-- Introduction -->
-  <section class="content-section" id="mehr-zum-thema">
-    <h2 class="content-h2">{c.introTitle}</h2>
-    <p class="content-intro">{c.introText}</p>
+  <!-- Section 1: Was ist ein Arbeitszeit Rechner? -->
+  <section class="content-section reveal" id="was-ist">
+    <h2 class="content-h2">{c.whatTitle}</h2>
+    <p class="content-p">{c.whatText1}</p>
+    <p class="content-p">{c.whatText2}</p>
+    <p class="content-p">{c.whatText3}</p>
+
+    <div class="entity-tags" id="entity-tags">
+      {entityTags.map((tag, i) => (
+        <span class="entity-tag" style={`animation-delay: ${i * 0.05}s`}>{tag}</span>
+      ))}
+    </div>
   </section>
 
   <div class="section-divider"></div>
 
-  <!-- How it works (3 Steps) -->
-  <section class="content-section" id="so-funktionierts">
+  <!-- Section 2: Wie funktioniert der Arbeitszeit Rechner? -->
+  <section class="content-section reveal" id="wie-funktioniert">
     <h2 class="content-h2">{c.howTitle}</h2>
-    <p class="content-p"><strong>{c.howSubtitle}</strong></p>
+    <p class="content-p"><strong>{c.howIntro}</strong></p>
 
-    <div class="steps-grid">
+    <div class="steps-grid" id="steps-grid">
       <div class="step-card">
         <div class="step-number">1</div>
         <h3>{c.step1Title}</h3>
@@ -47,50 +55,100 @@ const decimalRows = [
         <h3>{c.step3Title}</h3>
         <p>{c.step3Text}</p>
       </div>
+      <div class="step-card">
+        <div class="step-number">4</div>
+        <h3>{c.step4Title}</h3>
+        <p>{c.step4Text}</p>
+      </div>
     </div>
   </section>
 
   <div class="section-divider"></div>
 
-  <!-- Detailed functionality -->
-  <section class="content-section" id="funktionsweise">
-    <h2 class="content-h2">{c.funcTitle}</h2>
+  <!-- Section 3: Arbeitszeit berechnen – Formel -->
+  <section class="content-section reveal" id="formel">
+    <h2 class="content-h2">{c.formulaTitle}</h2>
+    <p class="content-p">{c.formulaIntro}</p>
 
-    <h3 class="content-h3">{c.funcH3a}</h3>
-    <p class="content-p"><strong>{c.funcH3aText}</strong></p>
+    <!-- Interactive Formula Cards -->
+    <div class="formula-cards" id="formula-cards">
+      <div class="formula-card">
+        <div class="formula-card-label">{c.formulaNettoLabel}</div>
+        <div class="formula-card-formula"><code>{c.formulaNettoFormula}</code></div>
+        <p class="formula-card-desc">{c.formulaNettoDesc}</p>
+      </div>
+      <div class="formula-card">
+        <div class="formula-card-label">{c.formulaBruttoLabel}</div>
+        <div class="formula-card-formula"><code>{c.formulaBruttoFormula}</code></div>
+        <p class="formula-card-desc">{c.formulaBruttoDesc}</p>
+      </div>
+      <div class="formula-card">
+        <div class="formula-card-label">{c.formulaDecLabel}</div>
+        <div class="formula-card-formula"><code>{c.formulaDecFormula}</code></div>
+        <p class="formula-card-desc">{c.formulaDecDesc}</p>
+      </div>
+    </div>
 
-    <h3 class="content-h3">{c.funcH3b}</h3>
-    <p class="content-p">{c.funcH3bText}</p>
-
-    <h3 class="content-h3">{c.funcH3c}</h3>
-    <p class="content-p">{c.funcH3cText}</p>
+    <div class="example-box">
+      <div class="example-title">📐 {c.formulaTitle}</div>
+      <p><strong>{c.formulaExample}</strong></p>
+    </div>
   </section>
 
   <div class="section-divider"></div>
 
-  <!-- Legal break times -->
-  <section class="content-section" id="pausenzeiten">
-    <h2 class="content-h2">{c.breakTitle}</h2>
-    <p class="content-p">{c.breakIntro}</p>
+  <!-- Section 4: Arbeitszeit mit Pause berechnen -->
+  <section class="content-section reveal" id="mit-pause">
+    <h2 class="content-h2">{c.pauseTitle}</h2>
+    <p class="content-p">{c.pauseIntro}</p>
 
-    <h3 class="content-h3">{c.break30Title}</h3>
-    <p class="content-p"><strong>{c.break30Text}</strong></p>
+    <h3 class="content-h3">{c.pauseLawTitle}</h3>
+    <p class="content-p">{c.pauseLawText}</p>
 
-    <h3 class="content-h3">{c.break45Title}</h3>
-    <p class="content-p"><strong>{c.break45Text}</strong></p>
+    <!-- Break Rules Bar Chart -->
+    <div class="break-visual" id="break-visual">
+      <div class="break-bars">
+        <div class="break-bar-row">
+          <div class="break-bar-label">{c.pauseTableRows[0][0]}</div>
+          <div class="break-bar-track">
+            <div class="break-bar-fill none" style="--fill-w: 50%;">
+              <span>{c.pauseTableRows[0][1]}</span>
+            </div>
+          </div>
+          <div class="break-bar-value">0 Min.</div>
+        </div>
+        <div class="break-bar-row">
+          <div class="break-bar-label">{c.pauseTableRows[1][0]}</div>
+          <div class="break-bar-track">
+            <div class="break-bar-fill medium" style="--fill-w: 67%;">
+              <span>30 Min.</span>
+            </div>
+          </div>
+          <div class="break-bar-value">30 Min.</div>
+        </div>
+        <div class="break-bar-row">
+          <div class="break-bar-label">{c.pauseTableRows[2][0]}</div>
+          <div class="break-bar-track">
+            <div class="break-bar-fill long" style="--fill-w: 100%;">
+              <span>45 Min.</span>
+            </div>
+          </div>
+          <div class="break-bar-value">45 Min.</div>
+        </div>
+      </div>
+    </div>
 
-    <h3 class="content-h3">{c.breakTableTitle}</h3>
     <div class="info-table-wrapper">
       <table class="info-table">
         <thead>
           <tr>
-            <th>{c.breakTableHeaders[0]}</th>
-            <th>{c.breakTableHeaders[1]}</th>
-            <th>{c.breakTableHeaders[2]}</th>
+            <th>{c.pauseTableHeaders[0]}</th>
+            <th>{c.pauseTableHeaders[1]}</th>
+            <th>{c.pauseTableHeaders[2]}</th>
           </tr>
         </thead>
         <tbody>
-          {c.breakTableRows.map((row) => (
+          {c.pauseTableRows.map((row) => (
             <tr>
               <td>{row[0]}</td>
               <td>{row[1]}</td>
@@ -100,60 +158,217 @@ const decimalRows = [
         </tbody>
       </table>
     </div>
+
+    <h3 class="content-h3">{c.pauseExTitle}</h3>
+
+    <!-- Interactive Timeline Diagram -->
+    <div class="timeline-diagram" id="workday-timeline">
+      <div class="timeline-header">
+        <span class="timeline-title">Arbeitstag-Visualisierung</span>
+        <button class="timeline-toggle" id="timeline-toggle-btn" type="button" aria-label="Beispiel wechseln">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 2v6h-6"/><path d="M3 12a9 9 0 0 1 15-6.7L21 8"/></svg>
+          Beispiel wechseln
+        </button>
+      </div>
+      <div class="timeline-bar-container" id="timeline-bar">
+        <div class="timeline-segment work-morning" id="seg-morning" style="width: 47.1%; left: 0;">
+          <span class="seg-label">Arbeit (08:00–12:00)</span>
+        </div>
+        <div class="timeline-segment break-segment" id="seg-break" style="width: 5.9%; left: 47.1%;">
+          <span class="seg-label">Pause</span>
+        </div>
+        <div class="timeline-segment work-afternoon" id="seg-afternoon" style="width: 47%; left: 53%;">
+          <span class="seg-label">Arbeit (12:30–16:30)</span>
+        </div>
+      </div>
+      <div class="timeline-labels">
+        <span id="tl-start">08:00</span>
+        <span id="tl-end">16:30</span>
+      </div>
+      <div class="timeline-stats">
+        <div class="timeline-stat">
+          <div class="timeline-stat-value" id="stat-brutto">8:30</div>
+          <div class="timeline-stat-label">Bruttoarbeitszeit</div>
+        </div>
+        <div class="timeline-stat">
+          <div class="timeline-stat-value" id="stat-pause" style="color: var(--warning-600);">0:30</div>
+          <div class="timeline-stat-label">Pausenzeit</div>
+        </div>
+        <div class="timeline-stat">
+          <div class="timeline-stat-value" id="stat-netto" style="color: var(--success-600);">8:00</div>
+          <div class="timeline-stat-label">Nettoarbeitszeit</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="example-box">
+      <div class="example-title">{c.pauseEx1Label}</div>
+      {c.pauseEx1Lines.map((line) => <p>{line}</p>)}
+    </div>
+    <div class="example-box">
+      <div class="example-title">{c.pauseEx2Label}</div>
+      {c.pauseEx2Lines.map((line) => <p>{line}</p>)}
+    </div>
+
+    <div class="tip-box">
+      <span class="tip-icon">💡</span>
+      <p>{c.pauseTip}</p>
+    </div>
   </section>
 
   <div class="section-divider"></div>
 
-  <!-- Applications -->
-  <section class="content-section" id="anwendungen">
-    <h2 class="content-h2">{c.appTitle}</h2>
+  <!-- Section 5: Überstunden berechnen -->
+  <section class="content-section reveal" id="ueberstunden">
+    <h2 class="content-h2">{c.overtimeTitle}</h2>
+    <p class="content-p">{c.overtimeIntro}</p>
 
-    <h3 class="content-h3">{c.appDailyTitle}</h3>
-    <p class="content-p">{c.appDailyText}</p>
-
-    <h4 class="content-h4">{c.appDailyExTitle}</h4>
-    <div class="example-box">
-      <div class="example-title">{c.appDailyExLabel}</div>
-      <p>{c.appDailyExLine1}</p>
-      <p>{c.appDailyExLine2}</p>
-      <p><strong>{c.appDailyExLine3}</strong></p>
+    <div class="formula-card" style="margin-bottom: var(--sp-6);">
+      <div class="formula-card-label">{c.overtimeFormulaLabel}</div>
+      <div class="formula-card-formula"><code>{c.overtimeFormula}</code></div>
     </div>
 
-    <h3 class="content-h3">{c.appWeeklyTitle}</h3>
-    <p class="content-p">{c.appWeeklyText}</p>
-
-    <h4 class="content-h4">{c.appOvertimeTitle}</h4>
     <div class="example-box">
-      <div class="example-title">{c.appOvertimeLabel}</div>
-      <p>{c.appOvertimeLine1}</p>
-      <p>{c.appOvertimeLine2}</p>
-      <p><strong>{c.appOvertimeLine3}</strong></p>
+      <div class="example-title">{c.overtimeExTitle}</div>
+      {c.overtimeExLines.map((line) => <p><strong>{line}</strong></p>)}
     </div>
-  </section>
 
-  <div class="section-divider"></div>
+    <h3 class="content-h3">{c.overtimeWeekTitle}</h3>
+    <p class="content-p">{c.overtimeWeekText}</p>
 
-  <!-- Decimal -->
-  <section class="content-section" id="dezimal">
-    <h2 class="content-h2">{c.decTitle}</h2>
-    <p class="content-p"><strong>{c.decIntro}</strong></p>
-
-    <h3 class="content-h3">{c.decConvertTitle}</h3>
-    <p class="content-p">{c.decConvertText}</p>
-
-    <h4 class="content-h4">{c.decTableTitle}</h4>
     <div class="info-table-wrapper">
       <table class="info-table">
         <thead>
           <tr>
-            <th>{c.decTableHeaders[0]}</th>
-            <th>{c.decTableHeaders[1]}</th>
-            <th>{c.decTableHeaders[2]}</th>
-            <th>{c.decTableHeaders[3]}</th>
+            {c.overtimeWeekTableHeaders.map((h) => <th>{h}</th>)}
           </tr>
         </thead>
         <tbody>
-          {decimalRows.map((row) => (
+          {c.overtimeWeekTableRows.map((row) => (
+            <tr>
+              <td>{row[0]}</td>
+              <td>{row[1]}</td>
+              <td>{row[2]}</td>
+              <td class={row[3].startsWith('+') ? 'positive' : row[3].startsWith('−') ? 'negative' : ''}><strong>{row[3]}</strong></td>
+            </tr>
+          ))}
+          <tr class="table-total-row">
+            <td colspan="3"><strong>Gesamt</strong></td>
+            <td class="positive"><strong>+2:00</strong></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="warning-box">
+      <span class="warning-icon">⚠️</span>
+      <p>{c.overtimeLawNote}</p>
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- Section 6: Sollstunden berechnen -->
+  <section class="content-section reveal" id="sollstunden">
+    <h2 class="content-h2">{c.targetTitle}</h2>
+    <p class="content-p">{c.targetIntro}</p>
+
+    <div class="formula-cards">
+      <div class="formula-card compact">
+        <div class="formula-card-label">{c.targetDailyLabel}</div>
+        <div class="formula-card-formula"><code>{c.targetDailyFormula}</code></div>
+      </div>
+      <div class="formula-card compact">
+        <div class="formula-card-label">{c.targetWeeklyLabel}</div>
+        <div class="formula-card-formula"><code>{c.targetWeeklyFormula}</code></div>
+      </div>
+      <div class="formula-card compact">
+        <div class="formula-card-label">{c.targetMonthlyLabel}</div>
+        <div class="formula-card-formula"><code>{c.targetMonthlyFormula}</code></div>
+      </div>
+    </div>
+
+    <h3 class="content-h3">{c.targetTableTitle}</h3>
+
+    <!-- Animated Target Hours Bar Chart -->
+    <div class="hours-chart" id="target-chart">
+      <div class="hours-chart-title">{c.targetTableTitle}</div>
+      {c.targetTableRows.map((row) => (
+        <div class="hbar-row">
+          <div class="hbar-label">{row[0]}</div>
+          <div class="hbar-track">
+            <div class={`hbar-fill`} style={`--fill-w: ${(parseFloat(row[2].replace(',', '.').replace('~', '')) / 173.33 * 100).toFixed(1)}%;`}>
+              {row[2]} Std.
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+
+    <div class="tip-box">
+      <span class="tip-icon">💡</span>
+      <p>{c.targetTip}</p>
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- Section 7: Arbeitszeit in Prozent berechnen -->
+  <section class="content-section reveal" id="prozent">
+    <h2 class="content-h2">{c.percentTitle}</h2>
+    <p class="content-p">{c.percentIntro}</p>
+
+    <div class="formula-card" style="margin-bottom: var(--sp-6);">
+      <div class="formula-card-label">Formel</div>
+      <div class="formula-card-formula"><code>{c.percentFormula}</code></div>
+    </div>
+
+    <!-- Animated Percentage Gauge -->
+    <div class="percent-gauge-grid" id="percent-gauge-grid">
+      {c.percentTableRows.map((row) => (
+        <div class="percent-gauge-card">
+          <div class="percent-ring">
+            <svg viewBox="0 0 80 80">
+              <circle class="ring-bg" cx="40" cy="40" r="34"/>
+              <circle class="ring-fill" cx="40" cy="40" r="34"
+                stroke-dasharray="213.6"
+                stroke-dashoffset="213.6"
+                data-target={String(213.6 - (parseFloat(row[1].replace('%', '').replace(',', '.').replace(' ', '')) / 100) * 213.6)}/>
+            </svg>
+            <span class="percent-ring-label">{row[1]}</span>
+          </div>
+          <div class="percent-gauge-info">
+            <strong>{row[0]} h</strong>
+            <span>{row[2]}</span>
+          </div>
+        </div>
+      ))}
+    </div>
+
+    <div class="example-box">
+      <div class="example-title">📊 Rechenbeispiel</div>
+      <p><strong>{c.percentExample}</strong></p>
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- Section 8: Teilzeit Arbeitszeit -->
+  <section class="content-section reveal" id="teilzeit">
+    <h2 class="content-h2">{c.partTimeTitle}</h2>
+    <p class="content-p">{c.partTimeIntro}</p>
+    <p class="content-p">{c.partTimeText}</p>
+
+    <h3 class="content-h3">{c.partTimeTableTitle}</h3>
+    <div class="info-table-wrapper">
+      <table class="info-table">
+        <thead>
+          <tr>
+            {c.partTimeTableHeaders.map((h) => <th>{h}</th>)}
+          </tr>
+        </thead>
+        <tbody>
+          {c.partTimeTableRows.map((row) => (
             <tr>
               <td>{row[0]}</td>
               <td>{row[1]}</td>
@@ -165,44 +380,148 @@ const decimalRows = [
       </table>
     </div>
 
-    <h3 class="content-h3">{c.decIndustrialTitle}</h3>
-    <p class="content-p">{c.decIndustrialText}</p>
-
-    <h4 class="content-h4">{c.decIndustrialExTitle}</h4>
-    <div class="example-box">
-      <div class="example-title">{c.decIndustrialExTitle}</div>
-      <p>{c.decIndustrialExLine1}</p>
-      <p>{c.decIndustrialExLine2}</p>
-      <p><strong>{c.decIndustrialExLine3}</strong></p>
+    <div class="tip-box">
+      <span class="tip-icon">💡</span>
+      <p>{c.partTimeTip}</p>
     </div>
   </section>
 
   <div class="section-divider"></div>
 
-  <!-- Salary -->
-  <section class="content-section" id="gehaltsabrechnung">
-    <h2 class="content-h2">{c.salaryTitle}</h2>
+  <!-- Section 9: Vollzeit Arbeitszeit -->
+  <section class="content-section reveal" id="vollzeit">
+    <h2 class="content-h2">{c.fullTimeTitle}</h2>
+    <p class="content-p">{c.fullTimeIntro}</p>
+    <p class="content-p">{c.fullTimeText}</p>
 
-    <h3 class="content-h3">{c.salaryMonthTitle}</h3>
-    <p class="content-p"><strong>{c.salaryMonthText}</strong></p>
-
-    <h4 class="content-h4">{c.salaryFormulaTitle}</h4>
-    <div class="example-box">
-      <div class="example-title">{c.salaryFormulaLabel}</div>
-      <p><code>{c.salaryFormulaLine1}</code></p>
-      {c.salaryFormulaLines.map((line) => (
-        <p><strong>{line}</strong></p>
+    <div class="info-cards">
+      {c.fullTimeCards.map((card) => (
+        <div class="info-card">
+          <h3>{card.title}</h3>
+          <div class="info-card-value">{card.value}</div>
+          <p>{card.desc}</p>
+        </div>
       ))}
     </div>
 
-    <h3 class="content-h3">{c.salaryTvodTitle}</h3>
-    <p class="content-p">{c.salaryTvodText}</p>
+    <div class="legal-notice">
+      <h4>📜 Gesetzliche Grundlage</h4>
+      <p>{c.fullTimeLawNote}</p>
+    </div>
   </section>
 
   <div class="section-divider"></div>
 
-  <!-- Main FAQ -->
-  <section class="content-section" id="faq-section">
+  <!-- Section 10: Praktische Beispiele -->
+  <section class="content-section reveal" id="beispiele">
+    <h2 class="content-h2">{c.examplesTitle}</h2>
+    <p class="content-p">{c.examplesIntro}</p>
+
+    <!-- Scenario Comparison Table -->
+    <div class="info-table-wrapper">
+      <table class="info-table">
+        <thead>
+          <tr>
+            <th>Szenario</th>
+            <th>Beginn</th>
+            <th>Ende</th>
+            <th>Pause</th>
+            <th>Brutto</th>
+            <th>Netto</th>
+            <th>Dezimal</th>
+          </tr>
+        </thead>
+        <tbody>
+          {c.examplesScenarios.map((s) => (
+            <tr>
+              <td><strong>{s.label}</strong></td>
+              <td>{s.start}</td>
+              <td>{s.end}</td>
+              <td>{s.pause}</td>
+              <td>{s.brutto}</td>
+              <td class="positive"><strong>{s.netto}</strong></td>
+              <td>{s.decimal}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+
+    <h3 class="content-h3">{c.examplesWeekTitle}</h3>
+    <div class="info-table-wrapper">
+      <table class="info-table">
+        <thead>
+          <tr>
+            {c.examplesWeekTableHeaders.map((h) => <th>{h}</th>)}
+          </tr>
+        </thead>
+        <tbody>
+          {c.examplesWeekTableRows.map((row) => (
+            <tr>
+              <td>{row[0]}</td>
+              <td>{row[1]}</td>
+              <td>{row[2]}</td>
+              <td>{row[3]}</td>
+              <td><strong>{row[4]}</strong></td>
+            </tr>
+          ))}
+          <tr class="table-total-row">
+            <td colspan="4"><strong>{c.examplesWeekTotal[0]}</strong></td>
+            <td><strong>{c.examplesWeekTotal[3]}</strong></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- Section 11: Häufige Fehler -->
+  <section class="content-section reveal" id="fehler">
+    <h2 class="content-h2">{c.mistakesTitle}</h2>
+    <p class="content-p">{c.mistakesIntro}</p>
+
+    <div class="mistakes-grid">
+      {c.mistakes.map((m, i) => (
+        <div class="mistake-card">
+          <div class="mistake-header">
+            <span class="mistake-number">{i + 1}</span>
+            <h3>{m.title}</h3>
+          </div>
+          <div class="mistake-problem">
+            <span class="mistake-label">❌ Problem:</span>
+            <p>{m.problem}</p>
+          </div>
+          <div class="mistake-solution">
+            <span class="mistake-label">✅ Lösung:</span>
+            <p>{m.solution}</p>
+          </div>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- Section 12: Vorteile unseres Arbeitszeit Rechners -->
+  <section class="content-section reveal" id="vorteile">
+    <h2 class="content-h2">{c.benefitsTitle}</h2>
+
+    <div class="feature-grid">
+      {c.benefitsCards.map((card) => (
+        <div class="feature-card">
+          <div class="feature-icon">{card.icon}</div>
+          <h3>{card.title}</h3>
+          <p>{card.text}</p>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- Section 13: FAQ -->
+  <section class="content-section reveal" id="faq">
     <h2 class="content-h2">{c.faqTitle}</h2>
 
     <div class="faq-list">
@@ -222,97 +541,6 @@ const decimalRows = [
     </div>
   </section>
 
-  <div class="section-divider"></div>
-
-  <!-- Why us -->
-  <section class="content-section" id="warum-unser-rechner">
-    <h2 class="content-h2">{c.whyTitle}</h2>
-
-    <div class="feature-grid">
-      {c.whyCards.map((card) => (
-        <div class="feature-card">
-          <div class="feature-icon">{card.icon}</div>
-          <h3>{card.title}</h3>
-          <p>{card.text}</p>
-        </div>
-      ))}
-    </div>
-  </section>
-
-  <div class="section-divider"></div>
-
-  <!-- Country info -->
-  <section class="content-section" id="arbeitszeit-deutschland">
-    <h2 class="content-h2">{c.countryTitle}</h2>
-
-    <div class="info-cards">
-      {c.countryCards.map((card) => (
-        <div class="info-card">
-          <h3>{card.title}</h3>
-          <p>{card.text1}</p>
-          <p>{card.text2}</p>
-        </div>
-      ))}
-    </div>
-
-    <div class="legal-notice">
-      <h4>{c.legalTitle}</h4>
-      <p>{c.legalText}</p>
-    </div>
-  </section>
-
-  <div class="section-divider"></div>
-
-  <!-- Legal regulation -->
-  <section class="content-section" id="gesetzliche-regelung">
-    <h2 class="content-h2">{c.regTitle}</h2>
-    <p class="content-p">{c.regIntro}</p>
-
-    <h3 class="content-h3">{c.regBreakTitle}</h3>
-    <p class="content-p"><strong>{c.regBreakText}</strong></p>
-    <ul class="content-list">
-      {c.regBreakList.map((item) => (
-        <li>{item}</li>
-      ))}
-    </ul>
-  </section>
-
-  <div class="section-divider"></div>
-
-  <!-- Supplementary FAQ -->
-  <section class="content-section" id="faq-zusatz">
-    <h2 class="content-h2">{c.faq2Title}</h2>
-
-    <div class="faq-list">
-      {c.faq2Items.map((item) => (
-        <details class="faq-item">
-          <summary class="faq-question">
-            <span>{item.q}</span>
-            <svg class="faq-chevron" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <polyline points="6 9 12 15 18 9"></polyline>
-            </svg>
-          </summary>
-          <div class="faq-answer">
-            <p>{item.a}</p>
-          </div>
-        </details>
-      ))}
-    </div>
-  </section>
-
-  <div class="section-divider"></div>
-
-  <!-- Yearly -->
-  <section class="content-section" id="jahresarbeitszeit">
-    <h3 class="content-h3">{c.yearlyTitle}</h3>
-    <p class="content-p"><strong>{c.yearlyText}</strong></p>
-    <div class="example-box">
-      <div class="example-title">{c.yearlyExTitle}</div>
-      <p><code>{c.yearlyExLine1}</code></p>
-      <p><strong>{c.yearlyExLine2}</strong></p>
-    </div>
-  </section>
-
   <!-- CTA -->
   <div class="cta-section">
     <h2>{c.ctaTitle}</h2>
@@ -324,3 +552,98 @@ const decimalRows = [
   </div>
 
 </div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // ---- Scroll reveal animation ----
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+    document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+    // ---- Step cards staggered entrance ----
+    const stepObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.querySelectorAll('.step-card').forEach(card => card.classList.add('visible'));
+          stepObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.2 });
+    const stepsGrid = document.getElementById('steps-grid');
+    if (stepsGrid) stepObserver.observe(stepsGrid);
+
+    // ---- Break bars animation ----
+    const breakObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.querySelectorAll('.break-bar-fill').forEach((bar, i) => {
+            setTimeout(() => bar.classList.add('animated'), i * 200);
+          });
+          breakObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.3 });
+    const breakVisual = document.getElementById('break-visual');
+    if (breakVisual) breakObserver.observe(breakVisual);
+
+    // ---- Target hours bar chart animation ----
+    const chartObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.querySelectorAll('.hbar-fill').forEach((bar, i) => {
+            setTimeout(() => bar.classList.add('animated'), i * 120);
+          });
+          chartObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.3 });
+    const targetChart = document.getElementById('target-chart');
+    if (targetChart) chartObserver.observe(targetChart);
+
+    // ---- Percentage gauge ring animation ----
+    const gaugeObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.querySelectorAll('.ring-fill').forEach(ring => {
+            const target = ring.getAttribute('data-target');
+            if (target) ring.style.strokeDashoffset = target;
+          });
+          gaugeObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.3 });
+    const gaugeGrid = document.getElementById('percent-gauge-grid');
+    if (gaugeGrid) gaugeObserver.observe(gaugeGrid);
+
+    // ---- Timeline toggle (cycle through scenarios) ----
+    const timelineExamples = [
+      { start: '08:00', end: '16:30', morning: '08:00–12:00', afternoon: '12:30–16:30', mornW: 47.1, breakW: 5.9, aftW: 47, brutto: '8:30', pause: '0:30', netto: '8:00' },
+      { start: '07:00', end: '17:15', morning: '07:00–12:00', afternoon: '12:45–17:15', mornW: 48.8, breakW: 7.3, aftW: 43.9, brutto: '10:15', pause: '0:45', netto: '9:30' },
+      { start: '22:00', end: '06:30', morning: '22:00–02:00', afternoon: '02:30–06:30', mornW: 47.1, breakW: 5.9, aftW: 47, brutto: '8:30', pause: '0:30', netto: '8:00' },
+    ];
+    let currentExample = 0;
+    const toggleBtn = document.getElementById('timeline-toggle-btn');
+    if (toggleBtn) {
+      toggleBtn.addEventListener('click', () => {
+        currentExample = (currentExample + 1) % timelineExamples.length;
+        const ex = timelineExamples[currentExample];
+        const segM = document.getElementById('seg-morning');
+        const segB = document.getElementById('seg-break');
+        const segA = document.getElementById('seg-afternoon');
+        if (segM) { segM.style.width = ex.mornW + '%'; segM.querySelector('.seg-label')!.textContent = `Arbeit (${ex.morning})`; }
+        if (segB) { segB.style.width = ex.breakW + '%'; segB.style.left = ex.mornW + '%'; }
+        if (segA) { segA.style.width = ex.aftW + '%'; segA.style.left = (ex.mornW + ex.breakW) + '%'; segA.querySelector('.seg-label')!.textContent = `Arbeit (${ex.afternoon})`; }
+        const tlS = document.getElementById('tl-start'); const tlE = document.getElementById('tl-end');
+        if (tlS) tlS.textContent = ex.start; if (tlE) tlE.textContent = ex.end;
+        const sB = document.getElementById('stat-brutto'); const sP = document.getElementById('stat-pause'); const sN = document.getElementById('stat-netto');
+        if (sB) sB.textContent = ex.brutto; if (sP) sP.textContent = ex.pause; if (sN) sN.textContent = ex.netto;
+      });
+    }
+  });
+</script>
