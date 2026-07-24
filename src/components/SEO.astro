@@ -113,11 +113,11 @@ const today = new Date().toISOString();
     <link 
       rel="alternate" 
       hreflang={loc} 
-      href={encodeURI(`${siteUrl}${locPath}`)} 
+      href={encodeURI(decodeURI(`${siteUrl}${locPath}`))} 
     />
   );
 })}
-<link rel="alternate" hreflang="x-default" href={encodeURI(`${siteUrl}${(translations && translations[defaultLocale]) ? translations[defaultLocale] : cleanPath}`)} />
+<link rel="alternate" hreflang="x-default" href={encodeURI(decodeURI(`${siteUrl}${(translations && translations[defaultLocale]) ? translations[defaultLocale] : getLocalizedPath(cleanPath, defaultLocale)}`))} />
 
 <!-- Open Graph / Facebook -->
 <meta property="og:type" content={ogType} />
