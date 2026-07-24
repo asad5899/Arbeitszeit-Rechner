@@ -30,7 +30,13 @@ const serializedPosts = posts.map(p => ({
   url: getLocalizedPath(`/blog/${p.id}`, locale),
 }));
 
-const title = locale === 'de' ? 'Suche — Arbeitszeit Rechner Pro' : 'Search — Work Time Calculator Pro';
+const title = locale === 'de' 
+  ? 'Suche — Arbeitszeit Rechner Pro' 
+  : locale === 'fr'
+  ? 'Recherche — Calculateur Temps de Travail'
+  : locale === 'ar'
+  ? 'البحث — حاسبة ساعات العمل'
+  : 'Search — Work Time Calculator Pro';
 const description = 'Suchen Sie nach Artikeln, Gesetzen und Hilfestellungen rund um Arbeitszeit und Erfassung.';
 ---
 
