@@ -67,6 +67,7 @@ const {
 
 const locale = getLocaleFromUrl(Astro.url);
 const currentUrl = url || Astro.url.href;
+const cleanUrl = currentUrl.endsWith('/') ? currentUrl.slice(0, -1) : currentUrl;
 const currentPath = Astro.url.pathname;
 const siteUrl = 'https://www.arbeitszeitrechnerpro.de';
 
@@ -80,6 +81,11 @@ if (!activeTool) {
     activeTool = tools.find((t) => t.slug === slug);
   }
 }
+
+// Gather FAQ items
+const pageFaqItems = faqItems.length > 0
+  ? faqItems
+  : (activeTool?.faqItems ? activeTool.faqItems.map((item) => ({ question: item.q, answer: item.a })) : []);
 
 // Auto-detect page type if not specifically specified
 let pageType = type;
@@ -190,7 +196,7 @@ else if (pageType === 'collection') webPageType = 'CollectionPage';
 
 const webpageSchema = {
   '@type': webPageType,
-  '@id': `${currentUrl}/#webpage`,
+  '@id': `${cleanUrl}#webpage`,
   url: currentUrl,
   name: title,
   description: description,
@@ -201,12 +207,22 @@ const webpageSchema = {
     '@id': `${siteUrl}/#organization`,
   },
   inLanguage: 'de-DE',
+  ...(webPageType === 'FAQPage' && pageFaqItems.length > 0 ? {
+    mainEntity: pageFaqItems.map((item) => ({
+      '@type': 'Question',
+      name: item.question,
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: item.answer,
+      },
+    })),
+  } : {}),
 };
 
 // 4. SiteNavigationElement
 const navigationSchema = {
   '@type': 'ItemList',
-  '@id': `${currentUrl}/#navigation`,
+  '@id': `${cleanUrl}#navigation`,
   name: 'Hauptnavigation',
   itemListElement: [
     {
@@ -251,7 +267,7 @@ const navigationSchema = {
 // 5. ItemList (listing all calculator tools)
 const itemListSchema = {
   '@type': 'ItemList',
-  '@id': `${currentUrl}/#tools-list`,
+  '@id': `${cleanUrl}#tools-list`,
   name: 'Arbeitszeit Rechner Pro Werkzeuge',
   numberOfItems: tools.length,
   itemListElement: tools.map((t, index) => ({
@@ -262,14 +278,10 @@ const itemListSchema = {
   })),
 };
 
-// 6. FAQPage Schema
-const pageFaqItems = faqItems.length > 0
-  ? faqItems
-  : (activeTool?.faqItems ? activeTool.faqItems.map((item) => ({ question: item.q, answer: item.a })) : []);
-
-const faqSchema = pageFaqItems.length > 0 ? {
+// 6. FAQPage Schema (only if not already merged as the main page schema)
+const faqSchema = (pageFaqItems.length > 0 && webPageType !== 'FAQPage') ? {
   '@type': 'FAQPage',
-  '@id': `${currentUrl}/#faq`,
+  '@id': `${cleanUrl}#faq`,
   mainEntity: pageFaqItems.map((item) => ({
     '@type': 'Question',
     name: item.question,
@@ -280,16 +292,15 @@ const faqSchema = pageFaqItems.length > 0 ? {
   })),
 } : null;
 
-// 7. SoftwareApplication & WebApplication (for Calculator pages)
+// 7. WebApplication (consolidated Software App schema for Calculator pages)
 const softwareAppSchema = activeTool ? {
-  '@type': 'SoftwareApplication',
-  '@id': `${currentUrl}/#software`,
-  name: `${activeTool.name} Pro`,
-  operatingSystem: 'Web',
+  '@type': 'WebApplication',
+  '@id': `${cleanUrl}#software`,
+  name: activeTool.name.endsWith('Pro') ? activeTool.name : `${activeTool.name} Pro`,
+  operatingSystem: 'All',
   applicationCategory: 'BusinessApplication',
   browserRequirements: 'Requires HTML5 and Javascript enabled in a modern web browser.',
   url: currentUrl,
-  downloadUrl: currentUrl,
   featureList: activeTool.features ? activeTool.features.map(f => f.title) : [
     'Online-Zeiterfassung',
     'Pausenabzug nach ArbZG',
@@ -298,10 +309,9 @@ const softwareAppSchema = activeTool ? {
   ],
   offers: {
     '@type': 'Offer',
-    '@id': `${currentUrl}/#offer`,
+    '@id': `${cleanUrl}#offer`,
     price: '0.00',
     priceCurrency: 'EUR',
-    category: 'Free',
   },
   aggregateRating: {
     '@type': 'AggregateRating',
@@ -310,25 +320,10 @@ const softwareAppSchema = activeTool ? {
   },
 } : null;
 
-const webAppSchema = activeTool ? {
-  '@type': 'WebApplication',
-  '@id': `${currentUrl}/#webapplication`,
-  name: `${activeTool.name} Pro`,
-  url: currentUrl,
-  applicationCategory: 'BusinessApplication',
-  operatingSystem: 'All',
-  browserRequirements: 'Requires a modern browser supporting HTML5, CSS3, and Javascript.',
-  offers: {
-    '@type': 'Offer',
-    price: '0.00',
-    priceCurrency: 'EUR',
-  },
-} : null;
-
 // 8. Service Schema
 const serviceSchema = activeTool ? {
   '@type': 'Service',
-  '@id': `${currentUrl}/#service`,
+  '@id': `${cleanUrl}#service`,
   name: `${activeTool.name} Service`,
   description: activeTool.description,
   provider: {
@@ -345,7 +340,7 @@ const serviceSchema = activeTool ? {
 // 9. HowTo (Calculator Guide)
 const howToSchema = activeTool ? {
   '@type': 'HowTo',
-  '@id': `${currentUrl}/#howto`,
+  '@id': `${cleanUrl}#howto`,
   name: `Anleitung: So benutzen Sie den ${activeTool.name}`,
   description: `Schritt-für-Schritt-Anleitung zur genauen Arbeitszeitberechnung mit dem ${activeTool.name} Online-Tool.`,
   step: [
@@ -373,7 +368,7 @@ const howToSchema = activeTool ? {
 // 10. VideoObject (when applicable for calculators)
 const videoSchema = activeTool ? {
   '@type': 'VideoObject',
-  '@id': `${currentUrl}/#video`,
+  '@id': `${cleanUrl}#video`,
   name: `Anleitung zur Nutzung des ${activeTool.name}s`,
   description: `Lernen Sie in dieser Videoanleitung, wie Sie den ${activeTool.name} optimal für Ihre tägliche Zeiterfassung nutzen.`,
   thumbnailUrl: `${siteUrl}/og-image.png`,
@@ -388,9 +383,9 @@ const videoSchema = activeTool ? {
 // 11. Article / BlogPosting Schema
 const articleSchema = (pageType === 'article' || type === 'article') && articleData ? {
   '@type': 'BlogPosting',
-  '@id': `${currentUrl}/#article`,
+  '@id': `${cleanUrl}#article`,
   isPartOf: {
-    '@id': `${currentUrl}/#webpage`,
+    '@id': `${cleanUrl}#webpage`,
   },
   mainEntityOfPage: currentUrl,
   headline: articleData.headline,
@@ -417,7 +412,7 @@ const articleSchema = (pageType === 'article' || type === 'article') && articleD
 // 12. Person (Author) Schema
 const personSchema = (pageType === 'author' || type === 'author') && authorData ? {
   '@type': 'Person',
-  '@id': `${currentUrl}/#person`,
+  '@id': `${cleanUrl}#person`,
   name: authorData.name,
   description: authorData.bio,
   image: {
@@ -434,7 +429,7 @@ const personSchema = (pageType === 'author' || type === 'author') && authorData 
 // 13. Breadcrumb Schema
 const breadcrumbListSchema = breadcrumbs.length > 0 ? {
   '@type': 'BreadcrumbList',
-  '@id': `${currentUrl}/#breadcrumb`,
+  '@id': `${cleanUrl}#breadcrumb`,
   itemListElement: breadcrumbs.map((b, index) => ({
     '@type': 'ListItem',
     position: index + 1,
@@ -462,7 +457,6 @@ if (pageType === 'homepage' || pageType === 'collection') {
 
 if (activeTool) {
   if (softwareAppSchema) graph.push(softwareAppSchema);
-  if (webAppSchema) graph.push(webAppSchema);
   if (serviceSchema) graph.push(serviceSchema);
   if (howToSchema) graph.push(howToSchema);
   if (videoSchema) graph.push(videoSchema);
