@@ -20,7 +20,13 @@ export function getStaticPaths() {
 const locale = getLocaleFromUrl(Astro.url);
 const t = useTranslations(locale);
 
-const title = locale === 'de' ? 'Cookie-Richtlinie — Arbeitszeit Rechner Pro' : 'Cookie Policy — Work Time Calculator Pro';
+const title = locale === 'de' 
+  ? 'Cookie-Richtlinie — Arbeitszeit Rechner Pro' 
+  : locale === 'fr'
+  ? 'Politique de Cookies — Calculateur Temps de Travail'
+  : locale === 'ar'
+  ? 'سياسة ملفات تعريف الارتباط — حاسبة ساعات العمل'
+  : 'Cookie Policy — Work Time Calculator Pro';
 const description = 'Transparente Informationen über den Einsatz von Cookies auf dem Arbeitszeit Rechner Pro.';
 ---
 
