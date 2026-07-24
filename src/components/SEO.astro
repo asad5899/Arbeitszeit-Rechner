@@ -51,7 +51,14 @@ if (!cleanPath.startsWith('/')) {
   cleanPath = '/' + cleanPath;
 }
 
-const canonicalUrl = canonical || `${siteUrl}${currentPath}`;
+let normalizedPath = currentPath;
+if (!normalizedPath.endsWith('/') && !normalizedPath.includes('.')) {
+  normalizedPath = normalizedPath + '/';
+}
+
+const canonicalUrl = canonical 
+  ? (canonical.endsWith('/') || canonical.includes('.') ? canonical : `${canonical}/`)
+  : `${siteUrl}${normalizedPath}`;
 const ogImageUrl = image.startsWith('http') ? image : `${siteUrl}${image}`;
 const today = new Date().toISOString();
 ---

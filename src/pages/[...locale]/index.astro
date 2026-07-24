@@ -24,12 +24,12 @@ const locale = getLocaleFromUrl(Astro.url);
 const t = useTranslations(locale);
 
 const title = locale === 'de'
-  ? 'Arbeitszeit Rechner – Arbeitsstunden einfach online berechnen'
+  ? 'Arbeitszeit Rechner Pro — Arbeitsstunden & Zeiterfassung Online'
   : locale === 'fr'
-  ? 'Calculateur de Temps de Travail — Calculez votre temps net'
+  ? 'Calculateur de Temps de Travail Pro — Heures et Pauses En Ligne'
   : locale === 'ar'
-  ? 'حاسبة ساعات العمل — احسب صافي ساعات عملك بسهولة'
-  : 'Work Time Calculator Pro — Calculate net working hours';
+  ? 'حاسبة ساعات العمل برو — أدوات حساب وقت العمل والشيفتات'
+  : 'Arbeitszeit Rechner Pro — Online Work Hours & Shift Calculators';
 
 const description = locale === 'de'
   ? 'Arbeitszeit Rechner Pro: Brutto- und Nettoarbeitszeit, Überstunden und Dezimalstunden kostenlos berechnen. Ohne Anmeldung, werbefrei und mit Pausenregelung nach ArbZG.'
