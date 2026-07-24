@@ -20,7 +20,13 @@ export function getStaticPaths() {
 const locale = getLocaleFromUrl(Astro.url);
 const t = useTranslations(locale);
 
-const title = locale === 'de' ? 'Kontakt — Arbeitszeit Rechner Pro Pro' : 'Contact — Work Time Calculator Pro Pro';
+const title = locale === 'de' 
+  ? 'Kontakt — Arbeitszeit Rechner Pro' 
+  : locale === 'fr'
+  ? 'Contactez-nous — Calculateur Temps de Travail'
+  : locale === 'ar'
+  ? 'اتصل بنا — حاسبة ساعات العمل'
+  : 'Contact Us — Work Time Calculator Pro';
 const description = 'Nehmen Sie Kontakt mit unserem Redaktions- und Support-Team auf.';
 ---
 

@@ -23,7 +23,13 @@ const t = useTranslations(locale);
 
 const authors = await getCollection('authors');
 
-const title = locale === 'de' ? 'Unsere Autoren & Experten — Arbeitszeit Rechner Pro' : 'Our Authors & Experts — Work Time Calculator Pro';
+const title = locale === 'de' 
+  ? 'Unsere Autoren & Experten — Arbeitszeit Rechner Pro' 
+  : locale === 'fr'
+  ? 'Nos Auteurs & Experts — Calculateur Temps de Travail'
+  : locale === 'ar'
+  ? 'خبراؤنا وكتابنا — حاسبة ساعات العمل'
+  : 'Our Authors & Experts — Work Time Calculator Pro';
 const description = 'Lernen Sie das Expertenteam hinter dem Arbeitszeit Rechner Pro kennen — Juristen, HR-Spezialisten und Fachredakteure.';
 ---
 

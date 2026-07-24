@@ -34,7 +34,13 @@ const allPosts = await getCollection('blog', ({ data }) => {
   return data.author === author.id && data.locale === locale;
 });
 
-const title = `${author.data.name} — Redaktionsprofil & Beiträge`;
+const title = locale === 'de'
+  ? `${author.data.name} — Redaktionsprofil & Beiträge`
+  : locale === 'fr'
+  ? `${author.data.name} — Profil d'auteur et articles`
+  : locale === 'ar'
+  ? `${author.data.name} — ملف الكاتب والمقالات`
+  : `${author.data.name} — Author Profile & Articles`;
 const description = `${author.data.name} ist Experte für ${author.data.expertise}. Hier finden Sie alle Veröffentlichungen und Beiträge.`;
 ---
 
