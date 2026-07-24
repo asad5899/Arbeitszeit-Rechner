@@ -733,3 +733,444 @@ export function getToolBySlug(slug: string): ToolDef | undefined {
 export function getAllSlugs(): string[] {
   return tools.map(t => t.slug);
 }
+
+const toolTranslations: Record<string, Record<string, Partial<ToolDef>>> = {
+  'arbeitszeit-rechner': {
+    en: {
+      name: 'Work Time Calculator Pro',
+      title: 'Work Time Calculator Pro — Calculate Net Working Hours',
+      description: 'Calculate daily net work time from start time, end time, and breaks. Results in HH:MM and decimal format. Free without registration.',
+      subtitle: 'Enter start time, end time, and breaks — net work time is calculated instantly.',
+    },
+    fr: {
+      name: 'Calculateur Temps de Travail',
+      title: 'Calculateur Temps de Travail — Calculez vos Heures de Travail',
+      description: 'Calculez le temps de travail quotidien net à partir de l\'heure de début, de fin et des pauses. Résultats en HH:MM et décimal.',
+      subtitle: 'Saisissez l\'heure de début, de fin et les pauses — le temps de travail net est calculé instantanément.',
+    },
+    ar: {
+      name: 'حاسبة وقت العمل',
+      title: 'حاسبة وقت العمل — احسب ساعات العمل الفعالية',
+      description: 'احسب وقت العمل اليومي الفعلي من وقت البدء والنهاية والاستراحات. النتائج بتنسيق HH:MM وبالنظام العشري.',
+      subtitle: 'أدخل وقت البدء ووقت النهاية والاستراحات — يتم حساب صافي وقت العمل فوراً.',
+    }
+  },
+  'stundenlohn-rechner': {
+    en: {
+      name: 'Hourly Wage Calculator',
+      title: 'Hourly Wage Calculator — Calculate Hourly Rate from Salary',
+      description: 'Calculate your exact hourly wage from monthly salary and weekly working hours. Free online wage calculator.',
+      subtitle: 'Calculate your hourly rate from monthly income and weekly hours.',
+    },
+    fr: {
+      name: 'Calculateur Taux Horaire',
+      title: 'Calculateur Taux Horaire — Calculez votre Salaire Horaire',
+      description: 'Calculez votre salaire horaire exact à partir du salaire mensuel et des heures hebdomadaires.',
+      subtitle: 'Calculez votre taux horaire à partir du revenu mensuel et des heures hebdomadaires.',
+    },
+    ar: {
+      name: 'حاسبة الأجر بالساعة',
+      title: 'حاسبة الأجر بالساعة — احسب معدل الأجر بالساعة',
+      description: 'احسب أجرك بالساعة بالضبط من الراتب الشهري وساعات العمل الأسبوعية. حاسبة أجور مجانية.',
+      subtitle: 'احسب معدل أجرك بالساعة من الدخل الشهري وساعات العمل الأسبوعية.',
+    }
+  },
+  'arbeitsstunden-rechner': {
+    en: {
+      name: 'Work Hours Calculator',
+      title: 'Work Hours Calculator — Calculate Total Working Hours',
+      description: 'Sum up your total work hours and minutes easily with our online working hours calculator.',
+      subtitle: 'Calculate total work hours and convert minutes to decimal hours.',
+    },
+    fr: {
+      name: 'Calculateur Heures de Travail',
+      title: 'Calculateur Heures de Travail — Somme des Heures',
+      description: 'Additionnez facilement vos heures et minutes de travail totales avec notre calculateur.',
+      subtitle: 'Calculez le total des heures de travail et convertissez les minutes.',
+    },
+    ar: {
+      name: 'حاسبة ساعات العمل الإجمالية',
+      title: 'حاسبة ساعات العمل — مجموع ساعات العمل',
+      description: 'احسب إجمالي ساعات ودقائق عملك بسهولة باستخدام حاسبة ساعات العمل أونلاين.',
+      subtitle: 'احسب إجمالي ساعات العمل وقم بتحويل الدقائق إلى ساعات عشرية.',
+    }
+  },
+  'teilzeit-rechner': {
+    en: {
+      name: 'Part-Time Calculator',
+      title: 'Part-Time Calculator — Salary and Hours Comparison',
+      description: 'Calculate part-time salary, reduced hours, and earnings ratio compared to full-time work.',
+      subtitle: 'Compare full-time and part-time working hours and salary.',
+    },
+    fr: {
+      name: 'Calculateur Temps Partiel',
+      title: 'Calculateur Temps Partiel — Salaire et Heures',
+      description: 'Calculez le salaire à temps partiel, la réduction du temps de travail et le salaire au prorata.',
+      subtitle: 'Comparez le temps plein et le temps partiel en termes d\'heures et de salaire.',
+    },
+    ar: {
+      name: 'حاسبة العمل الجزئي',
+      title: 'حاسبة العمل الجزئي — مقارنة الراتب والساعات',
+      description: 'احسب راتب العمل الجزئي وساعات العمل المخفضة ونسبة الأجر مقارنة بالعمل الكامل.',
+      subtitle: 'قارن بين ساعات العمل والراتب للدوام الكامل والدوام الجزئي.',
+    }
+  },
+  'urlaubsgeld-rechner': {
+    en: {
+      name: 'Holiday Pay Calculator',
+      title: 'Holiday Pay Calculator — Calculate Vacation Bonus',
+      description: 'Calculate your holiday pay entitlement and bonus payments based on your average salary.',
+      subtitle: 'Determine your holiday pay bonus accurately.',
+    },
+    fr: {
+      name: 'Calculateur Prime de Vacances',
+      title: 'Calculateur Prime de Vacances — Calculez vos Indemnités',
+      description: 'Calculez vos droits aux primes de vacances en fonction de votre salaire moyen.',
+      subtitle: 'Déterminez avec précision le montant de votre prime de vacances.',
+    },
+    ar: {
+      name: 'حاسبة بدل العطلة',
+      title: 'حاسبة بدل العطلة — احسب مكافأة الإجازة',
+      description: 'احسب استحقاقك لبدل العطلة ومكافآت الإجازة بناءً على متوسط راتبك.',
+      subtitle: 'حدد مكافأة بدل الإجازة بدقة.',
+    }
+  },
+  'urlaubstage-rechner': {
+    en: {
+      name: 'Vacation Days Calculator',
+      title: 'Vacation Days Calculator — Calculate Annual Leave Entitlement',
+      description: 'Calculate your annual vacation day entitlement based on working days per week and join date.',
+      subtitle: 'Calculate your exact prorated vacation days.',
+    },
+    fr: {
+      name: 'Calculateur Jours de Congé',
+      title: 'Calculateur Jours de Congé — Droit aux Congés Payés',
+      description: 'Calculez vos jours de congé annuel payé en fonction des jours travaillés par semaine.',
+      subtitle: 'Calculez vos jours de congé proratisés exacts.',
+    },
+    ar: {
+      name: 'حاسبة أيام الإجازة',
+      title: 'حاسبة أيام الإجازة — احسب استحقاق الإجازة السنوية',
+      description: 'احسب استحقاقك السنوي من أيام الإجازة بناءً على أيام العمل في الأسبوع وتاريخ الانضمام.',
+      subtitle: 'احسب أيام الإجازة المستحقة بدقة.',
+    }
+  },
+  'arbeitsstundenrechner': {
+    en: {
+      name: 'Work Hours Counter',
+      title: 'Work Hours Counter — Quick Time Counter',
+      description: 'Quickly count working hours and decimal times for timesheets and payroll.',
+      subtitle: 'Count working hours and convert to decimal format instantly.',
+    },
+    fr: {
+      name: 'Compteur Heures de Travail',
+      title: 'Compteur Heures de Travail — Calcul Rapide',
+      description: 'Comptez rapidement les heures de travail et convertissez-les en valeurs décimales.',
+      subtitle: 'Comptez les heures de travail et convertissez-les instantanément.',
+    },
+    ar: {
+      name: 'عداد ساعات العمل',
+      title: 'عداد ساعات العمل — حساب سريع للساعات',
+      description: 'احسب ساعات العمل والأوقات العشرية بسرعة لجداول كشف الأجور.',
+      subtitle: 'احسب ساعات العمل وقم بتحويلها إلى نظام عشري فوراً.',
+    }
+  },
+  'nachtzuschlag-rechner': {
+    en: {
+      name: 'Night Shift Bonus Calculator',
+      title: 'Night Shift Bonus Calculator — Calculate Night Work Allowance',
+      description: 'Calculate night shift bonuses, tax-free allowances, and extra pay for night shifts.',
+      subtitle: 'Calculate night work bonus pay and tax exemptions.',
+    },
+    fr: {
+      name: 'Calculateur Majoration Nuit',
+      title: 'Calculateur Majoration Nuit — Travail de Nuit',
+      description: 'Calculez les majorations pour travail de nuit et les heures supplémentaires de nuit.',
+      subtitle: 'Calculez les primes de nuit et les exonérations.',
+    },
+    ar: {
+      name: 'حاسبة بدل العمل الليلي',
+      title: 'حاسبة بدل العمل الليلي — احسب مكافأة الشفت الليلي',
+      description: 'احسب بدلات العمل الليلي والمكافآت المعفاة من الضريبة والزيادات عن العمل الليلي.',
+      subtitle: 'احسب أجر بدل العمل الليلي والإعفاءات.',
+    }
+  },
+  'ueberstunden-rechner': {
+    en: {
+      name: 'Overtime Calculator',
+      title: 'Overtime Calculator — Calculate Extra Hours & Pay',
+      description: 'Calculate your accumulated overtime hours, compensation pay, and time-off balance.',
+      subtitle: 'Track overtime hours and calculate extra earnings.',
+    },
+    fr: {
+      name: 'Calculateur Heures Supplémentaires',
+      title: 'Calculateur Heures Supplémentaires — Majorations et Paie',
+      description: 'Calculez vos heures supplémentaires accumulées et leur indemnisation financière.',
+      subtitle: 'Suivez vos heures supplémentaires et calculez vos gains.',
+    },
+    ar: {
+      name: 'حاسبة الساعات الإضافية',
+      title: 'حاسبة الساعات الإضافية — احسب الأجر الإضافي',
+      description: 'احسب ساعات العمل الإضافية المتراكمة والأجر المستحق ورصيد التعويض الزمن.',
+      subtitle: 'تتبع الساعات الإضافية واحسب الأجر الإضافي.',
+    }
+  },
+  'stunden-und-minuten-rechner': {
+    en: {
+      name: 'Hours and Minutes Calculator',
+      title: 'Hours and Minutes Calculator — Add & Subtract Time',
+      description: 'Add, subtract, and convert hours and minutes easily for work logs and timesheets.',
+      subtitle: 'Add and subtract time durations accurately.',
+    },
+    fr: {
+      name: 'Calculateur Heures et Minutes',
+      title: 'Calculateur Heures et Minutes — Additionner et Soustraire',
+      description: 'Additionnez et soustrayez des heures et minutes facilement pour vos relevés de temps.',
+      subtitle: 'Calculez et convertissez des durées en heures et minutes.',
+    },
+    ar: {
+      name: 'حاسبة الساعات والدقائق',
+      title: 'حاسبة الساعات والدقائق — جمع وطرح الوقت',
+      description: 'اجمع واطرح وحول الساعات والدقائق بسهولة لسجلات وساعات العمل.',
+      subtitle: 'اجمع واطرح الفترات الزمنية بدقة.',
+    }
+  },
+  'wochenstunden-rechner': {
+    en: {
+      name: 'Weekly Hours Calculator',
+      title: 'Weekly Hours Calculator — Total Weekly Work Hours',
+      description: 'Calculate weekly total working hours, average daily hours, and weekly overtime.',
+      subtitle: 'Sum up daily working hours for the entire week.',
+    },
+    fr: {
+      name: 'Calculateur Heures Hebdomadaires',
+      title: 'Calculateur Heures Hebdomadaires — Total Semaine',
+      description: 'Calculez le total des heures de travail hebdomadaires et la moyenne quotidienne.',
+      subtitle: 'Additionnez les heures de travail quotidiennes pour la semaine.',
+    },
+    ar: {
+      name: 'حاسبة الساعات الأسبوعية',
+      title: 'حاسبة الساعات الأسبوعية — إجمالي ساعات العمل في الأسبوع',
+      description: 'احسب إجمالي ساعات العمل الأسبوعية ومتوسط الساعات اليومية والساعات الإضافية الأسبوعية.',
+      subtitle: 'اجمع ساعات العمل اليومية للأسبوع بأكمله.',
+    }
+  },
+  'schichtzulagen-rechner': {
+    en: {
+      name: 'Shift Allowance Calculator',
+      title: 'Shift Allowance Calculator — Calculate Shift Bonuses',
+      description: 'Calculate shift work allowances, late shift bonuses, and rotation extra pay.',
+      subtitle: 'Determine shift allowances for rotating and late shifts.',
+    },
+    fr: {
+      name: 'Calculateur Prime d\'Équipe',
+      title: 'Calculateur Prime d\'Équipe — Travail en Postes',
+      description: 'Calculez les primes d\'équipe et majorations pour travail en horaires décalés.',
+      subtitle: 'Déterminez les indemnités pour le travail en équipe.',
+    },
+    ar: {
+      name: 'حاسبة بدل الوردية',
+      title: 'حاسبة بدل الوردية — احسب بدلات الشفتات',
+      description: 'احسب بدلات العمل بنظام الورديات ومكافآت الشفت المتأخر والأجر الإضافي للتدوير.',
+      subtitle: 'حدد بدلات الورديات للعمل المتأخر والدوري.',
+    }
+  },
+  'zeiterfassung-rechner': {
+    en: {
+      name: 'Time Tracking Calculator',
+      title: 'Time Tracking Calculator — Digital Timesheet',
+      description: 'Track daily working hours, manage timesheets, and export work logs effortlessly.',
+      subtitle: 'Digital time tracking for employees and freelancers.',
+    },
+    fr: {
+      name: 'Calculateur Suivi du Temps',
+      title: 'Calculateur Suivi du Temps — Relevé d\'Heures',
+      description: 'Suivez les heures de travail quotidiennes et gérez vos relevés de temps facilement.',
+      subtitle: 'Suivi du temps numérique pour salariés et indépendants.',
+    },
+    ar: {
+      name: 'حاسبة تتبع الوقت',
+      title: 'حاسبة تتبع الوقت — جدول الساعات الرقمي',
+      description: 'تتبع ساعات العمل اليومية وادر جداول الساعات وصدر سجلات العمل بسهولة.',
+      subtitle: 'تتبع الوقت الرقمي للموظفين والمستقلين.',
+    }
+  },
+  'feiertagszuschlag-rechner': {
+    en: {
+      name: 'Public Holiday Bonus Calculator',
+      title: 'Public Holiday Bonus Calculator — Holiday Work Pay',
+      description: 'Calculate extra pay allowances and tax advantages for working on public holidays.',
+      subtitle: 'Calculate statutory holiday bonuses and extra hourly pay.',
+    },
+    fr: {
+      name: 'Calculateur Jours Fériés',
+      title: 'Calculateur Jours Fériés — Majoration Travail Férié',
+      description: 'Calculez les majorations de salaire pour les heures travaillées les jours fériés.',
+      subtitle: 'Calculez les primes légales pour jours fériés.',
+    },
+    ar: {
+      name: 'حاسبة بدل العطل الرسمية',
+      title: 'حاسبة بدل العطل الرسمية — أجر العمل في الأعياد',
+      description: 'احسب بدلات الأجر الإضافي والمزايا الضريبية للعمل في العطلات الرسمية والأعياد.',
+      subtitle: 'احسب بدلات العطلات الرسمية والأجر الإضافي.',
+    }
+  },
+  'sonntagszuschlag-rechner': {
+    en: {
+      name: 'Sunday Bonus Calculator',
+      title: 'Sunday Bonus Calculator — Sunday Work Pay Allowance',
+      description: 'Calculate Sunday work bonuses, premium pay, and tax-free extra allowances.',
+      subtitle: 'Determine bonus pay for working on Sundays.',
+    },
+    fr: {
+      name: 'Calculateur Majoration Dimanche',
+      title: 'Calculateur Majoration Dimanche — Travail le Dimanche',
+      description: 'Calculez les majorations pour le travail le dimanche et les exonérations fiscales.',
+      subtitle: 'Déterminez les primes de salaire pour le travail dominical.',
+    },
+    ar: {
+      name: 'حاسبة بدل عمل الأحد والعطل',
+      title: 'حاسبة بدل عمل الأحد — أجر العمل يوم الأحد',
+      description: 'احسب بدلات العمل يوم الأحد والأجر المتميز والبدلات الإضافية المعفاة من الضريبة.',
+      subtitle: 'حدد بدل الأجر للعمل يوم الأحد.',
+    }
+  },
+  'feierabend-rechner': {
+    en: {
+      name: 'Finish Time Calculator',
+      title: 'Finish Time Calculator — When Can I Leave Work?',
+      description: 'Calculate your exact end of workday based on start time, required hours, and breaks.',
+      subtitle: 'Calculate what time you can finish work today.',
+    },
+    fr: {
+      name: 'Calculateur Fin de Journée',
+      title: 'Calculateur Fin de Journée — À Quelle Heure Partir ?',
+      description: 'Calculez l\'heure exacte de fin de votre journée de travail en fonction des pauses.',
+      subtitle: 'Calculez l\'heure à laquelle vous pouvez quitter le travail.',
+    },
+    ar: {
+      name: 'حاسبة وقت الانصراف',
+      title: 'حاسبة وقت الانصراف — متى ينتهي وقت عملي اليوم؟',
+      description: 'احسب وقت نهاية يوم عملك بالضبط بناءً على وقت البدء والساعات المطلوبة والاستراحات.',
+      subtitle: 'احسب الوقت الذي يمكنك فيه إنهاء العمل اليوم.',
+    }
+  },
+  'wochenarbeitszeit-rechner': {
+    en: {
+      name: 'Weekly Work Time Calculator',
+      title: 'Weekly Work Time Calculator — Target vs Actual Hours',
+      description: 'Compare target weekly hours against actual hours worked to track overtime.',
+      subtitle: 'Calculate target vs actual weekly work time balance.',
+    },
+    fr: {
+      name: 'Calculateur Temps Hebdomadaire',
+      title: 'Calculateur Temps Hebdomadaire — Heures Réalisées',
+      description: 'Comparez les heures hebdomadaires prévues et réalisées pour suivre les écarts.',
+      subtitle: 'Calculez le solde entre heures prévues et réalisées.',
+    },
+    ar: {
+      name: 'حاسبة وقت العمل الأسبوعي',
+      title: 'حاسبة وقت العمل الأسبوعي — مقارنة المستهدف والفعلي',
+      description: 'قارن بين ساعات العمل الأسبوعية المستهدفة والساعات الفعلية لتتبع الزيادات.',
+      subtitle: 'احسب توازن وقت العمل الأسبوعي المستهدف والفعلي.',
+    }
+  },
+  'gleitzeit-rechner': {
+    en: {
+      name: 'Flexitime Calculator',
+      title: 'Flexitime Calculator — Flexitime Credit & Balance',
+      description: 'Calculate flexitime balances, accumulated flexi hours, and core working hours.',
+      subtitle: 'Track your flexitime account balance easily.',
+    },
+    fr: {
+      name: 'Calculateur Horaire Flexible',
+      title: 'Calculateur Horaire Flexible — Solde d\'Heures',
+      description: 'Calculez votre solde d\'heures flexibles et le crédit de temps accumulé.',
+      subtitle: 'Suivez facilement le solde de votre compte d\'horaires flexibles.',
+    },
+    ar: {
+      name: 'حاسبة الساعات المرنة',
+      title: 'حاسبة الساعات المرنة — رصيد الدوام المرن',
+      description: 'احسب أرصدة الدوام المرن والساعات المرنة المتراكمة وساعات العمل الأساسية.',
+      subtitle: 'تتبع رصيد حساب الدوام المرن بسهولة.',
+    }
+  },
+  'monatsstunden-rechner': {
+    en: {
+      name: 'Monthly Hours Calculator',
+      title: 'Monthly Hours Calculator — Convert Weekly to Monthly Hours',
+      description: 'Convert weekly working hours to average monthly hours using official multipliers.',
+      subtitle: 'Convert weekly hours to monthly working hours accurately.',
+    },
+    fr: {
+      name: 'Calculateur Heures Mensuelles',
+      title: 'Calculateur Heures Mensuelles — Semaine en Mois',
+      description: 'Convertissez les heures hebdomadaires en moyenne mensuelle d\'heures de travail.',
+      subtitle: 'Convertissez les heures de la semaine en heures mensuelles.',
+    },
+    ar: {
+      name: 'حاسبة الساعات الشهرية',
+      title: 'حاسبة الساعات الشهرية — تحويل الساعات الأسبوعية لشهرية',
+      description: 'حول ساعات العمل الأسبوعية إلى متوسط الساعات الشهرية باستخدام المعاملات الرسمية.',
+      subtitle: 'حول الساعات الأسبوعية إلى ساعات عمل شهرية بدقة.',
+    }
+  },
+  'resturlaub-rechner': {
+    en: {
+      name: 'Remaining Vacation Calculator',
+      title: 'Remaining Vacation Calculator — Unused Leave Balance',
+      description: 'Calculate remaining unused vacation days, taken leave, and carry-over entitlement.',
+      subtitle: 'Calculate your remaining vacation days balance.',
+    },
+    fr: {
+      name: 'Calculateur Solde de Congés',
+      title: 'Calculateur Solde de Congés — Congés Restants',
+      description: 'Calculez votre solde de jours de congé restants et les jours de report.',
+      subtitle: 'Calculez votre solde de congés payés restants.',
+    },
+    ar: {
+      name: 'حاسبة الإجازات المتبقية',
+      title: 'حاسبة الإجازات المتبقية — رصيد الإجازات غير المستخدمة',
+      description: 'احسب أيام الإجازة المتبقية غير المستخدمة والإجازات المأخوذة واستحقاق الترحيل.',
+      subtitle: 'احسب رصيد أيام إجازتك المتبقية.',
+    }
+  },
+  'arbeitszeiterfassung-rechner': {
+    en: {
+      name: 'Work Time Recording Calculator',
+      title: 'Work Time Recording Calculator — Compliance Log',
+      description: 'Record work time according to legal mandates, break compliance, and daily logs.',
+      subtitle: 'Legally compliant work time recording calculator.',
+    },
+    fr: {
+      name: 'Calculateur Enregistrement Temps',
+      title: 'Calculateur Enregistrement Temps — Saisie Conforme',
+      description: 'Enregistrez le temps de travail conformément à la législation et aux temps de pause.',
+      subtitle: 'Calculateur d\'enregistrement du temps de travail conforme.',
+    },
+    ar: {
+      name: 'حاسبة تسجيل وقت العمل',
+      title: 'حاسبة تسجيل وقت العمل — سجل الامتثال القانوني',
+      description: 'سجل وقت العمل وفقاً للمتطلبات القانونية وامتثال الاستراحات والسجلات اليومية.',
+      subtitle: 'حاسبة تسجيل وقت العمل المتوافقة قانونياً.',
+    }
+  }
+};
+
+export function getLocalizedTool(slug: string, locale: string): ToolDef {
+  const tool = getToolBySlug(slug);
+  if (!tool) throw new Error(`Tool ${slug} not found`);
+
+  if (locale === 'de') return tool;
+
+  const translation = toolTranslations[slug]?.[locale];
+  if (!translation) return tool;
+
+  return {
+    ...tool,
+    name: translation.name || tool.name,
+    title: translation.title || tool.title,
+    description: translation.description || tool.description,
+    subtitle: translation.subtitle || tool.subtitle,
+  };
+}
