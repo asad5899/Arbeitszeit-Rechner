@@ -7,9 +7,11 @@ export const GET: APIRoute = async () => {
   const siteUrl = 'https://www.arbeitszeitrechnerpro.de';
   const today = new Date().toISOString().split('T')[0];
 
-  const getHreflangCode = (locale: string) => {
-    if (locale === 'de') return 'de-DE';
-    return locale;
+  const getHreflangCode = (locale: string) => locale;
+
+  const formatUrl = (path: string) => {
+    const clean = path.endsWith('/') ? path : `${path}/`;
+    return `${siteUrl}${clean}`;
   };
 
   const escapeXml = (str: string) => {
@@ -45,19 +47,19 @@ export const GET: APIRoute = async () => {
   for (const page of corePages) {
     for (const locale of locales) {
       const localPath = getLocalizedPath(page.path, locale);
-      const locUrl = `${siteUrl}${localPath}${localPath.endsWith('/') ? '' : '/'}`;
+      const locUrl = formatUrl(localPath);
 
       const alternates = locales
         .map((loc) => {
           const altPath = getLocalizedPath(page.path, loc);
-          const altUrl = `${siteUrl}${altPath}${altPath.endsWith('/') ? '' : '/'}`;
+          const altUrl = formatUrl(altPath);
           const hreflang = getHreflangCode(loc);
           return `    <xhtml:link rel="alternate" hreflang="${hreflang}" href="${altUrl}" />`;
         })
         .join('\n');
 
       const defaultPath = getLocalizedPath(page.path, defaultLocale);
-      const defaultUrl = `${siteUrl}${defaultPath}${defaultPath.endsWith('/') ? '' : '/'}`;
+      const defaultUrl = formatUrl(defaultPath);
       const xDefault = `    <xhtml:link rel="alternate" hreflang="x-default" href="${defaultUrl}" />`;
 
       urlNodes += `  <url>
@@ -77,19 +79,19 @@ ${xDefault}
 
     for (const locale of locales) {
       const localPath = getLocalizedPath(basePath, locale);
-      const locUrl = `${siteUrl}${localPath}/`;
+      const locUrl = formatUrl(localPath);
 
       const alternates = locales
         .map((loc) => {
           const altPath = getLocalizedPath(basePath, loc);
-          const altUrl = `${siteUrl}${altPath}/`;
+          const altUrl = formatUrl(altPath);
           const hreflang = getHreflangCode(loc);
           return `    <xhtml:link rel="alternate" hreflang="${hreflang}" href="${altUrl}" />`;
         })
         .join('\n');
 
       const defaultPath = getLocalizedPath(basePath, defaultLocale);
-      const defaultUrl = `${siteUrl}${defaultPath}/`;
+      const defaultUrl = formatUrl(defaultPath);
       const xDefault = `    <xhtml:link rel="alternate" hreflang="x-default" href="${defaultUrl}" />`;
 
       const videoTitle = escapeXml(`Anleitung zur Nutzung des ${tool.name}s`);
@@ -121,7 +123,7 @@ ${xDefault}
     const locale = post.data.locale;
     const basePath = `/blog/${post.id}`;
     const localPath = getLocalizedPath(basePath, locale);
-    const locUrl = `${siteUrl}${localPath}/`;
+    const locUrl = formatUrl(localPath);
 
     const rawDate = post.data.updateDate || post.data.publishDate;
     const lastmod = rawDate instanceof Date ? rawDate.toISOString().split('T')[0] : today;
@@ -163,19 +165,19 @@ ${xDefault}
 
     for (const locale of locales) {
       const localPath = getLocalizedPath(basePath, locale);
-      const locUrl = `${siteUrl}${localPath}/`;
+      const locUrl = formatUrl(localPath);
 
       const alternates = locales
         .map((loc) => {
           const altPath = getLocalizedPath(basePath, loc);
-          const altUrl = `${siteUrl}${altPath}/`;
+          const altUrl = formatUrl(altPath);
           const hreflang = getHreflangCode(loc);
           return `    <xhtml:link rel="alternate" hreflang="${hreflang}" href="${altUrl}" />`;
         })
         .join('\n');
 
       const defaultPath = getLocalizedPath(basePath, defaultLocale);
-      const defaultUrl = `${siteUrl}${defaultPath}/`;
+      const defaultUrl = formatUrl(defaultPath);
       const xDefault = `    <xhtml:link rel="alternate" hreflang="x-default" href="${defaultUrl}" />`;
 
       const imageUrl = author.data.image.startsWith('http') 
@@ -210,7 +212,7 @@ ${xDefault}
       const catSlug = cat.toLowerCase().replace(/\s+/g, '-');
       const basePath = `/categories/${catSlug}`;
       const localPath = getLocalizedPath(basePath, locale);
-      const locUrl = `${siteUrl}${localPath}/`;
+      const locUrl = formatUrl(localPath);
 
       urlNodes += `  <url>
     <loc>${locUrl}</loc>
