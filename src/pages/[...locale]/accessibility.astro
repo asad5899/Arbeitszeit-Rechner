@@ -20,7 +20,13 @@ export function getStaticPaths() {
 const locale = getLocaleFromUrl(Astro.url);
 const t = useTranslations(locale);
 
-const title = locale === 'de' ? 'Erklärung zur Barrierefreiheit — Arbeitszeit Rechner Pro' : 'Accessibility Statement — Work Time Calculator Pro';
+const title = locale === 'de' 
+  ? 'Erklärung zur Barrierefreiheit — Arbeitszeit Rechner Pro' 
+  : locale === 'fr'
+  ? 'Déclaration d\'Accessibilité — Calculateur Temps de Travail'
+  : locale === 'ar'
+  ? 'بيان إمكانية الوصول — حاسبة ساعات العمل'
+  : 'Accessibility Statement — Work Time Calculator Pro';
 const description = 'Unsere Erklärung zur Barrierefreiheit gemäß den WCAG 2.2 AA Richtlinien.';
 ---
 
