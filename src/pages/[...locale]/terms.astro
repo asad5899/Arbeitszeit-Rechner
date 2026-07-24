@@ -20,7 +20,13 @@ export function getStaticPaths() {
 const locale = getLocaleFromUrl(Astro.url);
 const t = useTranslations(locale);
 
-const title = locale === 'de' ? 'Allgemeine Geschäftsbedingungen — Arbeitszeit Rechner Pro' : 'Terms & Conditions — Work Time Calculator Pro';
+const title = locale === 'de' 
+  ? 'Allgemeine Geschäftsbedingungen — Arbeitszeit Rechner Pro' 
+  : locale === 'fr'
+  ? 'Conditions Générales d\'Utilisation — Calculateur Temps de Travail'
+  : locale === 'ar'
+  ? 'الشروط والأحكام — حاسبة ساعات العمل'
+  : 'Terms & Conditions — Work Time Calculator Pro';
 const description = 'Allgemeine Geschäftsbedingungen zur Nutzung des kostenlosen Arbeitszeit Rechner Pros.';
 ---
 
