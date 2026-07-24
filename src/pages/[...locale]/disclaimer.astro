@@ -20,7 +20,13 @@ export function getStaticPaths() {
 const locale = getLocaleFromUrl(Astro.url);
 const t = useTranslations(locale);
 
-const title = locale === 'de' ? 'Haftungsausschluss — Arbeitszeit Rechner Pro' : 'Disclaimer — Work Time Calculator Pro';
+const title = locale === 'de' 
+  ? 'Haftungsausschluss — Arbeitszeit Rechner Pro' 
+  : locale === 'fr'
+  ? 'Avertissement Légal — Calculateur Temps de Travail'
+  : locale === 'ar'
+  ? 'إخلاء المسؤولية — حاسبة ساعات العمل'
+  : 'Disclaimer — Work Time Calculator Pro';
 const description = 'Haftungsausschluss bezüglich der Nutzungsergebnisse des Arbeitszeit Rechner Pros.';
 ---
 
