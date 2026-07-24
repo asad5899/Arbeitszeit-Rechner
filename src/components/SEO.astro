@@ -15,6 +15,7 @@ interface Props {
   author?: string;
   section?: string;
   tags?: string[];
+  translations?: Record<string, string>;
 }
 
 const {
@@ -31,6 +32,7 @@ const {
   author,
   section,
   tags = [],
+  translations,
 } = Astro.props;
 
 const siteUrl = 'https://www.arbeitszeitrechnerpro.de';
@@ -99,7 +101,7 @@ const today = new Date().toISOString();
 
 <!-- Language Alternates (hreflang) -->
 {locales.map((loc) => {
-  const locPath = getLocalizedPath(cleanPath, loc);
+  const locPath = (translations && translations[loc]) ? translations[loc] : getLocalizedPath(cleanPath, loc);
   return (
     <link 
       rel="alternate" 
@@ -108,7 +110,7 @@ const today = new Date().toISOString();
     />
   );
 })}
-<link rel="alternate" hreflang="x-default" href={`${siteUrl}${cleanPath}`} />
+<link rel="alternate" hreflang="x-default" href={`${siteUrl}${(translations && translations[defaultLocale]) ? translations[defaultLocale] : cleanPath}`} />
 
 <!-- Open Graph / Facebook -->
 <meta property="og:type" content={ogType} />

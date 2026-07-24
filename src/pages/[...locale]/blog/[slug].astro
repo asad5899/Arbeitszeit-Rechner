@@ -1,6 +1,6 @@
 ---
 import { getCollection, getEntry, render } from 'astro:content';
-import { locales, defaultLocale, getLocaleFromUrl, useTranslations, getLocalizedPath } from '../../../utils/i18n';
+import { locales, defaultLocale, getLocaleFromUrl, useTranslations, getLocalizedPath, blogTranslations } from '../../../utils/i18n';
 import SEO from '../../../components/SEO.astro';
 import Schema from '../../../components/Schema.astro';
 import Navbar from '../../../components/Navbar.astro';
@@ -48,6 +48,16 @@ const breadcrumbs = [
 
 // Calculate words for Schema
 const wordCount = post.body ? post.body.split(/\s+/).length : 200;
+
+// Generate translation paths for Navbar language switcher
+const postSlug = post.id;
+const translations: Record<string, string> = {};
+const mapping = blogTranslations[postSlug];
+if (mapping) {
+  for (const loc of locales) {
+    translations[loc] = getLocalizedPath(`/blog/${mapping[loc]}`, loc);
+  }
+}
 ---
 
 <!DOCTYPE html>
@@ -64,6 +74,7 @@ const wordCount = post.body ? post.body.split(/\s+/).length : 200;
       author={authorEntry?.data.name}
       section={post.data.category}
       tags={post.data.tags}
+      translations={translations}
     />
     <Schema 
       type="article"
@@ -84,7 +95,7 @@ const wordCount = post.body ? post.body.split(/\s+/).length : 200;
     />
   </head>
   <body>
-    <Navbar />
+    <Navbar translations={translations} />
 
     <main class="page">
       <!-- Breadcrumbs -->

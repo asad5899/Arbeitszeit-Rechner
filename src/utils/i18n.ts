@@ -330,3 +330,151 @@ export function getLocalizedPath(path: string, locale: Locale): string {
   }
   return `/${locale}${cleanPath === '/' ? '' : cleanPath}`;
 }
+
+// Blog translations mapping
+export const blogTranslations: Record<string, Record<Locale, string>> = {
+  'arbeitszeitgesetz-pausenregelungen-de': {
+    de: 'arbeitszeitgesetz-pausenregelungen-de',
+    en: 'working-hours-laws-en',
+    fr: 'lois-duree-travail-fr',
+    ar: 'working-hours-laws-ar'
+  },
+  'working-hours-laws-en': {
+    de: 'arbeitszeitgesetz-pausenregelungen-de',
+    en: 'working-hours-laws-en',
+    fr: 'lois-duree-travail-fr',
+    ar: 'working-hours-laws-ar'
+  },
+  'lois-duree-travail-fr': {
+    de: 'arbeitszeitgesetz-pausenregelungen-de',
+    en: 'working-hours-laws-en',
+    fr: 'lois-duree-travail-fr',
+    ar: 'working-hours-laws-ar'
+  },
+  'working-hours-laws-ar': {
+    de: 'arbeitszeitgesetz-pausenregelungen-de',
+    en: 'working-hours-laws-en',
+    fr: 'lois-duree-travail-fr',
+    ar: 'working-hours-laws-ar'
+  }
+};
+
+// Category translations mapping
+export const categoryTranslations: Record<string, Record<Locale, string>> = {
+  'arbeitsrecht': {
+    de: 'arbeitsrecht',
+    en: 'labor-law',
+    fr: 'droit-du-travail',
+    ar: 'قانون-العمل'
+  },
+  'labor-law': {
+    de: 'arbeitsrecht',
+    en: 'labor-law',
+    fr: 'droit-du-travail',
+    ar: 'قانون-العمل'
+  },
+  'droit-du-travail': {
+    de: 'arbeitsrecht',
+    en: 'labor-law',
+    fr: 'droit-du-travail',
+    ar: 'قانون-العمل'
+  },
+  'قانون-العمل': {
+    de: 'arbeitsrecht',
+    en: 'labor-law',
+    fr: 'droit-du-travail',
+    ar: 'قانون-العمل'
+  }
+};
+
+// Tag translations mapping
+export const tagTranslations: Record<string, Record<Locale, string>> = {
+  'arbzg': {
+    de: 'arbzg',
+    en: 'compliance',
+    fr: 'législation',
+    ar: 'الامتثال'
+  },
+  'compliance': {
+    de: 'arbzg',
+    en: 'compliance',
+    fr: 'législation',
+    ar: 'الامتثال'
+  },
+  'législation': {
+    de: 'arbzg',
+    en: 'compliance',
+    fr: 'législation',
+    ar: 'الامتثال'
+  },
+  'الامتثال': {
+    de: 'arbzg',
+    en: 'compliance',
+    fr: 'législation',
+    ar: 'الامتثال'
+  },
+  
+  'pausenzeit': {
+    de: 'pausenzeit',
+    en: 'breaks',
+    fr: 'pauses',
+    ar: 'الاستراحات'
+  },
+  'breaks': {
+    de: 'pausenzeit',
+    en: 'breaks',
+    fr: 'pauses',
+    ar: 'الاستراحات'
+  },
+  'pauses': {
+    de: 'pausenzeit',
+    en: 'breaks',
+    fr: 'pauses',
+    ar: 'الاستراحات'
+  },
+  'الاستراحات': {
+    de: 'pausenzeit',
+    en: 'breaks',
+    fr: 'pauses',
+    ar: 'الاستراحات'
+  },
+
+  'überstunden': {
+    de: 'überstunden',
+    en: 'overtime',
+    fr: 'heures-supplémentaires',
+    ar: 'ساعات-العمل'
+  },
+  'overtime': {
+    de: 'überstunden',
+    en: 'overtime',
+    fr: 'heures-supplémentaires',
+    ar: 'ساعات-العمل'
+  },
+  'heures-supplémentaires': {
+    de: 'überstunden',
+    en: 'overtime',
+    fr: 'heures-supplémentaires',
+    ar: 'ساعات-العمل'
+  },
+  'ساعات-العمل': {
+    de: 'überstunden',
+    en: 'overtime',
+    fr: 'heures-supplémentaires',
+    ar: 'ساعات-العمل'
+  },
+
+  'arbeitszeitgesetz': {
+    de: 'arbeitszeitgesetz',
+    en: 'compliance',
+    fr: 'législation',
+    ar: 'ساعات-العمل'
+  },
+  'hr': {
+    de: 'arbeitszeitgesetz',
+    en: 'hr',
+    fr: 'législation',
+    ar: 'الامتثال'
+  }
+};
+

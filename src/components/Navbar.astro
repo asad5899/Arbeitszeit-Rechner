@@ -1,6 +1,11 @@
 ---
 import { getLocaleFromUrl, useTranslations, getLocalizedPath, locales } from '../utils/i18n';
 
+interface Props {
+  translations?: Record<string, string>;
+}
+
+const { translations } = Astro.props;
 const locale = getLocaleFromUrl(Astro.url);
 const t = useTranslations(locale);
 const currentPath = Astro.url.pathname;
@@ -82,16 +87,21 @@ const navLinks = [
           <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="chevron"><path d="m6 9 6 6 6-6"/></svg>
         </button>
         <ul class="lang-dropdown" role="listbox">
-          {locales.map((loc) => (
-            <li role="option" aria-selected={loc === locale}>
-              <a href={getLocalizedPath(cleanPath, loc)} class={loc === locale ? 'active' : ''}>
-                <span>{loc === 'de' ? 'DE' : loc === 'en' ? 'EN' : loc === 'fr' ? 'FR' : 'AR'}</span>
-                {loc === locale && (
-                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="check"><path d="M20 6 9 17l-5-5"/></svg>
-                )}
-              </a>
-            </li>
-          ))}
+          {locales.map((loc) => {
+            const href = (translations && translations[loc])
+              ? translations[loc]
+              : getLocalizedPath(cleanPath, loc);
+            return (
+              <li role="option" aria-selected={loc === locale}>
+                <a href={href} class={loc === locale ? 'active' : ''}>
+                  <span>{loc === 'de' ? 'DE' : loc === 'en' ? 'EN' : loc === 'fr' ? 'FR' : 'AR'}</span>
+                  {loc === locale && (
+                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="check"><path d="M20 6 9 17l-5-5"/></svg>
+                  )}
+                </a>
+              </li>
+            );
+          })}
         </ul>
       </div>
 

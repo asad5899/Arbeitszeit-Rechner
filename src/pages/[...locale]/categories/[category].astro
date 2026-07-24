@@ -1,6 +1,6 @@
 ---
 import { getCollection } from 'astro:content';
-import { locales, defaultLocale, getLocaleFromUrl, useTranslations, getLocalizedPath } from '../../../utils/i18n';
+import { locales, defaultLocale, getLocaleFromUrl, useTranslations, getLocalizedPath, categoryTranslations } from '../../../utils/i18n';
 import SEO from '../../../components/SEO.astro';
 import Schema from '../../../components/Schema.astro';
 import Navbar from '../../../components/Navbar.astro';
@@ -30,8 +30,18 @@ export async function getStaticPaths() {
 }
 
 const { categoryName, posts } = Astro.props;
+const { category } = Astro.params;
 const locale = getLocaleFromUrl(Astro.url);
 const t = useTranslations(locale);
+
+const categorySlug = category!;
+const translations: Record<string, string> = {};
+const mapping = categoryTranslations[categorySlug];
+if (mapping) {
+  for (const loc of locales) {
+    translations[loc] = getLocalizedPath(`/categories/${mapping[loc]}`, loc);
+  }
+}
 
 const title = `Kategorie: ${categoryName} — Arbeitszeit Rechner Pro`;
 const description = `Entdecken Sie alle Fachbeiträge rund um das Thema ${categoryName}.`;
@@ -41,11 +51,11 @@ const description = `Entdecken Sie alle Fachbeiträge rund um das Thema ${catego
 <html lang={locale} dir={t('dir')}>
   <head>
     <meta charset="UTF-8" />
-    <SEO title={title} description={description} locale={locale} />
+    <SEO title={title} description={description} locale={locale} translations={translations} />
     <Schema type="webpage" title={title} description={description} />
   </head>
   <body>
-    <Navbar />
+    <Navbar translations={translations} />
 
     <main class="page">
       <h1 class="page-title">Kategorie: {categoryName}</h1>

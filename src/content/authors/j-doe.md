@@ -8,6 +8,6 @@ sameAs:
   - "https://www.linkedin.com/in/johndoe-hr"
 socials:
   linkedin: "https://www.linkedin.com/in/johndoe-hr"
-  website: "https://www.arbeitszeitrechnerpro.de/authors/john-doe"
+  website: "https://www.arbeitszeitrechnerpro.de/authors/j-doe"
 ---
 John Doe assists international businesses with standardizing time tracking methodologies.
