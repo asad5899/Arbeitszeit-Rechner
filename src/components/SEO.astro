@@ -105,7 +105,7 @@ const today = new Date().toISOString();
   return (
     <link 
       rel="alternate" 
-      hreflang={loc === 'ar' ? 'ar' : loc === 'de' ? 'de-DE' : loc === 'fr' ? 'fr' : 'en'} 
+      hreflang={loc} 
       href={`${siteUrl}${locPath}`} 
     />
   );
