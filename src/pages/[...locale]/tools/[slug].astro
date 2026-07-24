@@ -9,7 +9,7 @@ import WeeklyTable from '../../../components/WeeklyTable.astro';
 import ToolContent from '../../../components/ToolContent.astro';
 import TrendingSidebar from '../../../components/TrendingSidebar.astro';
 import CookieConsent from '../../../components/CookieConsent.astro';
-import { tools, getToolBySlug } from '../../../data/tools';
+import { tools, getToolBySlug, getLocalizedTool } from '../../../data/tools';
 import '../../../styles/global.css';
 
 export function getStaticPaths() {
@@ -32,7 +32,7 @@ const { slug } = Astro.params;
 const locale = getLocaleFromUrl(Astro.url);
 const t = useTranslations(locale);
 
-const tool = getToolBySlug(slug!)!;
+const tool = getLocalizedTool(slug!, locale);
 
 const title = tool.title;
 const description = tool.description;
