@@ -325,10 +325,14 @@ export function useTranslations(locale: Locale) {
 
 export function getLocalizedPath(path: string, locale: Locale): string {
   const cleanPath = path.startsWith('/') ? path : `/${path}`;
-  if (locale === defaultLocale) {
-    return cleanPath;
+  let result = locale === defaultLocale
+    ? cleanPath
+    : `/${locale}${cleanPath === '/' ? '' : cleanPath}`;
+  
+  if (!result.endsWith('/') && !result.includes('.') && !result.includes('#') && !result.includes('?')) {
+    result += '/';
   }
-  return `/${locale}${cleanPath === '/' ? '' : cleanPath}`;
+  return result;
 }
 
 // Blog translations mapping

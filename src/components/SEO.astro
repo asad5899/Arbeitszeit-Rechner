@@ -74,7 +74,7 @@ const today = new Date().toISOString();
 <meta name="publisher" content="Arbeitszeit Rechner Pro" />
 
 <!-- Canonical URL -->
-<link rel="canonical" href={canonicalUrl} />
+<link rel="canonical" href={encodeURI(decodeURI(canonicalUrl))} />
 
 <!-- Favicons & App Manifests -->
 <link rel="icon" type="image/x-icon" href="/favicon.ico" />
@@ -106,11 +106,11 @@ const today = new Date().toISOString();
     <link 
       rel="alternate" 
       hreflang={loc} 
-      href={`${siteUrl}${locPath}`} 
+      href={encodeURI(`${siteUrl}${locPath}`)} 
     />
   );
 })}
-<link rel="alternate" hreflang="x-default" href={`${siteUrl}${(translations && translations[defaultLocale]) ? translations[defaultLocale] : cleanPath}`} />
+<link rel="alternate" hreflang="x-default" href={encodeURI(`${siteUrl}${(translations && translations[defaultLocale]) ? translations[defaultLocale] : cleanPath}`)} />
 
 <!-- Open Graph / Facebook -->
 <meta property="og:type" content={ogType} />
