@@ -16,16 +16,59 @@ export async function getStaticPaths() {
   for (const loc of locales) {
     const localeParam = loc === defaultLocale ? undefined : loc;
     for (const author of authors) {
+      // Canonical slug
       paths.push({
         params: { locale: localeParam, author: author.id },
-        props: { author }
+        props: { author, isRedirect: false }
       });
+
+      // Spelling variations redirect
+      const variants = [];
+      if (author.id === 'j-doe') {
+        variants.push('john-doe');
+      }
+      if (author.id === 'm-schmidt') {
+        variants.push('m.-schmidt');
+      }
+
+      for (const variant of variants) {
+        paths.push({
+          params: { locale: localeParam, author: variant },
+          props: {
+            author,
+            isRedirect: true,
+            redirectTo: getLocalizedPath(`/authors/${author.id}`, loc)
+          }
+        });
+      }
     }
   }
-  return paths;
+
+  // Sort paths so that canonical routes (isRedirect === false) come first
+  paths.sort((a, b) => {
+    const aVal = a.props.isRedirect ? 1 : 0;
+    const bVal = b.props.isRedirect ? 1 : 0;
+    return aVal - bVal;
+  });
+
+  // Deduplicate paths
+  const uniquePaths = [];
+  const seen = new Set();
+  for (const p of paths) {
+    const key = `${p.params.locale || 'default'}/${p.params.author}`;
+    if (!seen.has(key)) {
+      seen.add(key);
+      uniquePaths.push(p);
+    }
+  }
+  return uniquePaths;
 }
 
-const { author } = Astro.props;
+const { author, isRedirect, redirectTo } = Astro.props;
+if (isRedirect && redirectTo) {
+  return Astro.redirect(encodeURI(redirectTo), 301);
+}
+
 const locale = getLocaleFromUrl(Astro.url);
 const t = useTranslations(locale);
 

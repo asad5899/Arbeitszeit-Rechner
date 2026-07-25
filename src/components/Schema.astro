@@ -399,7 +399,16 @@ const articleSchema = (pageType === 'article' || type === 'article') && articleD
   author: {
     '@type': 'Person',
     name: articleData.authorName,
-    url: articleData.authorUrl || `${siteUrl}/authors/${articleData.authorName.toLowerCase().replace(/\s+/g, '-')}`,
+    url: articleData.authorUrl || (() => {
+      const nameLower = articleData.authorName.toLowerCase();
+      let authorSlug = nameLower.replace(/\s+/g, '-');
+      if (nameLower.includes('schmidt')) {
+        authorSlug = 'm-schmidt';
+      } else if (nameLower.includes('doe')) {
+        authorSlug = 'j-doe';
+      }
+      return `${siteUrl}/authors/${authorSlug}/`;
+    })(),
   },
   publisher: {
     '@id': `${siteUrl}/#organization`,

@@ -1,0 +1,56 @@
+---
+import { locales, defaultLocale, getLocaleFromUrl, useTranslations } from '../../../utils/i18n';
+import SEO from '../../../components/SEO.astro';
+import Schema from '../../../components/Schema.astro';
+import Navbar from '../../../components/Navbar.astro';
+import Footer from '../../../components/Footer.astro';
+import CookieConsent from '../../../components/CookieConsent.astro';
+import ToolsGrid from '../../../components/ToolsGrid.astro';
+import '../../../styles/global.css';
+
+export function getStaticPaths() {
+  return [
+    { params: { locale: undefined } },
+    ...locales.filter(loc => loc !== defaultLocale).map(loc => ({
+      params: { locale: loc }
+    }))
+  ];
+}
+
+const locale = getLocaleFromUrl(Astro.url);
+const t = useTranslations(locale);
+
+const title = locale === 'de' 
+  ? 'Alle Rechner & Tools im Überblick — Arbeitszeit Rechner Pro' 
+  : locale === 'fr'
+  ? 'Tous les Outils et Calculateurs — Calculateur Temps de Travail'
+  : locale === 'ar'
+  ? 'جميع الحاسبات والأدوات — حاسبة ساعات العمل'
+  : 'All Calculators & Tools — Work Time Calculator Pro';
+const description = locale === 'de'
+  ? 'Übersicht aller 21 kostenlosen Rechner für Arbeitszeit, Überstunden, Pausenzeit, Urlaubsanspruch und Branchenzuschläge.'
+  : locale === 'fr'
+  ? 'Aperçu de nos 21 calculateurs gratuits pour le temps de travail, les heures supplémentaires, les pauses et les congés.'
+  : locale === 'ar'
+  ? 'نظرة عامة على جميع الحاسبات الـ 21 المجانية لساعات العمل، الساعات الإضافية، الاستراحات، والتعويضات.'
+  : 'Overview of all 21 free calculators for working hours, overtime, breaks, vacation days, and industry premiums.';
+---
+
+<!DOCTYPE html>
+<html lang={locale} dir={t('dir')}>
+  <head>
+    <meta charset="UTF-8" />
+    <SEO title={title} description={description} locale={locale} />
+    <Schema type="webpage" title={title} description={description} />
+  </head>
+  <body>
+    <Navbar />
+
+    <main class="page" id="main-content" style="margin-top: var(--sp-4);">
+      <ToolsGrid />
+    </main>
+
+    <Footer />
+    <CookieConsent />
+  </body>
+</html>

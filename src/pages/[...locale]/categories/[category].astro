@@ -20,16 +20,64 @@ export async function getStaticPaths() {
 
     for (const cat of categories) {
       const catSlug = cat.toLowerCase().replace(/\s+/g, '-');
+      
+      // Canonical slug page
       paths.push({
         params: { locale: localeParam, category: catSlug },
-        props: { categoryName: cat, posts: locPosts.filter(p => p.data.category === cat) }
+        props: { 
+          categoryName: cat, 
+          posts: locPosts.filter(p => p.data.category === cat),
+          isRedirect: false
+        }
       });
+
+      // Find translation mapping for this slug
+      const mapping = categoryTranslations[catSlug];
+      if (mapping) {
+        // Redirect all other languages' slugs for this category to the correct slug for this locale
+        for (const otherLoc of locales) {
+          const otherSlug = mapping[otherLoc];
+          if (otherSlug && otherSlug !== catSlug) {
+            paths.push({
+              params: { locale: localeParam, category: otherSlug },
+              props: {
+                categoryName: cat,
+                posts: [],
+                isRedirect: true,
+                redirectTo: getLocalizedPath(`/categories/${catSlug}`, loc)
+              }
+            });
+          }
+        }
+      }
     }
   }
-  return paths;
+
+  // Sort paths so that canonical routes (isRedirect === false) come first
+  paths.sort((a, b) => {
+    const aVal = a.props.isRedirect ? 1 : 0;
+    const bVal = b.props.isRedirect ? 1 : 0;
+    return aVal - bVal;
+  });
+
+  // Deduplicate paths
+  const uniquePaths = [];
+  const seen = new Set();
+  for (const p of paths) {
+    const key = `${p.params.locale || 'default'}/${p.params.category}`;
+    if (!seen.has(key)) {
+      seen.add(key);
+      uniquePaths.push(p);
+    }
+  }
+  return uniquePaths;
 }
 
-const { categoryName, posts } = Astro.props;
+const { categoryName, posts, isRedirect, redirectTo } = Astro.props;
+if (isRedirect && redirectTo) {
+  return Astro.redirect(encodeURI(redirectTo), 301);
+}
+
 const { category } = Astro.params;
 const locale = getLocaleFromUrl(Astro.url);
 const t = useTranslations(locale);

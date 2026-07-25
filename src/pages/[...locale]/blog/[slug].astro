@@ -17,20 +17,63 @@ export async function getStaticPaths() {
 
   for (const loc of locales) {
     const localeParam = loc === defaultLocale ? undefined : loc;
+    
     // Filter posts for this locale
     const locPosts = posts.filter(p => p.data.locale === loc);
 
     for (const post of locPosts) {
+      // Correct page
       paths.push({
         params: { locale: localeParam, slug: post.id },
-        props: { post }
+        props: { post, isRedirect: false }
       });
+
+      // Find translation mapping for this post
+      const mapping = blogTranslations[post.id];
+      if (mapping) {
+        // Redirect all other languages' slugs for this post to this correct slug
+        for (const otherLoc of locales) {
+          const otherSlug = mapping[otherLoc];
+          if (otherSlug && otherSlug !== post.id) {
+            paths.push({
+              params: { locale: localeParam, slug: otherSlug },
+              props: {
+                post,
+                isRedirect: true,
+                redirectTo: getLocalizedPath(`/blog/${post.id}`, loc)
+              }
+            });
+          }
+        }
+      }
     }
   }
-  return paths;
+
+  // Sort paths so that canonical routes (isRedirect === false) come first
+  paths.sort((a, b) => {
+    const aVal = a.props.isRedirect ? 1 : 0;
+    const bVal = b.props.isRedirect ? 1 : 0;
+    return aVal - bVal;
+  });
+
+  // Deduplicate paths
+  const uniquePaths = [];
+  const seen = new Set();
+  for (const p of paths) {
+    const key = `${p.params.locale || 'default'}/${p.params.slug}`;
+    if (!seen.has(key)) {
+      seen.add(key);
+      uniquePaths.push(p);
+    }
+  }
+  return uniquePaths;
 }
 
-const { post } = Astro.props;
+const { post, isRedirect, redirectTo } = Astro.props;
+if (isRedirect && redirectTo) {
+  return Astro.redirect(encodeURI(redirectTo), 301);
+}
+
 const locale = getLocaleFromUrl(Astro.url);
 const t = useTranslations(locale);
 
@@ -86,6 +129,7 @@ if (mapping) {
         description: post.data.description,
         image: post.data.image,
         authorName: authorEntry?.data.name || 'Editorial Team',
+        authorUrl: authorEntry ? `https://www.arbeitszeitrechnerpro.de${getLocalizedPath(`/authors/${authorEntry.id}`, locale)}` : undefined,
         datePublished: post.data.publishDate.toISOString(),
         dateModified: post.data.updateDate?.toISOString() || post.data.publishDate.toISOString(),
         wordCount: wordCount,

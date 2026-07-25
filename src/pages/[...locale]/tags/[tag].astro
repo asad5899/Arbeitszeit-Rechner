@@ -20,16 +20,64 @@ export async function getStaticPaths() {
 
     for (const tag of tags) {
       const tagSlug = tag.toLowerCase().replace(/\s+/g, '-');
+      
+      // Canonical slug page
       paths.push({
         params: { locale: localeParam, tag: tagSlug },
-        props: { tagName: tag, posts: locPosts.filter(p => p.data.tags.includes(tag)) }
+        props: { 
+          tagName: tag, 
+          posts: locPosts.filter(p => p.data.tags.includes(tag)),
+          isRedirect: false
+        }
       });
+
+      // Find translation mapping for this slug
+      const mapping = tagTranslations[tagSlug];
+      if (mapping) {
+        // Redirect all other languages' slugs for this tag to the correct slug for this locale
+        for (const otherLoc of locales) {
+          const otherSlug = mapping[otherLoc];
+          if (otherSlug && otherSlug !== tagSlug) {
+            paths.push({
+              params: { locale: localeParam, tag: otherSlug },
+              props: {
+                tagName: tag,
+                posts: [],
+                isRedirect: true,
+                redirectTo: getLocalizedPath(`/tags/${tagSlug}`, loc)
+              }
+            });
+          }
+        }
+      }
     }
   }
-  return paths;
+
+  // Sort paths so that canonical routes (isRedirect === false) come first
+  paths.sort((a, b) => {
+    const aVal = a.props.isRedirect ? 1 : 0;
+    const bVal = b.props.isRedirect ? 1 : 0;
+    return aVal - bVal;
+  });
+
+  // Deduplicate paths
+  const uniquePaths = [];
+  const seen = new Set();
+  for (const p of paths) {
+    const key = `${p.params.locale || 'default'}/${p.params.tag}`;
+    if (!seen.has(key)) {
+      seen.add(key);
+      uniquePaths.push(p);
+    }
+  }
+  return uniquePaths;
 }
 
-const { tagName, posts } = Astro.props;
+const { tagName, posts, isRedirect, redirectTo } = Astro.props;
+if (isRedirect && redirectTo) {
+  return Astro.redirect(encodeURI(redirectTo), 301);
+}
+
 const { tag } = Astro.params;
 const locale = getLocaleFromUrl(Astro.url);
 const t = useTranslations(locale);
