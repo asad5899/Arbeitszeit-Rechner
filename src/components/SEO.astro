@@ -151,11 +151,12 @@ const today = new Date().toISOString();
 <!-- E-E-A-T / Publisher Meta -->
 <link rel="publisher" href={siteUrl} />
 
-<!-- Google Search Console Verification -->
+<!-- Search Console & Verification Meta Tags -->
 <meta name="google-site-verification" content="lZak3h7u8o7scBwM054yFKNQN8sJpxX1DEMQlHi2vIs" />
 {import.meta.env.PUBLIC_GSC_TOKEN && (
   <meta name="google-site-verification" content={import.meta.env.PUBLIC_GSC_TOKEN} />
 )}
+<meta name="yandex-verification" content="75fef0b9addb023a" />
 
 <!-- Article Meta Details -->
 {ogType === 'article' && (
