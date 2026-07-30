@@ -16,5 +16,8 @@
     "@astrojs/rss": "^4.0.19",
     "@astrojs/sitemap": "^3.7.3",
     "astro": "^7.0.7"
+  },
+  "devDependencies": {
+    "xlsx": "^0.18.5"
   }
 }
