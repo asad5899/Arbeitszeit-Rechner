@@ -1,6 +1,6 @@
 ---
 import { tools } from '../data/tools';
-import { getLocaleFromUrl } from '../utils/i18n';
+import { getLocaleFromUrl, getLocalizedPath } from '../utils/i18n';
 
 interface BreadcrumbItem {
   name: string;
@@ -66,10 +66,10 @@ const {
 } = Astro.props;
 
 const locale = getLocaleFromUrl(Astro.url);
-const currentUrl = url || Astro.url.href;
-const cleanUrl = currentUrl.endsWith('/') ? currentUrl.slice(0, -1) : currentUrl;
-const currentPath = Astro.url.pathname;
 const siteUrl = 'https://www.arbeitszeitrechnerpro.de';
+const currentPath = Astro.url.pathname.replace(/\/+/g, '/');
+const currentUrl = url || `${siteUrl}${currentPath}`;
+const cleanUrl = currentUrl.endsWith('/') ? currentUrl.slice(0, -1) : currentUrl;
 
 // Auto-detect tool details if we are on a tool page
 let activeTool = toolData;
@@ -151,6 +151,7 @@ const orgSchema = {
     addressCountry: 'DE',
   },
   sameAs: [
+    'https://www.facebook.com/people/Arbeitszeit-Rechner/61592237566695/',
     'https://x.com/ArbeitszeitPro',
     'https://www.linkedin.com/company/arbeitszeit-rechner-pro',
   ],
@@ -229,37 +230,37 @@ const navigationSchema = {
       '@type': 'SiteNavigationElement',
       position: 1,
       name: 'Home',
-      url: `${siteUrl}/`,
+      url: `${siteUrl}${getLocalizedPath('/', locale)}`,
     },
     {
       '@type': 'SiteNavigationElement',
       position: 2,
       name: 'Arbeitszeit Rechner Pro',
-      url: `${siteUrl}/tools/arbeitszeit-rechner`,
+      url: `${siteUrl}${getLocalizedPath('/tools/arbeitszeit-rechner', locale)}`,
     },
     {
       '@type': 'SiteNavigationElement',
       position: 3,
-      name: 'Über Uns',
-      url: `${siteUrl}/about`,
+      name: locale === 'de' ? 'Über Uns' : locale === 'fr' ? 'À Propos' : locale === 'ar' ? 'من نحن' : 'About Us',
+      url: `${siteUrl}${getLocalizedPath('/about', locale)}`,
     },
     {
       '@type': 'SiteNavigationElement',
       position: 4,
-      name: 'Kontakt',
-      url: `${siteUrl}/contact`,
+      name: locale === 'de' ? 'Kontakt' : locale === 'fr' ? 'Contact' : locale === 'ar' ? 'اتصل بنا' : 'Contact',
+      url: `${siteUrl}${getLocalizedPath('/contact', locale)}`,
     },
     {
       '@type': 'SiteNavigationElement',
       position: 5,
       name: 'FAQ',
-      url: `${siteUrl}/faq`,
+      url: `${siteUrl}${getLocalizedPath('/faq', locale)}`,
     },
     {
       '@type': 'SiteNavigationElement',
       position: 6,
       name: 'Blog',
-      url: `${siteUrl}/blog`,
+      url: `${siteUrl}${getLocalizedPath('/blog', locale)}`,
     },
   ],
 };
@@ -273,7 +274,7 @@ const itemListSchema = {
   itemListElement: tools.map((t, index) => ({
     '@type': 'ListItem',
     position: index + 1,
-    url: `${siteUrl}/tools/${t.slug}`,
+    url: `${siteUrl}${getLocalizedPath(`/tools/${t.slug}`, locale)}`,
     name: t.name,
   })),
 };
@@ -407,7 +408,7 @@ const articleSchema = (pageType === 'article' || type === 'article') && articleD
       } else if (nameLower.includes('doe')) {
         authorSlug = 'j-doe';
       }
-      return `${siteUrl}/authors/${authorSlug}/`;
+      return `${siteUrl}${getLocalizedPath(`/authors/${authorSlug}`, locale)}`;
     })(),
   },
   publisher: {

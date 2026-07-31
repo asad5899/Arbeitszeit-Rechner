@@ -12,7 +12,7 @@ export async function GET(context) {
       pubDate: post.data.publishDate,
       description: post.data.description,
       customData: `<language>${post.data.locale}</language>`,
-      link: post.data.locale === 'de' ? `/blog/${post.id}` : `/${post.data.locale}/blog/${post.id}`,
+      link: post.data.locale === 'de' ? `/blog/${post.id}/` : `/${post.data.locale}/blog/${post.id}/`,
     })),
   });
 }

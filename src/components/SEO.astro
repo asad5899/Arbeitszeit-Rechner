@@ -36,7 +36,7 @@ const {
 } = Astro.props;
 
 const siteUrl = 'https://www.arbeitszeitrechnerpro.de';
-const currentPath = Astro.url.pathname;
+const currentPath = Astro.url.pathname.replace(/\/+/g, '/');
 
 // Remove locale prefix for building alternates
 let cleanPath = currentPath;
