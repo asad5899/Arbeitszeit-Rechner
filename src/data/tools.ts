@@ -402,30 +402,45 @@ export const tools: ToolDef[] = [
   {
     slug: 'schichtzulagen-rechner',
     name: 'Schichtzulagen Rechner',
-    title: 'Schichtzulagen Rechner — Zuschläge für alle Schichtmodelle',
-    description: 'Schichtzulagen für Früh-, Spät-, Nacht- und Wechselschicht berechnen. Steuerfreie Anteile nach § 3b EStG ermitteln.',
-    subtitle: 'Berechne Zuschläge für jede Schichtart — inklusive Steuerfrei-Prüfung.',
+    title: 'Schichtzulagen Rechner — Zuschläge für alle Schichtmodelle & § 3b EStG',
+    description: 'Schichtzulagen für Früh-, Spät-, Nacht- und Wechselschicht berechnen. Steuerfreie und steuerpflichtige Anteile nach § 3b EStG und § 6 ArbZG exakt ermitteln.',
+    subtitle: 'Berechne Zuschläge für jede Schichtart — inklusive Steuerfrei-Prüfung und TVöD/Tarif-Vergleich.',
     sections: [
-      { heading: 'Zuschlagsberechnung pro Schicht', text: 'Die Schichtzulage errechnet sich aus: Grundlohn × Zuschlagssatz × Schichtstunden. Eine Krankenschwester mit 18,50 €/h Grundlohn, 15 % Spätschichtzulage und 8 Stunden Spätdienst erhält 18,50 × 0,15 × 8 = 22,20 € Zulage. Gesamtverdienst der Schicht: 148,00 + 22,20 = 170,20 € brutto.' },
-      { heading: 'Steuerfreie und steuerpflichtige Anteile trennen', text: 'Nur Nachtzuschläge (23–6 Uhr) und Sonn-/Feiertagszuschläge genießen Steuerfreiheit nach § 3b EStG. Spätschichtzulagen (z. B. 14–22 Uhr) sind vollständig steuerpflichtig, da sie nicht unter die begünstigten Zeiten fallen. Wechselschichtzulagen werden nach ihrem Nachtanteil aufgeteilt: der Anteil zwischen 23 und 6 Uhr ist steuerfrei, der Rest steuerpflichtig.' },
-      { heading: 'Wechselschicht und Zusatzurlaub', text: 'Beschäftigte in Wechselschicht erhalten nach den meisten Tarifverträgen 1–4 zusätzliche Urlaubstage pro Jahr. Im TVöD beträgt der Wechselschichtzuschlag 105 € monatlich (Pauschale). Im Krankenhaustarifvertrag (TV-L) erhalten Pflegekräfte in Wechselschicht eine monatliche Zulage von 155 €. Die Regelungen variieren stark nach Branche.' },
+      { 
+        heading: 'Zuschlagsberechnung pro Schicht & Rechenformel', 
+        text: 'Die gesetzliche und tarifliche Schichtzulage errechnet sich grundsätzlich nach der Formel: Grundstundenlohn × Zuschlagssatz (%) × Schichtstunden im begünstigten Zeitfenster. Beispiel: Eine Fachkraft mit 20,00 €/h Grundlohn leistet 8 Stunden Spätdienst mit 15 % Spätschichtzulage. Die Zulage beträgt 20,00 € × 0,15 × 8 = 24,00 €. Bei einer 8-stündigen Nachtschicht mit 25 % Nachtzuschlag beträgt das Plus 20,00 € × 0,25 × 8 = 40,00 €. Der Gesamtschichtlohn beläuft sich damit auf 160,00 € Grundlohn + 40,00 € Zuschlag = 200,00 € brutto.' 
+      },
+      { 
+        heading: 'Steuerfreie vs. steuerpflichtige Anteile nach § 3b EStG', 
+        text: 'Nach § 3b Einkommensteuergesetz (EStG) sind Zuschläge für Sonntags-, Feiertags- und Nachtarbeit (SFN) unter bestimmten Voraussetzungen steuerfrei und sozialversicherungsfrei (bis 25 €/h Grundlohn für SV bzw. bis 50 €/h für Steuern). Nachtarbeit zwischen 23:00 und 06:00 Uhr ist mit 25 % steuerfrei (ab 00:00 Uhr bei Arbeitsbeginn vor Mitternacht sogar bis zu 40 %). Reine Früh- und Spätschichtzulagen (z. B. 14:00–22:00 Uhr) fallen hingegen nicht unter § 3b EStG und sind in voller Höhe einkommensteuer- und sozialabgabenpflichtig.' 
+      },
+      { 
+        heading: 'Wechselschichtmodelle (2-Schicht, 3-Schicht, 5-Schicht) & Zusatzurlaub', 
+        text: 'Wer regelmäßig im Wechsel zwischen Früh-, Spät- und Nachtschicht arbeitet, hat nach den meisten Tarifverträgen (z. B. TVöD, TV-L, IGM) Anspruch auf eine Wechselschichtzulage sowie zusätzliche Urlaubstage (1 bis 6 Tage pro Jahr). Im öffentlichen Dienst (TVöD § 8) beträgt die Wechselschichtpauschale 105 € monatlich (bzw. 155 € in Pflegeberufen). Bei Schichtarbeit ohne ständigen Wechsel beträgt die Schichtzulage 63 € bzw. 90 € pro Monat.' 
+      },
+      { 
+        heading: 'Gesetzlicher Ausgleichsanspruch nach § 6 Abs. 5 ArbZG', 
+        text: 'Besteht keine tarifliche Regelung, schreibt § 6 Abs. 5 Arbeitszeitgesetz (ArbZG) zwingend vor, dass der Arbeitgeber Nachtarbeitnehmern für die während der Nachtzeit geleisteten Arbeitsstunden eine angemessene Zahl bezahlter freier Tage oder einen angemessenen Zuschlag auf das Bruttoentgelt gewähren muss (in der Praxis der Arbeitsgerichte meist 25 % bis 30 %).' 
+      },
     ],
     faqItems: [
-      { q: 'Welche Schichtarten gibt es in Deutschland?', a: 'Frühschicht (ca. 6–14 Uhr), Spätschicht (ca. 14–22 Uhr), Nachtschicht (ca. 22–6 Uhr), Wechselschicht (planmäßiger Schichtwechsel) und Dauernachtschicht (ausschließlich Nachtarbeit).' },
-      { q: 'Ist eine Spätschichtzulage steuerfrei?', a: 'Nein. Nur Zuschläge für Arbeit zwischen 23 und 6 Uhr (Nacht), an Sonntagen und Feiertagen sind nach § 3b EStG steuerfrei. Spätschichtzulagen sind voll steuerpflichtig.' },
-      { q: 'Wie hoch ist die Wechselschichtzulage im TVöD?', a: '105 € monatlich bei ständiger Wechselschicht, 63 € bei Schichtarbeit ohne ständigen Wechsel (§ 8 TVöD).' },
-      { q: 'Werden Schichtzulagen bei der Rentenberechnung berücksichtigt?', a: 'Steuerpflichtige Zulagen ja — sie erhöhen das beitragspflichtige Bruttoentgelt. Steuerfreie Zuschläge bis 25 €/h Grundlohn sind auch sozialversicherungsfrei und fließen nicht in die Rentenberechnung ein.' },
-      { q: 'Habe ich Anspruch auf eine Schichtzulage bei Teilzeit-Schichtarbeit?', a: 'Ja. Teilzeitbeschäftigte in Schichtarbeit erhalten den gleichen prozentualen Zuschlag. Nur die Stundenzahl ist geringer, nicht der Prozentsatz.' },
-      { q: 'Können Früh- und Spätschichtzulagen kombiniert werden?', a: 'Nein, es gilt die Zulage der jeweiligen Schicht. Bei einer geteilten Schicht (z. B. 6–10 Uhr + 16–20 Uhr) gelten die Zuschläge der jeweiligen Zeitfenster.' },
+      { q: 'Welche Schichtarten gibt es in Deutschland?', a: 'Typische Schichtmodelle sind Frühschicht (ca. 06:00–14:30 Uhr), Spätschicht (ca. 14:00–22:30 Uhr), Nachtschicht (ca. 22:00–06:30 Uhr), 2-Schicht-Systeme (Früh/Spät), vollkontinuierliche 3-Schicht- und 5-Schicht-Systeme (24/7-Betrieb) sowie Dauernachtwachen.' },
+      { q: 'Ist eine Spätschichtzulage steuerfrei?', a: 'Nein. Das Einkommensteuergesetz (§ 3b EStG) begünstigt ausschließlich Nacht-, Sonntags- und Feiertagsarbeit. Zuschläge für Früh- und Spätschichten sind voll steuer- und sozialversicherungspflichtig.' },
+      { q: 'Ab welcher Uhrzeit gilt ein Nachtzuschlag steuerfrei?', a: 'Steuerlich beginnt das begünstigte Zeitfenster nach § 3b EStG um 23:00 Uhr und endet um 06:00 Uhr (25 % Zuschlag). Beginnt die Arbeit vor 00:00 Uhr, gilt in der Kernnacht von 00:00 bis 04:00 Uhr ein erhöhter steuerfreier Satz von bis zu 40 %.' },
+      { q: 'Wie hoch ist die Wechselschichtzulage im TVöD?', a: 'Im TVöD § 8 beträgt die Wechselschichtzulage 105 € monatlich bei ständiger Wechselschicht (155 € in Krankenhäusern und Pflege) sowie 63 € monatlich bei herkömmlicher Schichtarbeit.' },
+      { q: 'Werden Schichtzulagen bei der Rentenberechnung berücksichtigt?', a: 'Steuer- und sozialabgabenpflichtige Zuschläge (wie Spätschichtzulagen) fließen vollständig in die Rentenpunkte ein. Steuerfreie Nachtzuschläge (bis 25 €/h Grundlohn) sind beitragsfrei und erhöhen die spätere Rentenauszahlung daher nicht.' },
+      { q: 'Habe ich Anspruch auf eine Schichtzulage bei Teilzeit-Schichtarbeit?', a: 'Ja. Nach dem Teilzeit- und Befristungsgesetz (TzBfG) dürfen Teilzeitkräfte nicht benachteiligt werden. Sie erhalten denselben prozentualen Zuschlag für geleistete Schichtstunden wie Vollzeitbeschäftigte.' },
+      { q: 'Können Schicht- und Feiertagszulagen kumuliert werden?', a: 'Fällt eine Nacht- oder Wechselschicht auf einen gesetzlichen Feiertag, werden die steuerfreien Zuschlagsgrenzen nach § 3b Abs. 1 EStG addiert (z. B. 125 % Feiertag + 25 % Nacht = bis zu 150 % steuerfrei).' },
+      { q: 'Besteht ein gesetzlicher Anspruch auf bezahlte Freistellung statt Geld?', a: 'Ja, nach § 6 Abs. 5 ArbZG kann der Arbeitgeber wählen, ob er den Nachtzuschlag in Geld auszahlt oder durch bezahlte Erholungstage (Freizeitausgleich) abgilt, sofern kein Tarifvertrag etwas anderes festlegt.' },
     ],
     features: [
-      { icon: '🔄', title: 'Alle Schichttypen', text: 'Zuschläge für Früh-, Spät-, Nacht- und Wechselschicht berechnen.' },
-      { icon: '💰', title: 'Steuer-Splitting', text: 'Steuerfreien und steuerpflichtigen Zuschlagsanteil getrennt ausweisen.' },
-      { icon: '📊', title: 'Monatssumme', text: 'Alle Schichtzulagen eines Monats addieren und mit Grundlohn verrechnen.' },
-      { icon: '🏖️', title: 'Zusatzurlaub-Info', text: 'Hinweise zu tariflichen Zusatzurlaubstagen bei Wechselschicht.' },
+      { icon: '🔄', title: 'Alle Schichtmodelle', text: 'Zuschläge für Früh-, Spät-, Nacht- und Wechselschicht (2- bis 5-Schicht) berechnen.' },
+      { icon: '💰', title: 'Steuer- & SV-Prüfung', text: 'Steuerfreien Anteil nach § 3b EStG und steuerpflichtigen Bruttoanteil trennen.' },
+      { icon: '📊', title: 'Monatshochrechnung', text: 'Schichtzulagen für den gesamten Monat erfassen und mit Grundlohn summieren.' },
+      { icon: '🏖️', title: 'Zusatzurlaub-Rechner', text: 'Hinweise auf tariflichen Anspruch auf Zusatzurlaubstage bei Wechselschicht.' },
     ],
-    ctaTitle: 'Schichtzulage berechnen',
-    ctaText: 'Grundlohn, Schichtart und Stunden eingeben — Zulage sofort sehen.',
+    ctaTitle: 'Schichtzulage jetzt berechnen',
+    ctaText: 'Grundlohn, Schichtart und Stunden eingeben — sofortige Netto- und Brutto-Aufschlüsselung sehen.',
   },
 
   // ──────────────────────────────────────────
@@ -964,9 +979,37 @@ const toolTranslations: Record<string, Record<string, Partial<ToolDef>>> = {
     },
     fr: {
       name: 'Calculateur Prime d\'Équipe',
-      title: 'Calculateur Prime d\'Équipe — Travail en Postes',
-      description: 'Calculez les primes d\'équipe et majorations pour travail en horaires décalés.',
-      subtitle: 'Déterminez les indemnités pour le travail en équipe.',
+      title: 'Calculateur Prime d\'Équipe — Majoration Travail Posté & Nuit',
+      description: 'Calculez vos primes de panier, majorations pour travail posté (2x8, 3x8, 5x8) et travail de nuit en toute simplicité.',
+      subtitle: 'Déterminez vos indemnités et majorations selon vos heures et votre cycle de travail.',
+      sections: [
+        { 
+          heading: 'Calcul des primes d\'équipe et travail en horaires décalés', 
+          text: 'La prime de travail en équipe ou prime de poste est attribuée aux salariés travaillant en horaires décalés ou alternants (2x8, 3x8, travail continu). Elle est calculée en appliquant un pourcentage sur le taux horaire de base ou sous forme d\'indemnité forfaitaire par vacation travaillée.' 
+        },
+        { 
+          heading: 'Majoration pour travail de nuit (21h - 6h)', 
+          text: 'Selon l\'article L3122-2 du Code du travail, tout travail accompli entre 21 heures et 6 heures (ou 22h et 7h selon accord) est considéré comme du travail de nuit. Les majorations de salaire prévues par les conventions collectives s\'élèvent généralement de 20 % à 50 % du salaire horaire brut.' 
+        },
+        { 
+          heading: 'Prime de panier et indemnité de restauration', 
+          text: 'Lorsque les horaires de travail obligent le salarié à prendre son repas sur place (travail de nuit, travail en équipe successive), l\'employeur verse une indemnité de panier exonérée de cotisations sociales dans les limites fixées par le barème URSSAF.' 
+        },
+      ],
+      faqItems: [
+        { q: 'Comment est fixée la prime d\'équipe ?', a: 'Le montant et les conditions d\'attribution de la prime d\'équipe sont déterminés par la convention collective de branche, un accord d\'entreprise ou le contrat de travail.' },
+        { q: 'Quelles sont les heures considérées comme travail de nuit en France ?', a: 'La plage légale du travail de nuit s\'étend de 21 heures à 6 heures du matin, sauf accord collectif décalant cette plage entre 22 heures et 7 heures.' },
+        { q: 'La prime de panier est-elle soumise à l\'impôt sur le revenu ?', a: 'Non, les indemnités de restauration sur le lieu de travail (paniers) sont exonérées d\'impôt sur le revenu et de cotisations sociales dans la limite du plafond légal URSSAF.' },
+        { q: 'Le repos compensateur est-il obligatoire en travail de nuit ?', a: 'Oui, les travailleurs de nuit bénéficient obligatoirement de contreparties sous forme de repos compensateur payé et, le cas échéant, de majorations salariales.' },
+      ],
+      features: [
+        { icon: '🔄', title: 'Tous cycles d\'équipe', text: 'Calcul pour travail en 2x8, 3x8, nuit fixe et équipes alternantes.' },
+        { icon: '💰', title: 'Primes & Paniers', text: 'Distinction claire entre majorations brutes et paniers exonérés.' },
+        { icon: '📊', title: 'Récapitulatif mensuel', text: 'Cumulez vos indemnités sur l\'ensemble du mois travaillé.' },
+        { icon: '⚖️', title: 'Conformité légale', text: 'Prise en compte des règles du Code du travail et des conventions.' },
+      ],
+      ctaTitle: 'Calculer ma prime d\'équipe',
+      ctaText: 'Renseignez votre taux horaire et vos heures pour estimer vos majorations.',
     },
     ar: {
       name: 'حاسبة بدل الوردية',
@@ -984,9 +1027,37 @@ const toolTranslations: Record<string, Record<string, Partial<ToolDef>>> = {
     },
     fr: {
       name: 'Calculateur Suivi du Temps',
-      title: 'Calculateur Suivi du Temps — Relevé d\'Heures',
-      description: 'Suivez les heures de travail quotidiennes et gérez vos relevés de temps facilement.',
-      subtitle: 'Suivi du temps numérique pour salariés et indépendants.',
+      title: 'Calculateur Suivi du Temps — Relevé d\'Heures Quotidien et Hebdomadaire',
+      description: 'Suivez vos heures de travail, enregistrez vos temps de pause et exportez votre relevé d\'heures complet. Conforme RGPD, gratuit et sans inscription.',
+      subtitle: 'Enregistrez vos horaires d\'arrivée, de départ et vos pauses pour un relevé d\'heures précis et conforme.',
+      sections: [
+        { 
+          heading: 'Obligation de décompte du temps de travail', 
+          text: 'En application de l\'article L3171-2 du Code du travail et de la jurisprudence européenne (arrêt CJUE 2019), les employeurs et salariés doivent pouvoir justifier des heures de travail réellement effectuées. Le relevé numérique permet d\'attester avec précision des heures d\'embauche, de débauche et de la durée des pauses.' 
+        },
+        { 
+          heading: 'Gestion automatique des pauses légales', 
+          text: 'Dès que le temps de travail quotidien atteint 6 heures consécutives, le salarié doit bénéficier d\'une pause minimale de 20 minutes (Article L3121-16 du Code du travail). Notre calculateur déduit automatiquement les temps de pause pour vous fournir le nombre exact d\'heures nettes effectives.' 
+        },
+        { 
+          heading: 'Protection des données et confidentialité RGPD', 
+          text: 'Toutes vos données de pointage restent stockées localement dans votre navigateur (localStorage). Aucune information n\'est envoyée à des serveurs distants, garantissant une confidentialité totale pour vos heures et informations de travail.' 
+        },
+      ],
+      faqItems: [
+        { q: 'Quelles mentions doivent figurer sur un relevé d\'heures ?', a: 'L\'heure de prise de poste, l\'heure de fin de service, le détail des pauses prises et le cumul des heures effectives journalières et hebdomadaires.' },
+        { q: 'Quelle est la durée de pause légale minimale ?', a: 'Au moins 20 minutes consécutives dès que la durée quotidienne de travail atteint 6 heures.' },
+        { q: 'Comment exporter mon relevé d\'heures ?', a: 'Utilisez le bouton de copie en un clic pour coller votre récapitulatif directement dans Excel, un email ou votre système de paie.' },
+        { q: 'Le calcul prend-il en compte les heures supplémentaires ?', a: 'Oui, toute heure effectuée au-delà de la durée légale hebdomadaire (35 heures en France) apparaît clairement dans le bilan hebdomadaire.' },
+      ],
+      features: [
+        { icon: '📝', title: 'Saisie simplifiée', text: 'Indiquez début, fin et pauses — le calcul net se fait automatiquement.' },
+        { icon: '🔒', title: '100% Confidentiel', text: 'Stockage local dans votre navigateur. Aucun cookie de pistage.' },
+        { icon: '📤', title: 'Export rapide', text: 'Copiez votre relevé hebdomadaire en un clic vers Excel ou par email.' },
+        { icon: '⏱️', title: 'Gestion des pauses', text: 'Déduction précise des pauses pour respecter les seuils légaux.' },
+      ],
+      ctaTitle: 'Démarrer le suivi de mes heures',
+      ctaText: 'Entrez vos heures de travail du jour pour générer votre relevé hebdomadaire.',
     },
     ar: {
       name: 'حاسبة تتبع الوقت',
@@ -1124,9 +1195,37 @@ const toolTranslations: Record<string, Record<string, Partial<ToolDef>>> = {
     },
     fr: {
       name: 'Calculateur Solde de Congés',
-      title: 'Calculateur Solde de Congés — Congés Restants',
-      description: 'Calculez votre solde de jours de congé restants et les jours de report.',
-      subtitle: 'Calculez votre solde de congés payés restants.',
+      title: 'Calculateur Solde de Congés Payés — Calcul des Jours Restants',
+      description: 'Calculez votre solde exact de congés payés restants, jours acquis, jours pris et droits au report. Conforme au Code du travail français.',
+      subtitle: 'Déterminez en quelques secondes votre solde de congés payés restants pour l\'année en cours.',
+      sections: [
+        { 
+          heading: 'Acquisition des congés payés en droit français', 
+          text: 'Tout salarié acquiert 2,5 jours ouvrables de congés payés par mois de travail effectif (soit 30 jours ouvrables ou 5 semaines par an), ou 2,08 jours ouvrés par mois (soit 25 jours ouvrés par an). L\'acquisition est identique que vous soyez à temps plein ou à temps partiel.' 
+        },
+        { 
+          heading: 'Période de référence et report des congés', 
+          text: 'La période d\'acquisition s\'étend généralement du 1er juin au 31 mai de l\'année suivante (ou du 1er janvier au 31 décembre si l\'entreprise fonctionne en année civile). Les congés non pris avant la fin de la période de prise sont en principe perdus, sauf accord de report, Compte Épargne Temps (CET) ou impossibilité médicale.' 
+        },
+        { 
+          heading: 'Indemnité compensatrice de congés payés', 
+          text: 'En cas de rupture du contrat de travail (démission, rupture conventionnelle, licenciement), le salarié a droit à une indemnité compensatrice pour tous les jours de congés acquis et non pris, calculée selon la méthode du maintien de salaire ou du 1/10e de la rémunération brute.' 
+        },
+      ],
+      faqItems: [
+        { q: 'Combien de jours de congés payés par an en France ?', a: 'Le droit commun prévoit 30 jours ouvrables (ou 25 jours ouvrés) par an pour une année complète de travail effectif.' },
+        { q: 'Quelle est la différence entre jours ouvrables et jours ouvrés ?', a: 'Les jours ouvrables incluent tous les jours du lundi au samedi (sauf jours fériés chômés). Les jours ouvrés ne comptent que les jours travaillés dans l\'entreprise (généralement du lundi au vendredi).' },
+        { q: 'Peut-on reporter ses congés payés sur l\'année suivante ?', a: 'Le report est possible en cas d\'accord de l\'employeur, d\'accord d\'entreprise, ou si le salarié a été dans l\'impossibilité de les prendre suite à un arrêt maladie ou congé maternité.' },
+        { q: 'Comment calculer l\'indemnité de congés payés ?', a: 'L\'employeur compare la méthode du 1/10e (10 % du total des rémunérations brutes perçues) et la méthode du maintien de salaire, et retient le montant le plus favorable au salarié.' },
+      ],
+      features: [
+        { icon: '🏖️', title: 'Calcul du solde net', text: 'Soustraction automatique des jours posés sur les jours acquis.' },
+        { icon: '📅', title: 'Jours ouvrés & ouvrables', text: 'Compatible avec les deux modes de décompte légaux.' },
+        { icon: '💼', title: 'Temps plein & partiel', text: 'Calcul équitable quel que soit votre volume horaire contractuel.' },
+        { icon: '💰', title: 'Indemnité de congés', text: 'Estimation de la valeur brute de vos congés non pris.' },
+      ],
+      ctaTitle: 'Calculer mes congés restants',
+      ctaText: 'Indiquez vos jours acquis et vos jours déjà pris pour afficher votre solde.',
     },
     ar: {
       name: 'حاسبة الإجازات المتبقية',
@@ -1163,7 +1262,7 @@ export function getLocalizedTool(slug: string, locale: string): ToolDef {
 
   if (locale === 'de') return tool;
 
-  const translation = toolTranslations[slug]?.[locale];
+  const translation: any = toolTranslations[slug]?.[locale];
   if (!translation) return tool;
 
   return {
@@ -1172,5 +1271,10 @@ export function getLocalizedTool(slug: string, locale: string): ToolDef {
     title: translation.title || tool.title,
     description: translation.description || tool.description,
     subtitle: translation.subtitle || tool.subtitle,
+    sections: translation.sections || tool.sections,
+    faqItems: translation.faqItems || tool.faqItems,
+    features: translation.features || tool.features,
+    ctaTitle: translation.ctaTitle || tool.ctaTitle,
+    ctaText: translation.ctaText || tool.ctaText,
   };
 }

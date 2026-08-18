@@ -34,7 +34,7 @@ const description = 'Transparente Informationen über den Einsatz von Cookies au
 <html lang={locale} dir={t('dir')}>
   <head>
     <meta charset="UTF-8" />
-    <SEO title={title} description={description} locale={locale} />
+    <SEO title={title} description={description} locale={locale} robots={locale !== defaultLocale ? 'noindex, follow' : 'index, follow'} />
     <Schema type="webpage" title={title} description={description} />
   </head>
   <body>

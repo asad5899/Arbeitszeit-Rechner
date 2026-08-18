@@ -25,23 +25,14 @@ export const GET: APIRoute = async () => {
 
   let urlNodes = '';
 
-  // 1. CORE PAGES (Home, About, FAQ, and legal pages)
+  // 1. CORE HIGH-VALUE PAGES (Home, About, FAQ, Blog index, Authors index, Privacy)
   const corePages = [
     { path: '/', priority: '1.0', changefreq: 'daily' },
-    { path: '/about', priority: '0.5', changefreq: 'yearly' },
-    { path: '/contact', priority: '0.5', changefreq: 'yearly' },
-    { path: '/faq', priority: '0.5', changefreq: 'yearly' },
-    { path: '/blog', priority: '0.5', changefreq: 'weekly' },
-    { path: '/authors', priority: '0.5', changefreq: 'yearly' },
-    { path: '/categories', priority: '0.5', changefreq: 'weekly' },
-    { path: '/tags', priority: '0.5', changefreq: 'weekly' },
-    { path: '/archives', priority: '0.5', changefreq: 'yearly' },
-    { path: '/privacy', priority: '0.5', changefreq: 'yearly' },
-    { path: '/terms', priority: '0.5', changefreq: 'yearly' },
-    { path: '/cookie-policy', priority: '0.5', changefreq: 'yearly' },
-    { path: '/disclaimer', priority: '0.5', changefreq: 'yearly' },
-    { path: '/accessibility', priority: '0.5', changefreq: 'yearly' },
-    { path: '/editorial', priority: '0.5', changefreq: 'yearly' },
+    { path: '/blog', priority: '0.8', changefreq: 'daily' },
+    { path: '/faq', priority: '0.7', changefreq: 'weekly' },
+    { path: '/about', priority: '0.6', changefreq: 'monthly' },
+    { path: '/authors', priority: '0.6', changefreq: 'monthly' },
+    { path: '/privacy', priority: '0.3', changefreq: 'yearly' },
   ];
 
   for (const page of corePages) {
@@ -73,7 +64,7 @@ ${xDefault}
     }
   }
 
-  // 2. CALCULATORS / TOOLS (with video sitemap details)
+  // 2. CALCULATORS / TOOLS (Primary conversion assets)
   for (const tool of tools) {
     const basePath = `/tools/${tool.slug}`;
 
@@ -141,7 +132,7 @@ ${xDefault}
     <loc>${locUrl}</loc>
     <lastmod>${lastmod}</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <priority>0.8</priority>
     <image:image>
       <image:loc>${imageUrl}</image:loc>
       <image:title>${escapedTitle}</image:title>
@@ -158,16 +149,23 @@ ${xDefault}
   </url>\n\n`;
   }
 
-  // 4. AUTHOR PROFILE PAGES (with image sitemap details)
+  // 4. AUTHOR PROFILE PAGES (Only for active authors in that locale)
   const authors = await getCollection('authors');
   for (const author of authors) {
     const basePath = `/authors/${author.id}`;
 
     for (const locale of locales) {
+      // Avoid thin empty profile pages in sitemap: only include if author published in that locale or default locale
+      const authorPostsInLocale = posts.filter((p) => p.data.author === author.id && p.data.locale === locale);
+      if (locale !== defaultLocale && authorPostsInLocale.length === 0) {
+        continue;
+      }
+
       const localPath = getLocalizedPath(basePath, locale);
       const locUrl = formatUrl(localPath);
 
       const alternates = locales
+        .filter((loc) => loc === defaultLocale || posts.some((p) => p.data.author === author.id && p.data.locale === loc))
         .map((loc) => {
           const altPath = getLocalizedPath(basePath, loc);
           const altUrl = formatUrl(altPath);
@@ -190,7 +188,7 @@ ${xDefault}
       urlNodes += `  <url>
     <loc>${locUrl}</loc>
     <lastmod>${today}</lastmod>
-    <changefreq>yearly</changefreq>
+    <changefreq>monthly</changefreq>
     <priority>0.5</priority>
 ${alternates}
 ${xDefault}
@@ -199,26 +197,6 @@ ${xDefault}
       <image:title>${escapedName}</image:title>
       <image:caption>${escapedBio}</image:caption>
     </image:image>
-  </url>\n\n`;
-    }
-  }
-
-  // 5. CATEGORIES
-  for (const locale of locales) {
-    const localePosts = posts.filter((p) => p.data.locale === locale);
-    const uniqueCategories = [...new Set(localePosts.map((p) => p.data.category))];
-
-    for (const cat of uniqueCategories) {
-      const catSlug = cat.toLowerCase().replace(/\s+/g, '-');
-      const basePath = `/categories/${catSlug}`;
-      const localPath = getLocalizedPath(basePath, locale);
-      const locUrl = formatUrl(localPath);
-
-      urlNodes += `  <url>
-    <loc>${locUrl}</loc>
-    <lastmod>${today}</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
   </url>\n\n`;
     }
   }

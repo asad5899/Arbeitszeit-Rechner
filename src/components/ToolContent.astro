@@ -1,11 +1,29 @@
 ---
 import type { ToolDef } from '../data/tools';
+import { getLocaleFromUrl } from '../utils/i18n';
 
 interface Props {
   tool: ToolDef;
 }
 
 const { tool } = Astro.props;
+const locale = getLocaleFromUrl(Astro.url);
+
+const faqTitle = locale === 'de'
+  ? 'Häufig gestellte Fragen'
+  : locale === 'fr'
+  ? 'Foire Aux Questions'
+  : locale === 'ar'
+  ? 'الأسئلة الشائعة'
+  : 'Frequently Asked Questions';
+
+const featuresTitle = locale === 'de'
+  ? 'Warum dieser Rechner?'
+  : locale === 'fr'
+  ? 'Pourquoi utiliser ce calculateur ?'
+  : locale === 'ar'
+  ? 'لماذا تختار هذه الحاسبة؟'
+  : 'Why use this calculator?';
 ---
 
 <div class="content-area" id="content-sections">
@@ -36,7 +54,7 @@ const { tool } = Astro.props;
 
   <!-- FAQ -->
   <section class="content-section" id="tool-faq">
-    <h2 class="content-h2">Häufig gestellte Fragen</h2>
+    <h2 class="content-h2">{faqTitle}</h2>
 
     <div class="faq-list">
       {tool.faqItems.map((item) => (
@@ -59,7 +77,7 @@ const { tool } = Astro.props;
 
   <!-- Features -->
   <section class="content-section" id="tool-features">
-    <h2 class="content-h2">Warum dieser Rechner?</h2>
+    <h2 class="content-h2">{featuresTitle}</h2>
 
     <div class="feature-grid">
       {tool.features.map((f) => (
