@@ -1,0 +1,102 @@
+---
+import { locales, defaultLocale, getLocaleFromUrl, useTranslations } from '../../utils/i18n';
+import SEO from '../../components/SEO.astro';
+import Schema from '../../components/Schema.astro';
+import Navbar from '../../components/Navbar.astro';
+import Footer from '../../components/Footer.astro';
+import Calculator from '../../components/Calculator.astro';
+import WeeklyTable from '../../components/WeeklyTable.astro';
+import HomepageContent from '../../components/HomepageContent.astro';
+import ToolsGrid from '../../components/ToolsGrid.astro';
+import CookieConsent from '../../components/CookieConsent.astro';
+import '../../styles/global.css';
+
+export function getStaticPaths() {
+  return [
+    { params: { locale: undefined } }, // default locale (de)
+    ...locales.filter(loc => loc !== defaultLocale).map(loc => ({
+      params: { locale: loc }
+    }))
+  ];
+}
+
+const locale = getLocaleFromUrl(Astro.url);
+const t = useTranslations(locale);
+
+const title = locale === 'de'
+  ? 'Arbeitszeit Rechner Pro — Arbeitsstunden & Zeiterfassung Online'
+  : locale === 'fr'
+  ? 'Calculateur de Temps de Travail Pro — Heures et Pauses En Ligne'
+  : locale === 'ar'
+  ? 'حاسبة ساعات العمل برو — أدوات حساب وقت العمل والشيفتات'
+  : 'Arbeitszeit Rechner Pro — Online Work Hours & Shift Calculators';
+
+const description = locale === 'de'
+  ? 'Arbeitszeit Rechner Pro: Brutto- und Nettoarbeitszeit, Überstunden und Dezimalstunden kostenlos berechnen. Ohne Anmeldung, werbefrei und mit Pausenregelung nach ArbZG.'
+  : locale === 'fr'
+  ? 'Calculez votre temps de travail quotidien net moins les pauses. Gratuit, sans publicité et hors ligne.'
+  : locale === 'ar'
+  ? 'احسب صافي ساعات عملك اليومية بعد خصم الاستراحات. مجاني تماماً وبدون إعلانات.'
+  : 'Calculate your daily net working hours minus breaks. 100% free, ad-free, offline and instant.';
+
+// FAQ items for Schema.org FAQPage markup (all locales)
+import { getHomeContent } from '../../utils/homeContent';
+const homeContent = getHomeContent(locale);
+const faqSchemaItems = homeContent.faqItems.map(item => ({ question: item.q, answer: item.a }));
+---
+
+<!DOCTYPE html>
+<html lang={locale} dir={t('dir')}>
+  <head>
+    <meta charset="UTF-8" />
+    
+    <SEO 
+      title={title} 
+      description={description} 
+      locale={locale} 
+    />
+    
+    <Schema 
+      type="website" 
+      title={title} 
+      description={description}
+      faqItems={faqSchemaItems}
+    />
+  </head>
+  <body>
+    <!-- Navbar -->
+    <Navbar />
+
+    <!-- Main Content Page -->
+    <main class="page" id="main-content">
+      <h1 class="page-title">{t('hero.title')}</h1>
+      <p class="page-subtitle">{t('hero.subtitle')}</p>
+
+      <!-- Calculator (two column layout Form + Summary Card) -->
+      <Calculator />
+
+      <!-- Weekly Log Table -->
+      <WeeklyTable />
+    </main>
+
+    <!-- All 21 Tools Grid -->
+    <ToolsGrid />
+
+    <!-- SEO Content Sections -->
+    <HomepageContent />
+
+    <!-- Footer -->
+    <Footer />
+
+    <!-- Cookie Consent Mode v2 -->
+    <CookieConsent />
+
+    <!-- Toast Notification structure -->
+    <div class="toast" id="toast" role="alert" aria-live="assertive">
+      <svg style="width:16px; height:16px; color:var(--success-500); margin-inline-end:var(--sp-2);" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M20 6 9 17l-5-5" />
+      </svg>
+      <span id="toast-msg">Kopiert!</span>
+    </div>
+  </body>
+</html>

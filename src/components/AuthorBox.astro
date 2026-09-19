@@ -1,0 +1,68 @@
+---
+interface Props {
+  name: string;
+  bio: string;
+  image: string;
+  expertise: string;
+  socials?: {
+    twitter?: string;
+    linkedin?: string;
+    website?: string;
+  };
+  reviewerName?: string;
+  reviewerBio?: string;
+}
+
+const { name, bio, image, expertise, socials = {}, reviewerName, reviewerBio } = Astro.props;
+---
+
+<div class="card" style="margin-top: var(--sp-8); display: flex; flex-direction: column; gap: var(--sp-6);">
+  <div style="display: flex; gap: var(--sp-6); align-items: flex-start; flex-wrap: wrap;">
+    <img src={image} alt={name} style="width: 80px; height: 80px; border-radius: var(--radius-full); object-fit: cover; border: 2px solid var(--blue-200);" />
+    <div style="flex: 1; min-width: 240px;">
+      <div style="font-size: var(--text-xs); text-transform: uppercase; letter-spacing: 0.05em; color: var(--blue-600); font-weight: 700; margin-bottom: 2px;">
+        Autor
+      </div>
+      <h3 style="font-size: var(--text-lg); font-weight: 700; color: var(--gray-900); margin: 0 0 var(--sp-2) 0;">
+        {name}
+      </h3>
+      <p style="font-size: var(--text-xs); color: var(--gray-500); margin-bottom: var(--sp-2);">
+        <strong>Expertise:</strong> {expertise}
+      </p>
+      <p style="font-size: var(--text-sm); color: var(--gray-700); line-height: 1.6; margin: 0 0 var(--sp-3) 0;">
+        {bio}
+      </p>
+      
+      <!-- Socials -->
+      <div style="display: flex; gap: var(--sp-3); align-items: center;">
+        {socials.twitter && (
+          <a href={socials.twitter} target="_blank" rel="noopener noreferrer" style="color: var(--gray-400); hover: color: var(--blue-500);" aria-label="Twitter">
+            <svg style="width: 16px; height: 16px;" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+          </a>
+        )}
+        {socials.linkedin && (
+          <a href={socials.linkedin} target="_blank" rel="noopener noreferrer" style="color: var(--gray-400); hover: color: var(--blue-500);" aria-label="LinkedIn">
+            <svg style="width: 16px; height: 16px;" fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.779-1.75-1.75s.784-1.75 1.75-1.75 1.75.779 1.75 1.75-.784 1.75-1.75 1.75zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+          </a>
+        )}
+        {socials.website && (
+          <a href={socials.website} target="_blank" rel="noopener noreferrer" style="color: var(--gray-400); hover: color: var(--blue-500);" aria-label="Website">
+            <svg style="width: 16px; height: 16px;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+          </a>
+        )}
+      </div>
+    </div>
+  </div>
+
+  {reviewerName && (
+    <div style="padding-top: var(--sp-4); border-top: 1px solid var(--gray-200); display: flex; gap: var(--sp-4); align-items: center; flex-wrap: wrap;">
+      <div style="font-size: var(--text-xs); background: var(--success-100); color: var(--success-600); padding: 2px var(--sp-2); border-radius: var(--radius-sm); font-weight: 700;">
+        Geprüft von
+      </div>
+      <div>
+        <h4 style="font-size: var(--text-sm); font-weight: 600; color: var(--gray-800); margin: 0;">{reviewerName}</h4>
+        {reviewerBio && <p style="font-size: var(--text-xs); color: var(--gray-500); margin: 2px 0 0 0;">{reviewerBio}</p>}
+      </div>
+    </div>
+  )}
+</div>

@@ -1,0 +1,16 @@
+# Arbeitszeit Rechner Pro
+
+> Comprehensive online calculators and professional guides for work hours, breaks, overtime, hourly wages, shift allowances, and labor law compliance.
+
+## Core Calculators
+- [Work Time Calculator](https://www.arbeitszeitrechnerpro.de/tools/arbeitszeit-rechner/)
+- [Hourly Wage Calculator](https://www.arbeitszeitrechnerpro.de/tools/stundenlohn-rechner/)
+- [Overtime Calculator](https://www.arbeitszeitrechnerpro.de/tools/ueberstunden-rechner/)
+- [Part-Time Calculator](https://www.arbeitszeitrechnerpro.de/tools/teilzeit-rechner/)
+- [Vacation Days Calculator](https://www.arbeitszeitrechnerpro.de/tools/urlaubstage-rechner/)
+- [Flexitime Calculator](https://www.arbeitszeitrechnerpro.de/tools/gleitzeit-rechner/)
+
+## Documentation & Guides
+- [Blog & Guides](https://www.arbeitszeitrechnerpro.de/blog/)
+- [Authors & Experts](https://www.arbeitszeitrechnerpro.de/authors/)
+- [Privacy Policy](https://www.arbeitszeitrechnerpro.de/privacy/)
