@@ -291,6 +291,16 @@ a:hover { color: var(--blue-700); text-decoration: underline; }
   margin-bottom: var(--sp-8);
 }
 
+/* SIDEBAR LAYOUT & STICKY BEHAVIOR */
+.sidebar-column {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-6);
+  align-self: stretch;
+  min-width: 0;
+  height: 100%;
+}
+
 /* CARDS */
 .card {
   background: var(--white);
@@ -793,6 +803,7 @@ a:hover { color: var(--blue-700); text-decoration: underline; }
 /* RESPONSIVE */
 @media (max-width: 900px) {
   .main-grid { grid-template-columns: 1fr; }
+  .sidebar-column { align-self: auto; height: auto; gap: var(--sp-5); }
   .nav-links { display: none; }
   .nav-hamburger { display: flex; }
 }
@@ -2393,4 +2404,17 @@ a:hover { color: var(--blue-700); text-decoration: underline; }
   .percent-gauge-grid {
     grid-template-columns: 1fr 1fr;
   }
+}
+
+/* Suppress Pinterest browser extension hover overlays & save buttons */
+[data-pin-hover],
+.pinit-button,
+a[data-pin-do],
+span[data-pin-log],
+[data-pin-log],
+[data-pin-nopin] + [data-pin-hover] {
+  display: none !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  visibility: hidden !important;
 }

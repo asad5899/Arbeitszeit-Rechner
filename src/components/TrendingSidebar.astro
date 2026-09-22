@@ -94,8 +94,18 @@ const allTools = tools;
     display: flex;
     flex-direction: column;
     gap: var(--sp-5);
+    position: -webkit-sticky;
     position: sticky;
-    top: 80px;
+    top: calc(var(--nav-h) + var(--sp-4));
+    max-height: calc(100vh - var(--nav-h) - var(--sp-6));
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .trending-sidebar::-webkit-scrollbar {
+    display: none;
   }
 
   /* Widget container */
@@ -264,10 +274,13 @@ const allTools = tools;
     background: var(--blue-700);
   }
 
-  /* ── Mobile: collapse to horizontal scroll ── */
+  /* ── Mobile/Tablet: disable sticky and stack normally ── */
   @media (max-width: 900px) {
     .trending-sidebar {
       position: static;
+      top: auto;
+      max-height: none;
+      overflow-y: visible;
       gap: var(--sp-4);
     }
   }

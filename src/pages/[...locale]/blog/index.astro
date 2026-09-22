@@ -64,28 +64,41 @@ const description = 'Aktuelle Artikel zu Arbeitsrecht, Pausenregelungen, Zeiterf
             <p style="color: var(--gray-500);">Keine Beiträge gefunden.</p>
           ) : (
             posts.map((post) => (
-              <article class="card" style="padding: var(--sp-6); display: flex; flex-direction: column; gap: var(--sp-4);">
+              <article class="card blog-card" style="padding: var(--sp-6); display: flex; flex-direction: column; gap: var(--sp-4);">
+                {post.data.image && (
+                  <a href={getLocalizedPath(`/blog/${post.id}`, locale)} style="display: block; border-radius: var(--radius-md); overflow: hidden; aspect-ratio: 16/9; max-height: 240px; background: var(--gray-100);" aria-hidden="true" tabindex="-1">
+                    <img 
+                      src={post.data.image} 
+                      alt={post.data.imageAlt || post.data.title}
+                      loading="lazy"
+                      decoding="async"
+                      style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s ease;"
+                      class="card-thumbnail"
+                    />
+                  </a>
+                )}
                 <div>
                   <div style="display: flex; gap: var(--sp-3); font-size: var(--text-xs); color: var(--blue-600); font-weight: 600; margin-bottom: var(--sp-2);">
                     <span>{post.data.category}</span>
                     <span>&bull;</span>
-                    <span>{post.data.readingTime}</span>
+                    <span>{post.data.readingTime || '5 Min.'}</span>
                   </div>
-                  <h2 style="font-size: var(--text-lg); font-weight: 700; color: var(--gray-900); margin: 0 0 var(--sp-2) 0;">
+                  <h2 style="font-size: var(--text-lg); font-weight: 700; color: var(--gray-900); margin: 0 0 var(--sp-2) 0; line-height: 1.35;">
                     <a href={getLocalizedPath(`/blog/${post.id}`, locale)} style="color: var(--gray-900); text-decoration: none;" class="post-title">
                       {post.data.title}
                     </a>
                   </h2>
-                  <p style="font-size: var(--text-sm); color: var(--gray-600); line-height: 1.6; margin-bottom: var(--sp-4);">
+                  <p style="font-size: var(--text-sm); color: var(--gray-600); line-height: 1.6; margin: 0;">
                     {post.data.description}
                   </p>
                 </div>
-                <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--gray-200); padding-top: var(--sp-4);">
-                  <span style="font-size: var(--text-xs); color: var(--gray-400);">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-top: auto; padding-top: var(--sp-2);">
+                  <span style="font-size: var(--text-xs); color: var(--gray-500);">
                     {post.data.publishDate.toLocaleDateString(locale)}
                   </span>
-                  <a href={getLocalizedPath(`/blog/${post.id}`, locale)} style="font-size: var(--text-sm); font-weight: 600; text-decoration: none;" aria-label={`${post.data.title} - ${t('blog.readMore')}`}>
-                    {post.data.title} &rarr;
+                  <a href={getLocalizedPath(`/blog/${post.id}`, locale)} style="font-size: var(--text-sm); font-weight: 600; color: var(--blue-600); text-decoration: none; display: inline-flex; align-items: center; gap: 4px;" class="read-more-btn" aria-label={`${post.data.title} - ${t('blog.readMore')}`}>
+                    <span>{t('blog.readMore') || 'Weiterlesen'}</span>
+                    <span aria-hidden="true">&rarr;</span>
                   </a>
                 </div>
               </article>
@@ -94,7 +107,7 @@ const description = 'Aktuelle Artikel zu Arbeitsrecht, Pausenregelungen, Zeiterf
         </div>
 
         <!-- Sidebar with Categories and Tags -->
-        <div style="display: flex; flex-direction: column; gap: var(--sp-6);">
+        <aside class="sidebar-column" aria-label="Blog Sidebar">
           <!-- Categories -->
           <div class="card" style="padding: var(--sp-5);">
             <h3 style="font-size: var(--text-sm); font-weight: 700; color: var(--gray-900); margin-bottom: var(--sp-4); text-transform: uppercase;">
@@ -135,7 +148,7 @@ const description = 'Aktuelle Artikel zu Arbeitsrecht, Pausenregelungen, Zeiterf
 
           <!-- Trending Tools Sidebar -->
           <TrendingSidebar />
-        </div>
+        </aside>
       </div>
     </main>
 
@@ -145,8 +158,21 @@ const description = 'Aktuelle Artikel zu Arbeitsrecht, Pausenregelungen, Zeiterf
 </html>
 
 <style>
+  .blog-card {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  .blog-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+  }
+  .blog-card:hover .card-thumbnail {
+    transform: scale(1.03);
+  }
   .post-title:hover {
     color: var(--blue-600) !important;
+  }
+  .read-more-btn:hover {
+    color: var(--blue-700) !important;
     text-decoration: underline !important;
   }
   .sidebar-link:hover {

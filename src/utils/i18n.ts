@@ -336,32 +336,7 @@ export function getLocalizedPath(path: string, locale: Locale): string {
 }
 
 // Blog translations mapping
-export const blogTranslations: Record<string, Record<Locale, string>> = {
-  'arbeitszeitgesetz-pausenregelungen-de': {
-    de: 'arbeitszeitgesetz-pausenregelungen-de',
-    en: 'working-hours-laws-en',
-    fr: 'lois-duree-travail-fr',
-    ar: 'working-hours-laws-ar'
-  },
-  'working-hours-laws-en': {
-    de: 'arbeitszeitgesetz-pausenregelungen-de',
-    en: 'working-hours-laws-en',
-    fr: 'lois-duree-travail-fr',
-    ar: 'working-hours-laws-ar'
-  },
-  'lois-duree-travail-fr': {
-    de: 'arbeitszeitgesetz-pausenregelungen-de',
-    en: 'working-hours-laws-en',
-    fr: 'lois-duree-travail-fr',
-    ar: 'working-hours-laws-ar'
-  },
-  'working-hours-laws-ar': {
-    de: 'arbeitszeitgesetz-pausenregelungen-de',
-    en: 'working-hours-laws-en',
-    fr: 'lois-duree-travail-fr',
-    ar: 'working-hours-laws-ar'
-  }
-};
+export const blogTranslations: Record<string, Record<Locale, string>> = {};
 
 // Category translations mapping
 export const categoryTranslations: Record<string, Record<Locale, string>> = {
