@@ -7,7 +7,6 @@ import Footer from '../../components/Footer.astro';
 import Calculator from '../../components/Calculator.astro';
 import WeeklyTable from '../../components/WeeklyTable.astro';
 import HomepageContent from '../../components/HomepageContent.astro';
-import ToolsGrid from '../../components/ToolsGrid.astro';
 import CookieConsent from '../../components/CookieConsent.astro';
 import '../../styles/global.css';
 
@@ -79,10 +78,7 @@ const faqSchemaItems = homeContent.faqItems.map(item => ({ question: item.q, ans
       <WeeklyTable />
     </main>
 
-    <!-- All 21 Tools Grid -->
-    <ToolsGrid />
-
-    <!-- SEO Content Sections -->
+    <!-- SEO Content Sections (contains Sections 1-12, ToolsGrid, BlogShowcase, FAQ & CTA) -->
     <HomepageContent />
 
     <!-- Footer -->

@@ -1,5 +1,5 @@
 ---
-import { locales, defaultLocale, getLocaleFromUrl, useTranslations } from '../../utils/i18n';
+import { locales, defaultLocale, getLocaleFromUrl, useTranslations, getLocalizedPath } from '../../utils/i18n';
 import SEO from '../../components/SEO.astro';
 import Schema from '../../components/Schema.astro';
 import Navbar from '../../components/Navbar.astro';
@@ -27,7 +27,22 @@ const title = locale === 'de'
   : locale === 'ar'
   ? 'من نحن — حاسبة ساعات العمل'
   : 'About Us — Work Time Calculator Pro';
-const description = 'Erfahren Sie mehr über unsere redaktionelle Transparenz und die Experten hinter dem Arbeitszeit Rechner Pro Pro.';
+
+const description = locale === 'de'
+  ? 'Erfahren Sie, wer hinter Arbeitszeit Rechner Pro steht — 21 kostenlose Rechner-Tools, fachgeprüfte Blogartikel und vollständiger Datenschutz.'
+  : locale === 'fr'
+  ? 'Découvrez qui se cache derrière Calculateur Temps de Travail — 21 outils gratuits, des articles vérifiés par des experts et une protection complète des données.'
+  : locale === 'ar'
+  ? 'تعرّف على فريق حاسبة ساعات العمل — 21 أداة حساب مجانية ومقالات مراجعة من خبراء وحماية كاملة للبيانات.'
+  : 'Learn who is behind Work Time Calculator Pro — 21 free calculator tools, expert-reviewed blog articles, and full data privacy.';
+
+const homePath = getLocalizedPath('/', locale);
+const toolsPath = getLocalizedPath('/tools', locale);
+const blogPath = getLocalizedPath('/blog', locale);
+const editorialPath = getLocalizedPath('/editorial', locale);
+const contactPath = getLocalizedPath('/contact', locale);
+const privacyPath = getLocalizedPath('/privacy', locale);
+const authorsPath = getLocalizedPath('/authors', locale);
 ---
 
 <!DOCTYPE html>
@@ -45,20 +60,155 @@ const description = 'Erfahren Sie mehr über unsere redaktionelle Transparenz un
       
       <div class="main-grid" style="margin-top: var(--sp-6);">
         <div class="card" style="line-height: 1.8;">
-          <h2 style="font-size: var(--text-2xl); color: var(--blue-900); margin-bottom: var(--sp-4);">Unsere Mission</h2>
-          <p style="margin-bottom: var(--sp-4);">
-            Der <strong>Arbeitszeit Rechner Pro Pro</strong> wurde mit der Vision entwickelt, Arbeitnehmern und Arbeitgebern ein einfaches, präzises und vollkommen kostenfreies Werkzeug zur täglichen Zeiterfassung bereitzustellen. In Zeiten von gesetzlichen Pflichten zur Arbeitszeiterfassung ist Transparenz wichtiger denn je.
-          </p>
-          
-          <h2 style="font-size: var(--text-xl); color: var(--blue-900); margin-top: var(--sp-6); margin-bottom: var(--sp-4);">E-E-A-T & Qualitätssicherung</h2>
-          <p style="margin-bottom: var(--sp-4);">
-            Unser Service basiert auf fundiertem Wissen. Alle Artikel, Rechentools und Anleitungen werden von Fachanwälten für Arbeitsrecht und HR-Experten verfasst, geprüft und regelmäßig aktualisiert. Wir stützen unsere Angaben direkt auf das deutsche Arbeitszeitgesetz (ArbZG), europäische Richtlinien und aktuelle Gerichtsurteile.
-          </p>
 
-          <h2 style="font-size: var(--text-xl); color: var(--blue-900); margin-top: var(--sp-6); margin-bottom: var(--sp-4);">Datenschutz & Sicherheit</h2>
-          <p style="margin-bottom: var(--sp-4);">
-            Ihre Privatsphäre steht für uns an oberster Stelle. Alle Berechnungen auf dieser Webseite finden ausschließlich lokal in Ihrem Browser statt. Es werden zu keinem Zeitpunkt persönliche Daten wie Arbeitszeiten, Standorte oder Profile an einen Server gesendet oder an Dritte weitergegeben.
-          </p>
+          {locale === 'de' && (
+            <>
+              <h2 style="font-size: var(--text-2xl); color: var(--blue-900); margin-bottom: var(--sp-4);">Was ist Arbeitszeit Rechner Pro?</h2>
+              <p style="margin-bottom: var(--sp-4);">
+                <strong>Arbeitszeit Rechner Pro</strong> ist eine kostenlose Online-Plattform für die Berechnung von Arbeitszeiten, Überstunden, Stundenlöhnen und verwandten Themen. Unsere Website richtet sich an Arbeitnehmer, Arbeitgeber, Freelancer und HR-Verantwortliche, die ein schnelles, zuverlässiges und datenschutzfreundliches Werkzeug suchen.
+              </p>
+
+              <h2 style="font-size: var(--text-xl); color: var(--blue-900); margin-top: var(--sp-6); margin-bottom: var(--sp-4);">Unsere Tools</h2>
+              <p style="margin-bottom: var(--sp-4);">
+                Wir bieten <a href={homePath}>21 spezialisierte Rechner-Tools</a> an, darunter:
+              </p>
+              <ul style="margin-left: var(--sp-6); margin-bottom: var(--sp-4);">
+                <li><strong>Arbeitszeit Rechner</strong> — Netto-Arbeitszeit aus Start, Ende und Pausen berechnen</li>
+                <li><strong>Stundenlohn Rechner</strong> — Vom Monatsgehalt zum Stundenverdienst</li>
+                <li><strong>Überstunden Rechner</strong> — Mehrarbeit erfassen und bewerten</li>
+                <li><strong>Nachtzuschlag Rechner</strong> — Zuschläge für Nachtarbeit berechnen</li>
+                <li><strong>Urlaubstage Rechner</strong> — Urlaubsanspruch ermitteln</li>
+                <li><strong>Teilzeit Rechner</strong> — Arbeitszeit für Teilzeitmodelle berechnen</li>
+              </ul>
+              <p style="margin-bottom: var(--sp-4);">
+                Alle Tools laufen vollständig in Ihrem Browser — ohne Anmeldung, ohne Serverübertragung und kostenlos.
+              </p>
+
+              <h2 style="font-size: var(--text-xl); color: var(--blue-900); margin-top: var(--sp-6); margin-bottom: var(--sp-4);">Blog & Fachartikel</h2>
+              <p style="margin-bottom: var(--sp-4);">
+                In unserem <a href={blogPath}>Blog</a> veröffentlichen wir Artikel rund um das deutsche Arbeitszeitrecht, Zeiterfassung und HR-Praxis. Jeder Beitrag wird nach unseren <a href={editorialPath}>redaktionellen Richtlinien</a> verfasst und durchläuft ein Peer-Review durch einen zweiten Fachexperten.
+              </p>
+
+              <h2 style="font-size: var(--text-xl); color: var(--blue-900); margin-top: var(--sp-6); margin-bottom: var(--sp-4);">Unser Team</h2>
+              <p style="margin-bottom: var(--sp-4);">
+                Hinter Arbeitszeit Rechner Pro steht ein Team aus Arbeitsrechtsexperten und HR-Fachleuten. Unsere <a href={authorsPath}>Autoren</a> bringen fundiertes Wissen aus dem Arbeitsrecht und der Personalpraxis mit, um Ihnen verlässliche Inhalte zu liefern.
+              </p>
+
+              <h2 style="font-size: var(--text-xl); color: var(--blue-900); margin-top: var(--sp-6); margin-bottom: var(--sp-4);">Datenschutz & Sicherheit</h2>
+              <p style="margin-bottom: var(--sp-4);">
+                Ihre Privatsphäre hat bei uns höchste Priorität. Sämtliche Berechnungen finden lokal in Ihrem Browser statt. Es werden keine persönlichen Daten an unsere Server gesendet. Gespeicherte Einträge (z.&thinsp;B. die Wochenübersicht) verbleiben ausschließlich im localStorage Ihres Browsers. Mehr dazu in unserer <a href={privacyPath}>Datenschutzerklärung</a>.
+              </p>
+
+              <h2 style="font-size: var(--text-xl); color: var(--blue-900); margin-top: var(--sp-6); margin-bottom: var(--sp-4);">Kontakt</h2>
+              <p style="margin-bottom: var(--sp-4);">
+                Fragen, Feedback oder Vorschläge? Besuchen Sie unsere <a href={contactPath}>Kontaktseite</a> oder folgen Sie uns auf unseren Social-Media-Kanälen.
+              </p>
+            </>
+          )}
+
+          {locale === 'en' && (
+            <>
+              <h2 style="font-size: var(--text-2xl); color: var(--blue-900); margin-bottom: var(--sp-4);">What Is Work Time Calculator Pro?</h2>
+              <p style="margin-bottom: var(--sp-4);">
+                <strong>Work Time Calculator Pro</strong> is a free online platform for calculating working hours, overtime, hourly wages, and related topics. Our website serves employees, employers, freelancers, and HR professionals who need a fast, reliable, and privacy-friendly tool.
+              </p>
+
+              <h2 style="font-size: var(--text-xl); color: var(--blue-900); margin-top: var(--sp-6); margin-bottom: var(--sp-4);">Our Tools</h2>
+              <p style="margin-bottom: var(--sp-4);">
+                We offer <a href={homePath}>21 specialized calculator tools</a>, including:
+              </p>
+              <ul style="margin-left: var(--sp-6); margin-bottom: var(--sp-4);">
+                <li><strong>Work Time Calculator</strong> — Calculate net working hours from start, end, and breaks</li>
+                <li><strong>Hourly Wage Calculator</strong> — Convert monthly salary to hourly rate</li>
+                <li><strong>Overtime Calculator</strong> — Track and evaluate overtime hours</li>
+                <li><strong>Night Shift Calculator</strong> — Calculate night-work supplements</li>
+                <li><strong>Vacation Days Calculator</strong> — Determine your leave entitlement</li>
+                <li><strong>Part-Time Calculator</strong> — Calculate hours for part-time models</li>
+              </ul>
+              <p style="margin-bottom: var(--sp-4);">
+                All tools run entirely in your browser — no sign-up, no server transmission, and completely free.
+              </p>
+
+              <h2 style="font-size: var(--text-xl); color: var(--blue-900); margin-top: var(--sp-6); margin-bottom: var(--sp-4);">Blog & Articles</h2>
+              <p style="margin-bottom: var(--sp-4);">
+                Our <a href={blogPath}>blog</a> features articles on German labor law, time tracking, and HR best practices. Every article is written according to our <a href={editorialPath}>editorial guidelines</a> and peer-reviewed by a second expert.
+              </p>
+
+              <h2 style="font-size: var(--text-xl); color: var(--blue-900); margin-top: var(--sp-6); margin-bottom: var(--sp-4);">Our Team</h2>
+              <p style="margin-bottom: var(--sp-4);">
+                Work Time Calculator Pro is maintained by a team of labor-law experts and HR professionals. Our <a href={authorsPath}>authors</a> bring deep expertise in employment law and HR practice to deliver trustworthy content.
+              </p>
+
+              <h2 style="font-size: var(--text-xl); color: var(--blue-900); margin-top: var(--sp-6); margin-bottom: var(--sp-4);">Privacy & Security</h2>
+              <p style="margin-bottom: var(--sp-4);">
+                Your privacy is our top priority. All calculations happen locally in your browser. No personal data is sent to our servers. Saved entries (such as the weekly overview) remain exclusively in your browser's localStorage. Learn more in our <a href={privacyPath}>Privacy Policy</a>.
+              </p>
+
+              <h2 style="font-size: var(--text-xl); color: var(--blue-900); margin-top: var(--sp-6); margin-bottom: var(--sp-4);">Contact</h2>
+              <p style="margin-bottom: var(--sp-4);">
+                Questions, feedback, or suggestions? Visit our <a href={contactPath}>Contact page</a> or follow us on social media.
+              </p>
+            </>
+          )}
+
+          {locale === 'fr' && (
+            <>
+              <h2 style="font-size: var(--text-2xl); color: var(--blue-900); margin-bottom: var(--sp-4);">Qu'est-ce que Calculateur Temps de Travail ?</h2>
+              <p style="margin-bottom: var(--sp-4);">
+                <strong>Calculateur Temps de Travail</strong> est une plateforme en ligne gratuite pour le calcul des heures de travail, des heures supplémentaires, du salaire horaire et de sujets connexes. Notre site s'adresse aux employés, employeurs, freelances et responsables RH.
+              </p>
+
+              <h2 style="font-size: var(--text-xl); color: var(--blue-900); margin-top: var(--sp-6); margin-bottom: var(--sp-4);">Nos outils</h2>
+              <p style="margin-bottom: var(--sp-4);">
+                Nous proposons <a href={homePath}>21 outils de calcul spécialisés</a>, entièrement gratuits et fonctionnant dans votre navigateur — sans inscription et sans transmission de données.
+              </p>
+
+              <h2 style="font-size: var(--text-xl); color: var(--blue-900); margin-top: var(--sp-6); margin-bottom: var(--sp-4);">Blog et articles</h2>
+              <p style="margin-bottom: var(--sp-4);">
+                Notre <a href={blogPath}>blog</a> publie des articles sur le droit du travail, le suivi du temps et les bonnes pratiques RH. Chaque article respecte notre <a href={editorialPath}>charte éditoriale</a> et est vérifié par un second expert.
+              </p>
+
+              <h2 style="font-size: var(--text-xl); color: var(--blue-900); margin-top: var(--sp-6); margin-bottom: var(--sp-4);">Confidentialité</h2>
+              <p style="margin-bottom: var(--sp-4);">
+                Tous les calculs sont effectués localement dans votre navigateur. Aucune donnée personnelle n'est envoyée à nos serveurs. Pour en savoir plus, consultez notre <a href={privacyPath}>Politique de confidentialité</a>.
+              </p>
+
+              <h2 style="font-size: var(--text-xl); color: var(--blue-900); margin-top: var(--sp-6); margin-bottom: var(--sp-4);">Contact</h2>
+              <p style="margin-bottom: var(--sp-4);">
+                Questions ou suggestions ? Rendez-vous sur notre <a href={contactPath}>page de contact</a>.
+              </p>
+            </>
+          )}
+
+          {locale === 'ar' && (
+            <>
+              <h2 style="font-size: var(--text-2xl); color: var(--blue-900); margin-bottom: var(--sp-4);">ما هي حاسبة ساعات العمل؟</h2>
+              <p style="margin-bottom: var(--sp-4);">
+                <strong>حاسبة ساعات العمل</strong> هي منصة مجانية عبر الإنترنت لحساب ساعات العمل والعمل الإضافي والأجر بالساعة والمواضيع ذات الصلة. يخدم موقعنا الموظفين وأصحاب العمل والمستقلين ومسؤولي الموارد البشرية.
+              </p>
+
+              <h2 style="font-size: var(--text-xl); color: var(--blue-900); margin-top: var(--sp-6); margin-bottom: var(--sp-4);">أدواتنا</h2>
+              <p style="margin-bottom: var(--sp-4);">
+                نقدم <a href={homePath}>21 أداة حساب متخصصة</a>، تعمل بالكامل في متصفحك — مجاناً وبدون تسجيل وبدون إرسال بيانات إلى أي خادم.
+              </p>
+
+              <h2 style="font-size: var(--text-xl); color: var(--blue-900); margin-top: var(--sp-6); margin-bottom: var(--sp-4);">المدونة والمقالات</h2>
+              <p style="margin-bottom: var(--sp-4);">
+                ينشر <a href={blogPath}>مدونتنا</a> مقالات حول قانون العمل وتتبع الوقت وأفضل ممارسات الموارد البشرية. يتم مراجعة كل مقال من قبل خبير ثانٍ وفقاً <a href={editorialPath}>لسياستنا التحريرية</a>.
+              </p>
+
+              <h2 style="font-size: var(--text-xl); color: var(--blue-900); margin-top: var(--sp-6); margin-bottom: var(--sp-4);">الخصوصية</h2>
+              <p style="margin-bottom: var(--sp-4);">
+                جميع الحسابات تتم محلياً في متصفحك. لا يتم إرسال أي بيانات شخصية إلى خوادمنا. لمزيد من المعلومات، راجع <a href={privacyPath}>سياسة الخصوصية</a>.
+              </p>
+
+              <h2 style="font-size: var(--text-xl); color: var(--blue-900); margin-top: var(--sp-6); margin-bottom: var(--sp-4);">اتصل بنا</h2>
+              <p style="margin-bottom: var(--sp-4);">
+                أسئلة أو اقتراحات؟ قم بزيارة <a href={contactPath}>صفحة الاتصال</a>.
+              </p>
+            </>
+          )}
+
         </div>
         <TrendingSidebar />
       </div>

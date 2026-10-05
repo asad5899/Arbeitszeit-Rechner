@@ -1,5 +1,5 @@
 ---
-import { locales, defaultLocale, getLocaleFromUrl, useTranslations } from '../../utils/i18n';
+import { locales, defaultLocale, getLocaleFromUrl, useTranslations, getLocalizedPath } from '../../utils/i18n';
 import SEO from '../../components/SEO.astro';
 import Schema from '../../components/Schema.astro';
 import Navbar from '../../components/Navbar.astro';
@@ -27,7 +27,18 @@ const title = locale === 'de'
   : locale === 'ar'
   ? 'سياسة الخصوصية — حاسبة ساعات العمل'
   : 'Privacy Policy — Work Time Calculator Pro';
-const description = 'Unsere Datenschutzerklärung erklärt transparent, wie wir mit Daten umgehen und die Privatsphäre wahren.';
+
+const description = locale === 'de'
+  ? 'Erfahren Sie, wie Arbeitszeit Rechner Pro Ihre Daten schützt. Alle Berechnungen laufen lokal in Ihrem Browser — ohne Serverübertragung.'
+  : locale === 'fr'
+  ? 'Découvrez comment Calculateur Temps de Travail protège vos données. Tous les calculs sont effectués localement dans votre navigateur.'
+  : locale === 'ar'
+  ? 'تعرّف على كيفية حماية بياناتك. جميع الحسابات تتم محلياً في متصفحك دون إرسال بيانات إلى أي خادم.'
+  : 'Learn how Work Time Calculator Pro protects your data. All calculations run locally in your browser — no data is sent to any server.';
+
+const cookiePolicyPath = getLocalizedPath('/cookie-policy', locale);
+const contactPath = getLocalizedPath('/contact', locale);
+const termsPath = getLocalizedPath('/terms', locale);
 ---
 
 <!DOCTYPE html>
@@ -45,25 +56,223 @@ const description = 'Unsere Datenschutzerklärung erklärt transparent, wie wir 
       
       <div class="main-grid" style="margin-top: var(--sp-6);">
         <div class="card" style="line-height: 1.8;">
-          <h2 style="font-size: var(--text-xl); color: var(--blue-900); margin-bottom: var(--sp-4);">1. Datenschutz auf einen Blick</h2>
-          <p style="margin-bottom: var(--sp-4);">
-            Die Betreiber dieser Seiten nehmen den Schutz Ihrer persönlichen Daten sehr ernst. Wir behandeln Ihre personenbezogenen Daten vertraulich und entsprechend den gesetzlichen Datenschutzvorschriften (DSGVO) sowie dieser Datenschutzerklärung.
-          </p>
 
-          <h2 style="font-size: var(--text-xl); color: var(--blue-900); margin-top: var(--sp-6); margin-bottom: var(--sp-4);">2. Datenerfassung auf unserer Website</h2>
-          <p style="margin-bottom: var(--sp-4);">
-            Unser Arbeitszeitrechner arbeitet zu 100 % clientseitig. Das bedeutet: Alle Eingaben (Arbeitsbeginn, Arbeitsende, Pausen) verbleiben ausschließlich auf Ihrem Endgerät und werden zu keinem Zeitpunkt an unsere Server übertragen.
-          </p>
+          {locale === 'de' && (
+            <>
+              <p style="margin-bottom: var(--sp-4); font-size: var(--text-sm); color: var(--gray-600);">
+                Zuletzt aktualisiert: Oktober 2026
+              </p>
 
-          <h2 style="font-size: var(--text-xl); color: var(--blue-900); margin-top: var(--sp-6); margin-bottom: var(--sp-4);">3. Cookies und Google Consent Mode v2</h2>
-          <p style="margin-bottom: var(--sp-4);">
-            Wir nutzen Cookies ausschließlich nach Ihrer expliziten Zustimmung über unseren Zustimmungs-Banner. Wenn Sie analytische oder Werbecookies aktivieren, werden diese Informationen verschlüsselt verarbeitet. Wir unterstützen den Google Consent Mode v2 für eine datenschutzkonforme Traffic-Messung.
-          </p>
+              <h2 style="font-size: var(--text-xl); color: var(--blue-900); margin-bottom: var(--sp-4);">1. Verantwortliche Stelle</h2>
+              <p style="margin-bottom: var(--sp-4);">
+                Verantwortlich für die Datenverarbeitung auf dieser Website ist der Betreiber von <strong>Arbeitszeit Rechner Pro</strong> (arbeitszeitrechnerpro.de). Bei Fragen zum Datenschutz erreichen Sie uns über unsere <a href={contactPath}>Kontaktseite</a>.
+              </p>
 
-          <h2 style="font-size: var(--text-xl); color: var(--blue-900); margin-top: var(--sp-6); margin-bottom: var(--sp-4);">4. Ihre Rechte</h2>
-          <p style="margin-bottom: var(--sp-4);">
-            Sie haben jederzeit das Recht, unentgeltlich Auskunft über Herkunft, Empfänger und Zweck Ihrer gespeicherten personenbezogenen Daten zu erhalten. Sie haben außerdem ein Recht auf Berichtigung oder Löschung dieser Daten.
-          </p>
+              <h2 style="font-size: var(--text-xl); color: var(--blue-900); margin-top: var(--sp-6); margin-bottom: var(--sp-4);">2. Lokale Datenverarbeitung</h2>
+              <p style="margin-bottom: var(--sp-4);">
+                Alle Berechnungen auf Arbeitszeit Rechner Pro — darunter unsere 21 Rechner-Tools wie der Arbeitszeit Rechner, Stundenlohn Rechner, Überstunden Rechner und Schichtzulagen Rechner — laufen vollständig in Ihrem Browser. Das bedeutet:
+              </p>
+              <ul style="margin-left: var(--sp-6); margin-bottom: var(--sp-4);">
+                <li>Ihre Eingaben (Arbeitsbeginn, Arbeitsende, Pausen, Gehalt) werden <strong>nicht an einen Server gesendet</strong>.</li>
+                <li>Die Wochenübersicht speichert Ihre Einträge ausschließlich im <strong>localStorage</strong> Ihres Browsers.</li>
+                <li>Wir haben keinen Zugriff auf Ihre Berechnungsdaten — weder direkt noch indirekt.</li>
+              </ul>
+
+              <h2 style="font-size: var(--text-xl); color: var(--blue-900); margin-top: var(--sp-6); margin-bottom: var(--sp-4);">3. Cookies</h2>
+              <p style="margin-bottom: var(--sp-4);">
+                Wir setzen Cookies nur nach Ihrer ausdrücklichen Zustimmung über unseren Cookie-Banner ein. Dabei unterscheiden wir:
+              </p>
+              <ul style="margin-left: var(--sp-6); margin-bottom: var(--sp-4);">
+                <li><strong>Notwendige Cookies:</strong> Speichern Ihre Cookie-Zustimmungseinstellungen und Ihre lokal gesicherten Zeiterfassungseinträge.</li>
+                <li><strong>Analytische Cookies:</strong> Werden nur nach Aktivierung über Google Analytics geladen, um anonymisierte Nutzungsstatistiken zu erheben.</li>
+                <li><strong>Marketing-Cookies:</strong> Ermöglichen personalisierte Werbeanzeigen, falls Sie zugestimmt haben.</li>
+              </ul>
+              <p style="margin-bottom: var(--sp-4);">
+                Weitere Details finden Sie in unserer <a href={cookiePolicyPath}>Cookie-Richtlinie</a>.
+              </p>
+
+              <h2 style="font-size: var(--text-xl); color: var(--blue-900); margin-top: var(--sp-6); margin-bottom: var(--sp-4);">4. Google Consent Mode v2</h2>
+              <p style="margin-bottom: var(--sp-4);">
+                Unsere Website unterstützt den Google Consent Mode v2. Solange Sie keine Zustimmung erteilen, bleiben sämtliche Tracking-Funktionen deaktiviert (<code>ad_storage</code>, <code>analytics_storage</code>, <code>ad_user_data</code> und <code>ad_personalization</code> stehen auf <code>denied</code>). Erst nach Ihrer Einwilligung werden die gewählten Kategorien aktiviert.
+              </p>
+
+              <h2 style="font-size: var(--text-xl); color: var(--blue-900); margin-top: var(--sp-6); margin-bottom: var(--sp-4);">5. Google Analytics</h2>
+              <p style="margin-bottom: var(--sp-4);">
+                Wenn Sie analytische Cookies akzeptieren, nutzen wir Google Analytics, um anonymisierte Besucherstatistiken zu erheben. Dabei werden keine personenbezogenen Daten übertragen. Die IP-Anonymisierung ist aktiviert. Sie können Ihre Zustimmung jederzeit über den Cookie-Banner widerrufen.
+              </p>
+
+              <h2 style="font-size: var(--text-xl); color: var(--blue-900); margin-top: var(--sp-6); margin-bottom: var(--sp-4);">6. Kontaktformular</h2>
+              <p style="margin-bottom: var(--sp-4);">
+                Wenn Sie uns über die <a href={contactPath}>Kontaktseite</a> eine Nachricht senden, werden Ihre Angaben (Name, E-Mail-Adresse und Nachricht) ausschließlich zur Bearbeitung Ihrer Anfrage verwendet und nicht an Dritte weitergegeben.
+              </p>
+
+              <h2 style="font-size: var(--text-xl); color: var(--blue-900); margin-top: var(--sp-6); margin-bottom: var(--sp-4);">7. Ihre Rechte</h2>
+              <p style="margin-bottom: var(--sp-4);">
+                Sie haben jederzeit das Recht auf:
+              </p>
+              <ul style="margin-left: var(--sp-6); margin-bottom: var(--sp-4);">
+                <li>Auskunft über Ihre gespeicherten personenbezogenen Daten</li>
+                <li>Berichtigung unrichtiger Daten</li>
+                <li>Löschung Ihrer Daten</li>
+                <li>Einschränkung der Verarbeitung</li>
+                <li>Widerspruch gegen die Verarbeitung</li>
+                <li>Datenübertragbarkeit</li>
+              </ul>
+              <p style="margin-bottom: var(--sp-4);">
+                Wenden Sie sich dazu an uns über unsere <a href={contactPath}>Kontaktseite</a>.
+              </p>
+
+              <h2 style="font-size: var(--text-xl); color: var(--blue-900); margin-top: var(--sp-6); margin-bottom: var(--sp-4);">8. Änderungen</h2>
+              <p style="margin-bottom: var(--sp-4);">
+                Wir behalten uns vor, diese Datenschutzerklärung anzupassen, um sie an geänderte rechtliche Rahmenbedingungen oder Änderungen unserer Website anzugleichen. Die aktuelle Fassung ist stets auf dieser Seite abrufbar.
+              </p>
+
+              <p style="margin-top: var(--sp-6); font-size: var(--text-sm); color: var(--gray-600);">
+                Siehe auch: <a href={termsPath}>AGB</a> · <a href={cookiePolicyPath}>Cookie-Richtlinie</a>
+              </p>
+            </>
+          )}
+
+          {locale === 'en' && (
+            <>
+              <p style="margin-bottom: var(--sp-4); font-size: var(--text-sm); color: var(--gray-600);">
+                Last updated: October 2026
+              </p>
+
+              <h2 style="font-size: var(--text-xl); color: var(--blue-900); margin-bottom: var(--sp-4);">1. Data Controller</h2>
+              <p style="margin-bottom: var(--sp-4);">
+                The data controller for this website is the operator of <strong>Work Time Calculator Pro</strong> (arbeitszeitrechnerpro.de). For privacy-related questions, please reach out through our <a href={contactPath}>Contact page</a>.
+              </p>
+
+              <h2 style="font-size: var(--text-xl); color: var(--blue-900); margin-top: var(--sp-6); margin-bottom: var(--sp-4);">2. Local Data Processing</h2>
+              <p style="margin-bottom: var(--sp-4);">
+                All calculations on Work Time Calculator Pro — including our 21 tools such as the Work Time Calculator, Hourly Wage Calculator, Overtime Calculator, and Shift Supplement Calculator — run entirely in your browser. This means:
+              </p>
+              <ul style="margin-left: var(--sp-6); margin-bottom: var(--sp-4);">
+                <li>Your inputs (start time, end time, breaks, salary) are <strong>never sent to a server</strong>.</li>
+                <li>The weekly overview stores entries only in your browser's <strong>localStorage</strong>.</li>
+                <li>We have no access to your calculation data — neither directly nor indirectly.</li>
+              </ul>
+
+              <h2 style="font-size: var(--text-xl); color: var(--blue-900); margin-top: var(--sp-6); margin-bottom: var(--sp-4);">3. Cookies</h2>
+              <p style="margin-bottom: var(--sp-4);">
+                We only use cookies after your explicit consent through our cookie banner. We distinguish between:
+              </p>
+              <ul style="margin-left: var(--sp-6); margin-bottom: var(--sp-4);">
+                <li><strong>Essential Cookies:</strong> Store your cookie consent preferences and locally saved time-tracking entries.</li>
+                <li><strong>Analytics Cookies:</strong> Loaded only after activation via Google Analytics to collect anonymized usage statistics.</li>
+                <li><strong>Marketing Cookies:</strong> Enable personalized ads if you have given your consent.</li>
+              </ul>
+              <p style="margin-bottom: var(--sp-4);">
+                For more details, please refer to our <a href={cookiePolicyPath}>Cookie Policy</a>.
+              </p>
+
+              <h2 style="font-size: var(--text-xl); color: var(--blue-900); margin-top: var(--sp-6); margin-bottom: var(--sp-4);">4. Google Consent Mode v2</h2>
+              <p style="margin-bottom: var(--sp-4);">
+                Our website supports Google Consent Mode v2. Until you grant consent, all tracking features remain disabled (<code>ad_storage</code>, <code>analytics_storage</code>, <code>ad_user_data</code>, and <code>ad_personalization</code> are set to <code>denied</code>). Only after your consent are the selected categories activated.
+              </p>
+
+              <h2 style="font-size: var(--text-xl); color: var(--blue-900); margin-top: var(--sp-6); margin-bottom: var(--sp-4);">5. Google Analytics</h2>
+              <p style="margin-bottom: var(--sp-4);">
+                If you accept analytics cookies, we use Google Analytics to gather anonymized visitor statistics. No personally identifiable information is transmitted. IP anonymization is enabled. You can revoke your consent at any time through the cookie banner.
+              </p>
+
+              <h2 style="font-size: var(--text-xl); color: var(--blue-900); margin-top: var(--sp-6); margin-bottom: var(--sp-4);">6. Contact Form</h2>
+              <p style="margin-bottom: var(--sp-4);">
+                When you send us a message through our <a href={contactPath}>Contact page</a>, the information you provide (name, email address, and message) is used solely to process your inquiry and is not shared with third parties.
+              </p>
+
+              <h2 style="font-size: var(--text-xl); color: var(--blue-900); margin-top: var(--sp-6); margin-bottom: var(--sp-4);">7. Your Rights</h2>
+              <p style="margin-bottom: var(--sp-4);">
+                You have the right at any time to:
+              </p>
+              <ul style="margin-left: var(--sp-6); margin-bottom: var(--sp-4);">
+                <li>Request access to your stored personal data</li>
+                <li>Correct inaccurate data</li>
+                <li>Request deletion of your data</li>
+                <li>Restrict processing</li>
+                <li>Object to processing</li>
+                <li>Request data portability</li>
+              </ul>
+              <p style="margin-bottom: var(--sp-4);">
+                To exercise your rights, please contact us via our <a href={contactPath}>Contact page</a>.
+              </p>
+
+              <h2 style="font-size: var(--text-xl); color: var(--blue-900); margin-top: var(--sp-6); margin-bottom: var(--sp-4);">8. Changes to This Policy</h2>
+              <p style="margin-bottom: var(--sp-4);">
+                We may update this Privacy Policy to reflect changes in legal requirements or updates to our website. The current version is always available on this page.
+              </p>
+
+              <p style="margin-top: var(--sp-6); font-size: var(--text-sm); color: var(--gray-600);">
+                See also: <a href={termsPath}>Terms &amp; Conditions</a> · <a href={cookiePolicyPath}>Cookie Policy</a>
+              </p>
+            </>
+          )}
+
+          {locale === 'fr' && (
+            <>
+              <p style="margin-bottom: var(--sp-4); font-size: var(--text-sm); color: var(--gray-600);">
+                Dernière mise à jour : octobre 2026
+              </p>
+
+              <h2 style="font-size: var(--text-xl); color: var(--blue-900); margin-bottom: var(--sp-4);">1. Responsable du traitement</h2>
+              <p style="margin-bottom: var(--sp-4);">
+                Le responsable du traitement des données de ce site est l'exploitant de <strong>Calculateur Temps de Travail</strong> (arbeitszeitrechnerpro.de). Pour toute question relative à la confidentialité, contactez-nous via notre <a href={contactPath}>page de contact</a>.
+              </p>
+
+              <h2 style="font-size: var(--text-xl); color: var(--blue-900); margin-top: var(--sp-6); margin-bottom: var(--sp-4);">2. Traitement local des données</h2>
+              <p style="margin-bottom: var(--sp-4);">
+                Tous les calculs sur notre site — y compris nos 21 outils tels que le calculateur de temps de travail, le calculateur de salaire horaire et le calculateur d'heures supplémentaires — sont effectués entièrement dans votre navigateur. Vos données ne sont jamais envoyées à un serveur.
+              </p>
+
+              <h2 style="font-size: var(--text-xl); color: var(--blue-900); margin-top: var(--sp-6); margin-bottom: var(--sp-4);">3. Cookies</h2>
+              <p style="margin-bottom: var(--sp-4);">
+                Nous n'utilisons des cookies qu'après votre consentement explicite via notre bannière de cookies. Nous distinguons les cookies essentiels, analytiques et marketing. Pour plus de détails, consultez notre <a href={cookiePolicyPath}>Politique de Cookies</a>.
+              </p>
+
+              <h2 style="font-size: var(--text-xl); color: var(--blue-900); margin-top: var(--sp-6); margin-bottom: var(--sp-4);">4. Vos droits</h2>
+              <p style="margin-bottom: var(--sp-4);">
+                Vous avez le droit d'accéder à vos données, de les corriger, de les supprimer ou de vous opposer à leur traitement. Contactez-nous via notre <a href={contactPath}>page de contact</a>.
+              </p>
+
+              <p style="margin-top: var(--sp-6); font-size: var(--text-sm); color: var(--gray-600);">
+                Voir aussi : <a href={termsPath}>CGU</a> · <a href={cookiePolicyPath}>Politique de Cookies</a>
+              </p>
+            </>
+          )}
+
+          {locale === 'ar' && (
+            <>
+              <p style="margin-bottom: var(--sp-4); font-size: var(--text-sm); color: var(--gray-600);">
+                آخر تحديث: أكتوبر 2026
+              </p>
+
+              <h2 style="font-size: var(--text-xl); color: var(--blue-900); margin-bottom: var(--sp-4);">1. المسؤول عن البيانات</h2>
+              <p style="margin-bottom: var(--sp-4);">
+                المسؤول عن معالجة البيانات في هذا الموقع هو مشغّل <strong>حاسبة ساعات العمل</strong> (arbeitszeitrechnerpro.de). للاستفسارات المتعلقة بالخصوصية، تواصل معنا عبر <a href={contactPath}>صفحة الاتصال</a>.
+              </p>
+
+              <h2 style="font-size: var(--text-xl); color: var(--blue-900); margin-top: var(--sp-6); margin-bottom: var(--sp-4);">2. المعالجة المحلية للبيانات</h2>
+              <p style="margin-bottom: var(--sp-4);">
+                جميع الحسابات على موقعنا — بما في ذلك أدواتنا الـ 21 — تتم بالكامل في متصفحك. لا يتم إرسال أي بيانات إلى خوادمنا.
+              </p>
+
+              <h2 style="font-size: var(--text-xl); color: var(--blue-900); margin-top: var(--sp-6); margin-bottom: var(--sp-4);">3. ملفات تعريف الارتباط</h2>
+              <p style="margin-bottom: var(--sp-4);">
+                نستخدم ملفات تعريف الارتباط فقط بعد موافقتك الصريحة عبر شريط الموافقة. لمزيد من التفاصيل، راجع <a href={cookiePolicyPath}>سياسة ملفات تعريف الارتباط</a>.
+              </p>
+
+              <h2 style="font-size: var(--text-xl); color: var(--blue-900); margin-top: var(--sp-6); margin-bottom: var(--sp-4);">4. حقوقك</h2>
+              <p style="margin-bottom: var(--sp-4);">
+                لديك الحق في الوصول إلى بياناتك أو تصحيحها أو حذفها أو الاعتراض على معالجتها في أي وقت. تواصل معنا عبر <a href={contactPath}>صفحة الاتصال</a>.
+              </p>
+
+              <p style="margin-top: var(--sp-6); font-size: var(--text-sm); color: var(--gray-600);">
+                انظر أيضاً: <a href={termsPath}>الشروط والأحكام</a> · <a href={cookiePolicyPath}>سياسة ملفات تعريف الارتباط</a>
+              </p>
+            </>
+          )}
+
         </div>
         <TrendingSidebar />
       </div>

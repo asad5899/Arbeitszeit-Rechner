@@ -7,6 +7,7 @@ import Footer from '../../../components/Footer.astro';
 import Calculator from '../../../components/Calculator.astro';
 import WeeklyTable from '../../../components/WeeklyTable.astro';
 import ToolContent from '../../../components/ToolContent.astro';
+import ToolsShowcase from '../../../components/ToolsShowcase.astro';
 import TrendingSidebar from '../../../components/TrendingSidebar.astro';
 import CookieConsent from '../../../components/CookieConsent.astro';
 import { tools, getToolBySlug, getLocalizedTool } from '../../../data/tools';
@@ -90,6 +91,9 @@ const toolKeywords = `${tool.name}, ${tool.name} online, ${tool.name} kostenlos,
       <!-- Weekly Log Table -->
       <WeeklyTable />
     </main>
+
+    <!-- Tools Showcase (4 Relevant Tools) -->
+    <ToolsShowcase currentSlug={slug!} />
 
     <!-- Tool Content + Sidebar -->
     <div class="page" style="padding-top: 0;">

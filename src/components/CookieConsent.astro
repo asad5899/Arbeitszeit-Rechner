@@ -1,75 +1,326 @@
 ---
-import { getLocaleFromUrl, useTranslations } from '../utils/i18n';
+import { getLocaleFromUrl, useTranslations, getLocalizedPath } from '../utils/i18n';
 
 const locale = getLocaleFromUrl(Astro.url);
 const t = useTranslations(locale);
+const cookiePolicyPath = getLocalizedPath('/cookie-policy', locale);
 ---
 
-<div id="consent-banner" class="cookie-banner" style="display: none; position: fixed; bottom: 0; left: 0; right: 0; background: var(--white); border-top: 2px solid var(--gray-300); box-shadow: var(--shadow-xl); padding: var(--sp-6); z-index: 1000; animation: slideUp 0.4s var(--ease) both;">
-  <div style="max-width: var(--max-w); margin: 0 auto; display: flex; flex-direction: column; gap: var(--sp-4);">
-    <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: var(--sp-4); flex-wrap: wrap;">
-      <div style="flex: 1; min-width: 280px;">
-        <h3 style="font-size: var(--text-md); font-weight: 700; color: var(--gray-900); margin-bottom: var(--sp-2);">
-          {t('cookie.title')}
-        </h3>
-        <p style="font-size: var(--text-sm); color: var(--gray-600); line-height: 1.5; margin: 0;">
-          {t('cookie.text')}
-        </p>
-      </div>
-      <div style="display: flex; gap: var(--sp-3); flex-wrap: wrap; align-items: center; margin-top: var(--sp-2);">
-        <button id="btn-consent-deny" class="btn-outline" style="height: 40px; padding: 0 var(--sp-4);">
-          {t('cookie.deny')}
-        </button>
-        <button id="btn-consent-settings" class="btn-outline" style="height: 40px; padding: 0 var(--sp-4);">
-          Einstellungen
-        </button>
-        <button id="btn-consent-accept" class="btn-primary" style="height: 40px; padding: 0 var(--sp-4); margin-top: 0;">
-          {t('cookie.accept')}
-        </button>
-      </div>
+<!-- Full-page cookie consent banner (homepage only, shown once) -->
+<div id="consent-banner" class="cookie-banner" aria-label={t('cookie.popupTitle')} role="dialog" aria-modal="false">
+  <div class="cookie-banner__inner">
+    <!-- Cookie Icon -->
+    <div class="cookie-banner__icon" aria-hidden="true">
+      <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 2a10 10 0 1 0 10 10 4 4 0 0 1-5-5 4 4 0 0 1-5-5"/>
+        <path d="M8.5 8.5v.01"/><path d="M16 15.5v.01"/><path d="M12 12v.01"/>
+        <path d="M11 17v.01"/><path d="M7 14v.01"/>
+      </svg>
+    </div>
+
+    <!-- Content -->
+    <div class="cookie-banner__content">
+      <h3 class="cookie-banner__title">{t('cookie.popupTitle')}</h3>
+      <p class="cookie-banner__text">{t('cookie.popupText')}</p>
+    </div>
+
+    <!-- Actions -->
+    <div class="cookie-banner__actions">
+      <button id="btn-consent-accept" class="cookie-banner__btn cookie-banner__btn--accept" type="button">
+        {t('cookie.popupAccept')}
+      </button>
+      <button id="btn-consent-settings" class="cookie-banner__btn cookie-banner__btn--settings" type="button">
+        {t('cookie.settings')}
+      </button>
+      <a href={cookiePolicyPath} class="cookie-banner__link">
+        {t('cookie.popupLink')}
+      </a>
     </div>
 
     <!-- Collapsible Settings Panel -->
-    <div id="consent-settings-panel" style="display: none; padding-top: var(--sp-4); border-top: 1px solid var(--gray-200); margin-top: var(--sp-2);">
-      <div style="display: flex; flex-direction: column; gap: var(--sp-4);">
-        <div style="display: flex; justify-content: space-between; align-items: center;">
+    <div id="consent-settings-panel" class="cookie-banner__settings">
+      <div class="cookie-banner__settings-inner">
+        <div class="cookie-banner__setting-row">
           <div>
-            <h4 style="font-size: var(--text-sm); font-weight: 600; color: var(--gray-800);">Essentielle Cookies</h4>
-            <p style="font-size: var(--text-xs); color: var(--gray-500); margin: 0;">Erforderlich für den Betrieb der Website.</p>
+            <h4 class="cookie-banner__setting-title">{t('cookie.essential')}</h4>
+            <p class="cookie-banner__setting-desc">{t('cookie.essentialDesc')}</p>
           </div>
-          <input type="checkbox" checked disabled style="width: 20px; height: 20px;" />
+          <input type="checkbox" checked disabled class="cookie-banner__checkbox" aria-label={t('cookie.essential')} />
         </div>
-        <div style="display: flex; justify-content: space-between; align-items: center;">
+        <div class="cookie-banner__setting-row">
           <div>
-            <h4 style="font-size: var(--text-sm); font-weight: 600; color: var(--gray-800);">Analytische Cookies</h4>
-            <p style="font-size: var(--text-xs); color: var(--gray-500); margin: 0;">Helfen uns, Website-Besuche und Leistung zu messen.</p>
+            <h4 class="cookie-banner__setting-title">{t('cookie.analytics')}</h4>
+            <p class="cookie-banner__setting-desc">{t('cookie.analyticsDesc')}</p>
           </div>
-          <input type="checkbox" id="check-consent-analytics" checked style="width: 20px; height: 20px;" />
+          <input type="checkbox" id="check-consent-analytics" checked class="cookie-banner__checkbox" aria-label={t('cookie.analytics')} />
         </div>
-        <div style="display: flex; justify-content: space-between; align-items: center;">
+        <div class="cookie-banner__setting-row">
           <div>
-            <h4 style="font-size: var(--text-sm); font-weight: 600; color: var(--gray-800);">Marketing- und Werbecookies</h4>
-            <p style="font-size: var(--text-xs); color: var(--gray-500); margin: 0;">Personalisierung von Anzeigen und Marketingmessungen.</p>
+            <h4 class="cookie-banner__setting-title">{t('cookie.marketing')}</h4>
+            <p class="cookie-banner__setting-desc">{t('cookie.marketingDesc')}</p>
           </div>
-          <input type="checkbox" id="check-consent-ads" checked style="width: 20px; height: 20px;" />
+          <input type="checkbox" id="check-consent-ads" checked class="cookie-banner__checkbox" aria-label={t('cookie.marketing')} />
         </div>
-        <button id="btn-consent-save-settings" class="btn-primary" style="height: 36px; padding: 0 var(--sp-4); align-self: flex-end; margin-top: var(--sp-2);">
-          {t('cookie.save')}
-        </button>
+        <div class="cookie-banner__settings-actions">
+          <button id="btn-consent-deny" class="cookie-banner__btn cookie-banner__btn--deny" type="button">
+            {t('cookie.deny')}
+          </button>
+          <button id="btn-consent-save-settings" class="cookie-banner__btn cookie-banner__btn--accept" type="button">
+            {t('cookie.save')}
+          </button>
+        </div>
       </div>
     </div>
   </div>
 </div>
+
+<style>
+  .cookie-banner {
+    display: none;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 9999;
+    padding: var(--sp-4) var(--sp-6);
+    animation: cookieSlideUp 0.5s var(--ease) both;
+  }
+
+  @keyframes cookieSlideUp {
+    from {
+      opacity: 0;
+      transform: translateY(100%);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .cookie-banner__inner {
+    max-width: var(--max-w);
+    margin: 0 auto;
+    background: var(--white);
+    border: 1px solid var(--gray-300);
+    border-radius: var(--radius-xl);
+    box-shadow: 0 -4px 32px rgba(0, 0, 0, 0.12), 0 0 0 1px rgba(0, 0, 0, 0.03);
+    padding: var(--sp-6);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: var(--sp-4);
+  }
+
+  .cookie-banner__icon {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    border-radius: var(--radius-lg);
+    background: var(--blue-50);
+    color: var(--blue-600);
+  }
+
+  .cookie-banner__content {
+    flex: 1;
+    min-width: 240px;
+  }
+
+  .cookie-banner__title {
+    font-size: var(--text-md);
+    font-weight: 700;
+    color: var(--gray-900);
+    margin-bottom: var(--sp-1);
+    line-height: 1.4;
+  }
+
+  .cookie-banner__text {
+    font-size: var(--text-sm);
+    color: var(--gray-600);
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  .cookie-banner__actions {
+    display: flex;
+    gap: var(--sp-3);
+    flex-wrap: wrap;
+    align-items: center;
+    flex-shrink: 0;
+  }
+
+  .cookie-banner__btn {
+    height: 40px;
+    padding: 0 var(--sp-5);
+    border-radius: var(--radius-md);
+    font-family: var(--font);
+    font-size: var(--text-sm);
+    font-weight: 600;
+    cursor: pointer;
+    transition: all var(--dur) var(--ease);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap;
+    border: none;
+  }
+
+  .cookie-banner__btn--accept {
+    background: var(--blue-700);
+    color: var(--white);
+    box-shadow: 0 1px 3px rgba(30, 64, 175, 0.3);
+  }
+
+  .cookie-banner__btn--accept:hover {
+    background: var(--blue-800);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(30, 64, 175, 0.3);
+  }
+
+  .cookie-banner__btn--accept:active {
+    transform: translateY(0);
+  }
+
+  .cookie-banner__btn--settings,
+  .cookie-banner__btn--deny {
+    background: var(--white);
+    color: var(--gray-700);
+    border: 1px solid var(--gray-300);
+  }
+
+  .cookie-banner__btn--settings:hover,
+  .cookie-banner__btn--deny:hover {
+    background: var(--gray-100);
+    border-color: var(--gray-400);
+  }
+
+  .cookie-banner__link {
+    font-size: var(--text-xs);
+    color: var(--blue-600);
+    text-decoration: none;
+    white-space: nowrap;
+    transition: color var(--dur) var(--ease);
+  }
+
+  .cookie-banner__link:hover {
+    color: var(--blue-700);
+    text-decoration: underline;
+  }
+
+  /* Settings Panel */
+  .cookie-banner__settings {
+    display: none;
+    width: 100%;
+    padding-top: var(--sp-4);
+    border-top: 1px solid var(--gray-200);
+    margin-top: var(--sp-2);
+  }
+
+  .cookie-banner__settings-inner {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-4);
+  }
+
+  .cookie-banner__setting-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--sp-4);
+  }
+
+  .cookie-banner__setting-title {
+    font-size: var(--text-sm);
+    font-weight: 600;
+    color: var(--gray-800);
+    margin-bottom: 2px;
+  }
+
+  .cookie-banner__setting-desc {
+    font-size: var(--text-xs);
+    color: var(--gray-500);
+    margin: 0;
+    line-height: 1.4;
+  }
+
+  .cookie-banner__checkbox {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+    accent-color: var(--blue-600);
+    cursor: pointer;
+  }
+
+  .cookie-banner__checkbox:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+
+  .cookie-banner__settings-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: var(--sp-3);
+    margin-top: var(--sp-2);
+  }
+
+  /* Responsive */
+  @media (max-width: 640px) {
+    .cookie-banner {
+      padding: var(--sp-3);
+    }
+
+    .cookie-banner__inner {
+      flex-direction: column;
+      padding: var(--sp-5);
+      border-radius: var(--radius-lg);
+      gap: var(--sp-3);
+    }
+
+    .cookie-banner__icon {
+      width: 40px;
+      height: 40px;
+    }
+
+    .cookie-banner__icon svg {
+      width: 22px;
+      height: 22px;
+    }
+
+    .cookie-banner__actions {
+      width: 100%;
+    }
+
+    .cookie-banner__btn {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .cookie-banner__link {
+      width: 100%;
+      text-align: center;
+    }
+
+    .cookie-banner__settings-actions {
+      flex-direction: column;
+    }
+
+    .cookie-banner__settings-actions .cookie-banner__btn {
+      width: 100%;
+    }
+  }
+</style>
 
 <script is:inline>
   // Google Consent Mode v2 Default Initialization
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
 
-  const savedConsent = localStorage.getItem('google_consent_settings');
+  var savedConsent = localStorage.getItem('cookie_consent_accepted');
   if (savedConsent) {
     try {
-      const consent = JSON.parse(savedConsent);
+      var consent = JSON.parse(savedConsent);
       gtag('consent', 'default', {
         'ad_storage': consent.ads ? 'granted' : 'denied',
         'analytics_storage': consent.analytics ? 'granted' : 'denied',
@@ -78,7 +329,6 @@ const t = useTranslations(locale);
         'wait_for_update': 500
       });
     } catch (e) {
-      // fallback default
       gtag('consent', 'default', {
         'ad_storage': 'denied',
         'analytics_storage': 'denied',
@@ -108,16 +358,16 @@ const t = useTranslations(locale);
   const checkAnalytics = document.getElementById('check-consent-analytics') as HTMLInputElement | null;
   const checkAds = document.getElementById('check-consent-ads') as HTMLInputElement | null;
 
-  // Show banner if not accepted/denied yet
-  if (banner && !localStorage.getItem('google_consent_settings')) {
+  // Show banner only if consent not yet saved
+  if (banner && !localStorage.getItem('cookie_consent_accepted')) {
     setTimeout(() => {
       banner.style.display = 'block';
-    }, 1000);
+    }, 1200);
   }
 
   function setConsentState(analytics: boolean, ads: boolean) {
-    const consent = { analytics, ads };
-    localStorage.setItem('google_consent_settings', JSON.stringify(consent));
+    const consent = { analytics, ads, timestamp: new Date().toISOString() };
+    localStorage.setItem('cookie_consent_accepted', JSON.stringify(consent));
 
     // Update Google Consent Mode v2
     // @ts-ignore
@@ -131,7 +381,12 @@ const t = useTranslations(locale);
       });
     }
 
-    if (banner) banner.style.display = 'none';
+    if (banner) {
+      banner.style.animation = 'cookieSlideDown 0.35s var(--ease) forwards';
+      setTimeout(() => {
+        banner.style.display = 'none';
+      }, 400);
+    }
   }
 
   if (btnAccept) {
@@ -150,6 +405,7 @@ const t = useTranslations(locale);
     btnSettings.addEventListener('click', () => {
       const isVisible = settingsPanel.style.display === 'block';
       settingsPanel.style.display = isVisible ? 'none' : 'block';
+      btnSettings.setAttribute('aria-expanded', String(!isVisible));
     });
   }
 
@@ -157,5 +413,18 @@ const t = useTranslations(locale);
     btnSaveSettings.addEventListener('click', () => {
       setConsentState(checkAnalytics.checked, checkAds.checked);
     });
+  }
+
+  // Add dismiss animation keyframe dynamically
+  if (!document.getElementById('cookie-dismiss-style')) {
+    const style = document.createElement('style');
+    style.id = 'cookie-dismiss-style';
+    style.textContent = `
+      @keyframes cookieSlideDown {
+        from { opacity: 1; transform: translateY(0); }
+        to { opacity: 0; transform: translateY(100%); }
+      }
+    `;
+    document.head.appendChild(style);
   }
 </script>

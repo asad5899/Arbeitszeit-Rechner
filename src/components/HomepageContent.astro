@@ -1,6 +1,8 @@
 ---
 import { getLocaleFromUrl } from '../utils/i18n';
 import { getHomeContent } from '../utils/homeContent';
+import ToolsGrid from './ToolsGrid.astro';
+import BlogShowcase from './BlogShowcase.astro';
 
 const locale = getLocaleFromUrl(Astro.url);
 const c = getHomeContent(locale);
@@ -518,10 +520,18 @@ const entityTags = [
     </div>
   </section>
 
-  <div class="section-divider"></div>
+</div>
+
+<!-- All 21 Tools Grid -->
+<ToolsGrid />
+
+<!-- Relevant Blog Posts Section -->
+<BlogShowcase />
+
+<div class="content-area">
 
   <!-- Section 13: FAQ -->
-  <section class="content-section reveal" id="faq">
+  <section class="content-section reveal" id="faq" style="margin-top: var(--sp-12);">
     <h2 class="content-h2">{c.faqTitle}</h2>
 
     <div class="faq-list">

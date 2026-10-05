@@ -1,5 +1,5 @@
 ---
-import { locales, defaultLocale, getLocaleFromUrl, useTranslations } from '../../utils/i18n';
+import { locales, defaultLocale, getLocaleFromUrl, useTranslations, getLocalizedPath } from '../../utils/i18n';
 import SEO from '../../components/SEO.astro';
 import Schema from '../../components/Schema.astro';
 import Navbar from '../../components/Navbar.astro';
@@ -27,7 +27,17 @@ const title = locale === 'de'
   : locale === 'ar'
   ? 'اتصل بنا — حاسبة ساعات العمل'
   : 'Contact Us — Work Time Calculator Pro';
-const description = 'Nehmen Sie Kontakt mit unserem Redaktions- und Support-Team auf.';
+
+const description = locale === 'de'
+  ? 'Fragen, Feedback oder Vorschläge? Kontaktieren Sie das Arbeitszeit Rechner Pro Team direkt über unser Kontaktformular.'
+  : locale === 'fr'
+  ? 'Questions, commentaires ou suggestions ? Contactez l\'équipe Calculateur Temps de Travail via notre formulaire de contact.'
+  : locale === 'ar'
+  ? 'أسئلة أو ملاحظات أو اقتراحات؟ تواصل مع فريق حاسبة ساعات العمل عبر نموذج الاتصال.'
+  : 'Questions, feedback, or suggestions? Contact the Work Time Calculator Pro team through our contact form.';
+
+const faqPath = getLocalizedPath('/faq', locale);
+const privacyPath = getLocalizedPath('/privacy', locale);
 ---
 
 <!DOCTYPE html>
@@ -50,41 +60,219 @@ const description = 'Nehmen Sie Kontakt mit unserem Redaktions- und Support-Team
       <div class="main-grid">
         <!-- Contact Form -->
         <div class="card">
-          <h2 style="font-size: var(--text-xl); color: var(--blue-900); margin-bottom: var(--sp-4);">Schreiben Sie uns</h2>
+
+          {locale === 'de' && (
+            <>
+              <h2 style="font-size: var(--text-xl); color: var(--blue-900); margin-bottom: var(--sp-4);">Schreiben Sie uns</h2>
+              <p style="margin-bottom: var(--sp-4); color: var(--gray-700); line-height: 1.6;">
+                Haben Sie eine Frage zu unseren Rechner-Tools, einen Verbesserungsvorschlag oder möchten Sie einen Fehler melden? Füllen Sie das Formular aus — wir antworten so schnell wie möglich.
+              </p>
+              <p style="margin-bottom: var(--sp-4); font-size: var(--text-sm); color: var(--gray-600);">
+                Allgemeine Fragen zur Arbeitszeitberechnung finden Sie möglicherweise auch in unserem <a href={faqPath}>FAQ-Bereich</a>.
+              </p>
+            </>
+          )}
+
+          {locale === 'en' && (
+            <>
+              <h2 style="font-size: var(--text-xl); color: var(--blue-900); margin-bottom: var(--sp-4);">Get in Touch</h2>
+              <p style="margin-bottom: var(--sp-4); color: var(--gray-700); line-height: 1.6;">
+                Have a question about our calculator tools, a suggestion for improvement, or found a bug? Fill out the form below — we'll get back to you as soon as possible.
+              </p>
+              <p style="margin-bottom: var(--sp-4); font-size: var(--text-sm); color: var(--gray-600);">
+                For common questions about work-time calculations, check our <a href={faqPath}>FAQ section</a> first.
+              </p>
+            </>
+          )}
+
+          {locale === 'fr' && (
+            <>
+              <h2 style="font-size: var(--text-xl); color: var(--blue-900); margin-bottom: var(--sp-4);">Écrivez-nous</h2>
+              <p style="margin-bottom: var(--sp-4); color: var(--gray-700); line-height: 1.6;">
+                Vous avez une question sur nos outils de calcul, une suggestion ou souhaitez signaler un problème ? Remplissez le formulaire ci-dessous — nous vous répondrons rapidement.
+              </p>
+              <p style="margin-bottom: var(--sp-4); font-size: var(--text-sm); color: var(--gray-600);">
+                Pour les questions fréquentes, consultez d'abord notre <a href={faqPath}>FAQ</a>.
+              </p>
+            </>
+          )}
+
+          {locale === 'ar' && (
+            <>
+              <h2 style="font-size: var(--text-xl); color: var(--blue-900); margin-bottom: var(--sp-4);">تواصل معنا</h2>
+              <p style="margin-bottom: var(--sp-4); color: var(--gray-700); line-height: 1.6;">
+                لديك سؤال حول أدوات الحساب لدينا أو اقتراح أو وجدت خطأ؟ املأ النموذج أدناه — سنرد عليك في أقرب وقت ممكن.
+              </p>
+              <p style="margin-bottom: var(--sp-4); font-size: var(--text-sm); color: var(--gray-600);">
+                للأسئلة الشائعة، تحقق من <a href={faqPath}>قسم الأسئلة المتكررة</a> أولاً.
+              </p>
+            </>
+          )}
+
           <form id="contact-form" style="display: flex; flex-direction: column; gap: var(--sp-4);">
             <div class="form-group" style="margin-bottom:0;">
-              <label class="form-label" for="contact-name">Name</label>
+              <label class="form-label" for="contact-name">{locale === 'de' ? 'Name' : locale === 'fr' ? 'Nom' : locale === 'ar' ? 'الاسم' : 'Name'}</label>
               <input type="text" id="contact-name" required class="form-input" />
             </div>
             <div class="form-group" style="margin-bottom:0;">
-              <label class="form-label" for="contact-email">E-Mail</label>
+              <label class="form-label" for="contact-email">{locale === 'de' ? 'E-Mail' : locale === 'fr' ? 'E-mail' : locale === 'ar' ? 'البريد الإلكتروني' : 'Email'}</label>
               <input type="email" id="contact-email" required class="form-input" />
             </div>
             <div class="form-group" style="margin-bottom:0;">
-              <label class="form-label" for="contact-message">Nachricht</label>
+              <label class="form-label" for="contact-subject">{locale === 'de' ? 'Betreff' : locale === 'fr' ? 'Objet' : locale === 'ar' ? 'الموضوع' : 'Subject'}</label>
+              <select id="contact-subject" class="form-input" required>
+                {locale === 'de' && (
+                  <>
+                    <option value="">Bitte wählen...</option>
+                    <option value="question">Frage zu einem Rechner-Tool</option>
+                    <option value="bug">Fehler melden</option>
+                    <option value="suggestion">Verbesserungsvorschlag</option>
+                    <option value="other">Sonstiges</option>
+                  </>
+                )}
+                {locale === 'en' && (
+                  <>
+                    <option value="">Please select...</option>
+                    <option value="question">Question about a calculator tool</option>
+                    <option value="bug">Report a bug</option>
+                    <option value="suggestion">Suggestion for improvement</option>
+                    <option value="other">Other</option>
+                  </>
+                )}
+                {locale === 'fr' && (
+                  <>
+                    <option value="">Veuillez sélectionner...</option>
+                    <option value="question">Question sur un outil de calcul</option>
+                    <option value="bug">Signaler un problème</option>
+                    <option value="suggestion">Suggestion</option>
+                    <option value="other">Autre</option>
+                  </>
+                )}
+                {locale === 'ar' && (
+                  <>
+                    <option value="">يرجى الاختيار...</option>
+                    <option value="question">سؤال حول أداة حساب</option>
+                    <option value="bug">الإبلاغ عن خطأ</option>
+                    <option value="suggestion">اقتراح</option>
+                    <option value="other">أخرى</option>
+                  </>
+                )}
+              </select>
+            </div>
+            <div class="form-group" style="margin-bottom:0;">
+              <label class="form-label" for="contact-message">{locale === 'de' ? 'Nachricht' : locale === 'fr' ? 'Message' : locale === 'ar' ? 'الرسالة' : 'Message'}</label>
               <textarea id="contact-message" required class="form-input" style="height: 120px; padding: var(--sp-3) var(--sp-4); resize: vertical;"></textarea>
             </div>
-            <button type="submit" class="btn-primary" style="margin-top: var(--sp-2);">Nachricht senden</button>
+            <button type="submit" class="btn-primary" style="margin-top: var(--sp-2);">
+              {locale === 'de' ? 'Nachricht senden' : locale === 'fr' ? 'Envoyer le message' : locale === 'ar' ? 'إرسال الرسالة' : 'Send Message'}
+            </button>
           </form>
           <div id="contact-success" style="display: none; color: var(--success-600); font-weight: 600; margin-top: var(--sp-4); text-align: center;">
-            Vielen Dank! Ihre Nachricht wurde gesendet.
+            {locale === 'de' ? 'Vielen Dank! Ihre Nachricht wurde gesendet.' : locale === 'fr' ? 'Merci ! Votre message a été envoyé.' : locale === 'ar' ? 'شكراً لك! تم إرسال رسالتك.' : 'Thank you! Your message has been sent.'}
           </div>
+
+          {locale === 'de' && (
+            <p style="margin-top: var(--sp-6); font-size: var(--text-xs); color: var(--gray-500); line-height: 1.6;">
+              Ihre Angaben werden ausschließlich zur Bearbeitung Ihrer Anfrage verwendet. Mehr dazu in unserer <a href={privacyPath}>Datenschutzerklärung</a>.
+            </p>
+          )}
+          {locale === 'en' && (
+            <p style="margin-top: var(--sp-6); font-size: var(--text-xs); color: var(--gray-500); line-height: 1.6;">
+              Your information is used solely to process your inquiry. Learn more in our <a href={privacyPath}>Privacy Policy</a>.
+            </p>
+          )}
+          {locale === 'fr' && (
+            <p style="margin-top: var(--sp-6); font-size: var(--text-xs); color: var(--gray-500); line-height: 1.6;">
+              Vos informations sont utilisées uniquement pour traiter votre demande. En savoir plus dans notre <a href={privacyPath}>Politique de confidentialité</a>.
+            </p>
+          )}
+          {locale === 'ar' && (
+            <p style="margin-top: var(--sp-6); font-size: var(--text-xs); color: var(--gray-500); line-height: 1.6;">
+              تُستخدم بياناتك فقط لمعالجة استفسارك. اطلع على <a href={privacyPath}>سياسة الخصوصية</a> لمزيد من المعلومات.
+            </p>
+          )}
         </div>
 
         <!-- Sidebar -->
-        <aside class="sidebar-column" aria-label="Kontakt Sidebar">
-          <!-- Corporate Address / Info -->
+        <aside class="sidebar-column" aria-label={locale === 'de' ? 'Kontakt Sidebar' : locale === 'fr' ? 'Barre latérale Contact' : locale === 'ar' ? 'الشريط الجانبي' : 'Contact Sidebar'}>
+          <!-- Quick Info Card -->
           <div class="card">
-            <h2 style="font-size: var(--text-xl); color: var(--blue-900); margin-bottom: var(--sp-4);">Herausgeber</h2>
-            <p style="font-size: var(--text-sm); color: var(--gray-700); line-height: 1.8; margin-bottom: var(--sp-4);">
-              <strong>Arbeitszeit Rechner Pro Pro Media GmbH</strong><br />
-              Musterstraße 42<br />
-              10117 Berlin, Deutschland
-            </p>
-            <p style="font-size: var(--text-sm); color: var(--gray-700); line-height: 1.8; margin-bottom: var(--sp-4);">
-              <strong>Telefon:</strong> +49 (0) 30 12345678<br />
-              <strong>E-Mail:</strong> info@arbeitszeitrechnerpro.de
-            </p>
+            {locale === 'de' && (
+              <>
+                <h2 style="font-size: var(--text-xl); color: var(--blue-900); margin-bottom: var(--sp-4);">Kontaktinformationen</h2>
+                <p style="font-size: var(--text-sm); color: var(--gray-700); line-height: 1.8; margin-bottom: var(--sp-4);">
+                  <strong>Arbeitszeit Rechner Pro</strong><br />
+                  Website: arbeitszeitrechnerpro.de
+                </p>
+                <p style="font-size: var(--text-sm); color: var(--gray-700); line-height: 1.8; margin-bottom: var(--sp-4);">
+                  <strong>E-Mail:</strong> info@arbeitszeitrechnerpro.de
+                </p>
+
+                <h3 style="font-size: var(--text-md); color: var(--blue-900); margin-top: var(--sp-4); margin-bottom: var(--sp-3);">Folgen Sie uns</h3>
+                <div style="display: flex; gap: var(--sp-3); flex-wrap: wrap;">
+                  <a href="https://www.facebook.com/people/Arbeitszeit-Rechner/61592237566695/" target="_blank" rel="noopener noreferrer" style="font-size: var(--text-sm); color: var(--blue-600);">Facebook</a>
+                  <a href="https://x.com/ArbeitszeitPro" target="_blank" rel="noopener noreferrer" style="font-size: var(--text-sm); color: var(--blue-600);">X</a>
+                  <a href="https://www.linkedin.com/company/arbeitszeit-rechner-pro" target="_blank" rel="noopener noreferrer" style="font-size: var(--text-sm); color: var(--blue-600);">LinkedIn</a>
+                </div>
+              </>
+            )}
+            {locale === 'en' && (
+              <>
+                <h2 style="font-size: var(--text-xl); color: var(--blue-900); margin-bottom: var(--sp-4);">Contact Information</h2>
+                <p style="font-size: var(--text-sm); color: var(--gray-700); line-height: 1.8; margin-bottom: var(--sp-4);">
+                  <strong>Work Time Calculator Pro</strong><br />
+                  Website: arbeitszeitrechnerpro.de
+                </p>
+                <p style="font-size: var(--text-sm); color: var(--gray-700); line-height: 1.8; margin-bottom: var(--sp-4);">
+                  <strong>Email:</strong> info@arbeitszeitrechnerpro.de
+                </p>
+
+                <h3 style="font-size: var(--text-md); color: var(--blue-900); margin-top: var(--sp-4); margin-bottom: var(--sp-3);">Follow Us</h3>
+                <div style="display: flex; gap: var(--sp-3); flex-wrap: wrap;">
+                  <a href="https://www.facebook.com/people/Arbeitszeit-Rechner/61592237566695/" target="_blank" rel="noopener noreferrer" style="font-size: var(--text-sm); color: var(--blue-600);">Facebook</a>
+                  <a href="https://x.com/ArbeitszeitPro" target="_blank" rel="noopener noreferrer" style="font-size: var(--text-sm); color: var(--blue-600);">X</a>
+                  <a href="https://www.linkedin.com/company/arbeitszeit-rechner-pro" target="_blank" rel="noopener noreferrer" style="font-size: var(--text-sm); color: var(--blue-600);">LinkedIn</a>
+                </div>
+              </>
+            )}
+            {locale === 'fr' && (
+              <>
+                <h2 style="font-size: var(--text-xl); color: var(--blue-900); margin-bottom: var(--sp-4);">Informations de contact</h2>
+                <p style="font-size: var(--text-sm); color: var(--gray-700); line-height: 1.8; margin-bottom: var(--sp-4);">
+                  <strong>Calculateur Temps de Travail</strong><br />
+                  Site web : arbeitszeitrechnerpro.de
+                </p>
+                <p style="font-size: var(--text-sm); color: var(--gray-700); line-height: 1.8; margin-bottom: var(--sp-4);">
+                  <strong>E-mail :</strong> info@arbeitszeitrechnerpro.de
+                </p>
+
+                <h3 style="font-size: var(--text-md); color: var(--blue-900); margin-top: var(--sp-4); margin-bottom: var(--sp-3);">Suivez-nous</h3>
+                <div style="display: flex; gap: var(--sp-3); flex-wrap: wrap;">
+                  <a href="https://www.facebook.com/people/Arbeitszeit-Rechner/61592237566695/" target="_blank" rel="noopener noreferrer" style="font-size: var(--text-sm); color: var(--blue-600);">Facebook</a>
+                  <a href="https://x.com/ArbeitszeitPro" target="_blank" rel="noopener noreferrer" style="font-size: var(--text-sm); color: var(--blue-600);">X</a>
+                  <a href="https://www.linkedin.com/company/arbeitszeit-rechner-pro" target="_blank" rel="noopener noreferrer" style="font-size: var(--text-sm); color: var(--blue-600);">LinkedIn</a>
+                </div>
+              </>
+            )}
+            {locale === 'ar' && (
+              <>
+                <h2 style="font-size: var(--text-xl); color: var(--blue-900); margin-bottom: var(--sp-4);">معلومات الاتصال</h2>
+                <p style="font-size: var(--text-sm); color: var(--gray-700); line-height: 1.8; margin-bottom: var(--sp-4);">
+                  <strong>حاسبة ساعات العمل</strong><br />
+                  الموقع: arbeitszeitrechnerpro.de
+                </p>
+                <p style="font-size: var(--text-sm); color: var(--gray-700); line-height: 1.8; margin-bottom: var(--sp-4);">
+                  <strong>البريد الإلكتروني:</strong> info@arbeitszeitrechnerpro.de
+                </p>
+
+                <h3 style="font-size: var(--text-md); color: var(--blue-900); margin-top: var(--sp-4); margin-bottom: var(--sp-3);">تابعنا</h3>
+                <div style="display: flex; gap: var(--sp-3); flex-wrap: wrap;">
+                  <a href="https://www.facebook.com/people/Arbeitszeit-Rechner/61592237566695/" target="_blank" rel="noopener noreferrer" style="font-size: var(--text-sm); color: var(--blue-600);">Facebook</a>
+                  <a href="https://x.com/ArbeitszeitPro" target="_blank" rel="noopener noreferrer" style="font-size: var(--text-sm); color: var(--blue-600);">X</a>
+                  <a href="https://www.linkedin.com/company/arbeitszeit-rechner-pro" target="_blank" rel="noopener noreferrer" style="font-size: var(--text-sm); color: var(--blue-600);">LinkedIn</a>
+                </div>
+              </>
+            )}
           </div>
           <TrendingSidebar />
         </aside>

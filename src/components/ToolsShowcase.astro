@@ -1,0 +1,523 @@
+---
+import { getLocaleFromUrl, defaultLocale } from '../utils/i18n';
+import { getLocalizedTool } from '../data/tools';
+
+interface Props {
+  currentSlug: string;
+}
+
+const { currentSlug } = Astro.props;
+const locale = getLocaleFromUrl(Astro.url);
+const localePath = locale === defaultLocale ? '' : `/${locale}`;
+
+// Mapping of 4 relevant tools for each tool slug
+const relevantToolsMap: Record<string, string[]> = {
+  'arbeitszeit-rechner': [
+    'arbeitsstunden-rechner',
+    'ueberstunden-rechner',
+    'stunden-und-minuten-rechner',
+    'feierabend-rechner',
+  ],
+  'stundenlohn-rechner': [
+    'arbeitszeit-rechner',
+    'teilzeit-rechner',
+    'schichtzulagen-rechner',
+    'monatsstunden-rechner',
+  ],
+  'arbeitsstunden-rechner': [
+    'arbeitszeit-rechner',
+    'arbeitsstundenrechner',
+    'wochenarbeitszeit-rechner',
+    'zeiterfassung-rechner',
+  ],
+  'teilzeit-rechner': [
+    'stundenlohn-rechner',
+    'wochenstunden-rechner',
+    'urlaubstage-rechner',
+    'arbeitszeit-rechner',
+  ],
+  'urlaubsgeld-rechner': [
+    'urlaubstage-rechner',
+    'resturlaub-rechner',
+    'stundenlohn-rechner',
+    'feiertagszuschlag-rechner',
+  ],
+  'urlaubstage-rechner': [
+    'resturlaub-rechner',
+    'urlaubsgeld-rechner',
+    'teilzeit-rechner',
+    'wochenarbeitszeit-rechner',
+  ],
+  'arbeitsstundenrechner': [
+    'arbeitszeit-rechner',
+    'stunden-und-minuten-rechner',
+    'arbeitsstunden-rechner',
+    'stundenlohn-rechner',
+  ],
+  'nachtzuschlag-rechner': [
+    'schichtzulagen-rechner',
+    'sonntagszuschlag-rechner',
+    'feiertagszuschlag-rechner',
+    'arbeitszeit-rechner',
+  ],
+  'ueberstunden-rechner': [
+    'gleitzeit-rechner',
+    'arbeitszeit-rechner',
+    'wochenstunden-rechner',
+    'arbeitszeiterfassung-rechner',
+  ],
+  'stunden-und-minuten-rechner': [
+    'arbeitsstundenrechner',
+    'arbeitszeit-rechner',
+    'feierabend-rechner',
+    'arbeitsstunden-rechner',
+  ],
+  'wochenstunden-rechner': [
+    'wochenarbeitszeit-rechner',
+    'monatsstunden-rechner',
+    'teilzeit-rechner',
+    'arbeitsstunden-rechner',
+  ],
+  'schichtzulagen-rechner': [
+    'nachtzuschlag-rechner',
+    'sonntagszuschlag-rechner',
+    'feiertagszuschlag-rechner',
+    'stundenlohn-rechner',
+  ],
+  'zeiterfassung-rechner': [
+    'arbeitszeiterfassung-rechner',
+    'arbeitszeit-rechner',
+    'arbeitsstunden-rechner',
+    'gleitzeit-rechner',
+  ],
+  'feiertagszuschlag-rechner': [
+    'sonntagszuschlag-rechner',
+    'nachtzuschlag-rechner',
+    'schichtzulagen-rechner',
+    'stundenlohn-rechner',
+  ],
+  'sonntagszuschlag-rechner': [
+    'feiertagszuschlag-rechner',
+    'nachtzuschlag-rechner',
+    'schichtzulagen-rechner',
+    'stundenlohn-rechner',
+  ],
+  'feierabend-rechner': [
+    'arbeitszeit-rechner',
+    'gleitzeit-rechner',
+    'stunden-und-minuten-rechner',
+    'wochenarbeitszeit-rechner',
+  ],
+  'wochenarbeitszeit-rechner': [
+    'wochenstunden-rechner',
+    'monatsstunden-rechner',
+    'arbeitszeit-rechner',
+    'arbeitsstunden-rechner',
+  ],
+  'gleitzeit-rechner': [
+    'ueberstunden-rechner',
+    'feierabend-rechner',
+    'arbeitszeiterfassung-rechner',
+    'arbeitszeit-rechner',
+  ],
+  'monatsstunden-rechner': [
+    'wochenarbeitszeit-rechner',
+    'wochenstunden-rechner',
+    'stundenlohn-rechner',
+    'teilzeit-rechner',
+  ],
+  'resturlaub-rechner': [
+    'urlaubstage-rechner',
+    'urlaubsgeld-rechner',
+    'teilzeit-rechner',
+    'arbeitszeit-rechner',
+  ],
+  'arbeitszeiterfassung-rechner': [
+    'zeiterfassung-rechner',
+    'arbeitszeit-rechner',
+    'arbeitsstunden-rechner',
+    'gleitzeit-rechner',
+  ],
+};
+
+// Fallback default list if slug is not matched
+const defaultRelevantSlugs = [
+  'arbeitszeit-rechner',
+  'stundenlohn-rechner',
+  'arbeitsstunden-rechner',
+  'ueberstunden-rechner',
+];
+
+const targetSlugs = (relevantToolsMap[currentSlug] || defaultRelevantSlugs)
+  .filter(slug => slug !== currentSlug)
+  .slice(0, 4);
+
+// Tool icon & style definitions
+const toolMeta: Record<string, { icon: string; color: string; gradient: string }> = {
+  'arbeitszeit-rechner': {
+    icon: `<svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="24" cy="24" r="20" stroke="currentColor" stroke-width="2.5"/><path d="M24 14v10l7 5" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+    color: '#3b82f6', gradient: 'linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)'
+  },
+  'stundenlohn-rechner': {
+    icon: `<svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="24" cy="24" r="20" stroke="currentColor" stroke-width="2.5"/><path d="M24 16v16M20 20h8a3 3 0 010 6h-8M20 26h8a3 3 0 010 6h-8" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+    color: '#10b981', gradient: 'linear-gradient(135deg, #10b981 0%, #059669 100%)'
+  },
+  'arbeitsstunden-rechner': {
+    icon: `<svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="8" y="8" width="32" height="32" rx="4" stroke="currentColor" stroke-width="2.5"/><path d="M16 20h16M16 28h10" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/><circle cx="34" cy="34" r="8" fill="currentColor" opacity="0.15"/><path d="M34 30v4l2.5 1.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>`,
+    color: '#6366f1', gradient: 'linear-gradient(135deg, #6366f1 0%, #4338ca 100%)'
+  },
+  'teilzeit-rechner': {
+    icon: `<svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="24" cy="24" r="20" stroke="currentColor" stroke-width="2.5"/><path d="M24 4a20 20 0 010 40" fill="currentColor" opacity="0.15"/><path d="M24 14v10h-10" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+    color: '#f59e0b', gradient: 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)'
+  },
+  'urlaubsgeld-rechner': {
+    icon: `<svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 38V14a2 2 0 012-2h20a2 2 0 012 2v24l-6-4-6 4-6-4-6 4z" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/><path d="M20 20h8M20 26h6" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg>`,
+    color: '#ec4899', gradient: 'linear-gradient(135deg, #ec4899 0%, #db2777 100%)'
+  },
+  'urlaubstage-rechner': {
+    icon: `<svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="8" y="12" width="32" height="28" rx="3" stroke="currentColor" stroke-width="2.5"/><path d="M8 20h32" stroke="currentColor" stroke-width="2.5"/><path d="M16 8v8M32 8v8" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/><circle cx="24" cy="30" r="4" fill="currentColor" opacity="0.2"/></svg>`,
+    color: '#14b8a6', gradient: 'linear-gradient(135deg, #14b8a6 0%, #0d9488 100%)'
+  },
+  'arbeitsstundenrechner': {
+    icon: `<svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="10" y="8" width="28" height="32" rx="3" stroke="currentColor" stroke-width="2.5"/><path d="M18 18h12M18 24h12M18 30h8" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/><circle cx="38" cy="38" r="7" fill="currentColor" opacity="0.15"/><path d="M36 38h4M38 36v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>`,
+    color: '#8b5cf6', gradient: 'linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%)'
+  },
+  'nachtzuschlag-rechner': {
+    icon: `<svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M36 28a16 16 0 11-20-20 12 12 0 0020 20z" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/><circle cx="20" cy="14" r="1.5" fill="currentColor"/><circle cx="30" cy="10" r="1" fill="currentColor"/><circle cx="36" cy="18" r="1.5" fill="currentColor"/></svg>`,
+    color: '#6366f1', gradient: 'linear-gradient(135deg, #312e81 0%, #4338ca 100%)'
+  },
+  'ueberstunden-rechner': {
+    icon: `<svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="24" cy="24" r="20" stroke="currentColor" stroke-width="2.5"/><path d="M24 14v10l7 5" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M34 10l4-4M38 14l4-1" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg>`,
+    color: '#ef4444', gradient: 'linear-gradient(135deg, #ef4444 0%, #dc2626 100%)'
+  },
+  'stunden-und-minuten-rechner': {
+    icon: `<svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="6" y="14" width="16" height="20" rx="3" stroke="currentColor" stroke-width="2.5"/><rect x="26" y="14" width="16" height="20" rx="3" stroke="currentColor" stroke-width="2.5"/><path d="M22 22l4 2-4 2" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M11 22h6M31 22h6M31 28h4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>`,
+    color: '#0ea5e9', gradient: 'linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%)'
+  },
+  'wochenstunden-rechner': {
+    icon: `<svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="6" y="16" width="6" height="20" rx="2" fill="currentColor" opacity="0.2"/><rect x="15" y="12" width="6" height="24" rx="2" fill="currentColor" opacity="0.3"/><rect x="24" y="18" width="6" height="18" rx="2" fill="currentColor" opacity="0.2"/><rect x="33" y="8" width="6" height="28" rx="2" fill="currentColor" opacity="0.35"/><rect x="6" y="16" width="6" height="20" rx="2" stroke="currentColor" stroke-width="2"/><rect x="15" y="12" width="6" height="24" rx="2" stroke="currentColor" stroke-width="2"/><rect x="24" y="18" width="6" height="18" rx="2" stroke="currentColor" stroke-width="2"/><rect x="33" y="8" width="6" height="28" rx="2" stroke="currentColor" stroke-width="2"/><path d="M4 38h40" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg>`,
+    color: '#f97316', gradient: 'linear-gradient(135deg, #f97316 0%, #ea580c 100%)'
+  },
+  'schichtzulagen-rechner': {
+    icon: `<svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 36h10V20H8z" stroke="currentColor" stroke-width="2.5" fill="currentColor" opacity="0.1"/><path d="M20 36h10V12H20z" stroke="currentColor" stroke-width="2.5" fill="currentColor" opacity="0.2"/><path d="M32 36h10V26H32z" stroke="currentColor" stroke-width="2.5" fill="currentColor" opacity="0.15"/><path d="M4 38h40" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/><path d="M13 24v-2M25 16v-2M37 30v-2" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg>`,
+    color: '#a855f7', gradient: 'linear-gradient(135deg, #a855f7 0%, #9333ea 100%)'
+  },
+  'zeiterfassung-rechner': {
+    icon: `<svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="8" y="6" width="32" height="36" rx="3" stroke="currentColor" stroke-width="2.5"/><path d="M16 16h16M16 22h16M16 28h12M16 34h8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M30 30l4 4 6-8" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+    color: '#06b6d4', gradient: 'linear-gradient(135deg, #06b6d4 0%, #0891b2 100%)'
+  },
+  'feiertagszuschlag-rechner': {
+    icon: `<svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M24 6l3 9h9l-7 5 3 9-8-6-8 6 3-9-7-5h9z" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round" fill="currentColor" opacity="0.15"/><rect x="12" y="32" width="24" height="10" rx="2" stroke="currentColor" stroke-width="2.5"/></svg>`,
+    color: '#eab308', gradient: 'linear-gradient(135deg, #eab308 0%, #ca8a04 100%)'
+  },
+  'sonntagszuschlag-rechner': {
+    icon: `<svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="24" cy="24" r="10" stroke="currentColor" stroke-width="2.5" fill="currentColor" opacity="0.1"/><path d="M24 8v4M24 36v4M8 24h4M36 24h4M12.7 12.7l2.8 2.8M32.5 32.5l2.8 2.8M12.7 35.3l2.8-2.8M32.5 15.5l2.8-2.8" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg>`,
+    color: '#f97316', gradient: 'linear-gradient(135deg, #fb923c 0%, #ea580c 100%)'
+  },
+  'feierabend-rechner': {
+    icon: `<svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10 38h28" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/><path d="M14 38V22l10-12 10 12v16" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/><rect x="20" y="28" width="8" height="10" rx="1" stroke="currentColor" stroke-width="2.5"/></svg>`,
+    color: '#22c55e', gradient: 'linear-gradient(135deg, #22c55e 0%, #16a34a 100%)'
+  },
+  'wochenarbeitszeit-rechner': {
+    icon: `<svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="6" y="10" width="36" height="28" rx="3" stroke="currentColor" stroke-width="2.5"/><path d="M6 18h36" stroke="currentColor" stroke-width="2.5"/><path d="M14 10v8M22 10v8M30 10v8M38 10v8" stroke="currentColor" stroke-width="2"/><path d="M12 26h6M12 32h4M20 26h6M28 26h6M28 32h8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>`,
+    color: '#0ea5e9', gradient: 'linear-gradient(135deg, #0ea5e9 0%, #0369a1 100%)'
+  },
+  'gleitzeit-rechner': {
+    icon: `<svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="24" cy="24" r="20" stroke="currentColor" stroke-width="2.5"/><path d="M16 24a8 8 0 0116 0" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/><path d="M24 16v-4M16 24h-4M32 24h4" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/><path d="M24 24l-4 6" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg>`,
+    color: '#8b5cf6', gradient: 'linear-gradient(135deg, #a78bfa 0%, #7c3aed 100%)'
+  },
+  'monatsstunden-rechner': {
+    icon: `<svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="8" y="8" width="32" height="32" rx="3" stroke="currentColor" stroke-width="2.5"/><path d="M8 16h32" stroke="currentColor" stroke-width="2.5"/><path d="M16 8v8M32 8v8" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/><text x="24" y="32" text-anchor="middle" fill="currentColor" font-size="12" font-weight="700" font-family="Inter,sans-serif">31</text></svg>`,
+    color: '#14b8a6', gradient: 'linear-gradient(135deg, #14b8a6 0%, #0f766e 100%)'
+  },
+  'resturlaub-rechner': {
+    icon: `<svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 40l8-8 6 4 8-12 10 8" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="36" cy="12" r="6" stroke="currentColor" stroke-width="2.5"/><path d="M36 10v4M34 12h4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>`,
+    color: '#ec4899', gradient: 'linear-gradient(135deg, #f472b6 0%, #db2777 100%)'
+  },
+  'arbeitszeiterfassung-rechner': {
+    icon: `<svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="10" y="6" width="28" height="36" rx="3" stroke="currentColor" stroke-width="2.5"/><path d="M18 6v-2a4 4 0 018 0v2" stroke="currentColor" stroke-width="2.5"/><path d="M18 18h12M18 24h12M18 30h8M18 36h6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>`,
+    color: '#64748b', gradient: 'linear-gradient(135deg, #64748b 0%, #475569 100%)'
+  },
+};
+
+const displayedTools = targetSlugs.map(slug => {
+  const tool = getLocalizedTool(slug, locale);
+  const meta = toolMeta[slug] || {
+    icon: `<svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="24" cy="24" r="20" stroke="currentColor" stroke-width="2.5"/></svg>`,
+    color: '#3b82f6',
+    gradient: 'linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)'
+  };
+  return {
+    ...tool,
+    meta,
+  };
+});
+
+// Localized headings
+const showcaseBadge = locale === 'de'
+  ? 'Empfohlene Rechner'
+  : locale === 'fr'
+  ? 'Outils Recommandés'
+  : locale === 'ar'
+  ? 'أدوات موصى بها'
+  : 'Recommended Tools';
+
+const showcaseTitle = locale === 'de'
+  ? 'Passende Tools & Rechner'
+  : locale === 'fr'
+  ? 'Outils et Calculateurs Associés'
+  : locale === 'ar'
+  ? 'أدوات وحاسبات ذات صلة'
+  : 'Related Tools & Calculators';
+
+const showcaseSubtitle = locale === 'de'
+  ? 'Entdecke 4 weitere nützliche Rechner für deine Arbeitszeit-, Überstunden- und Gehaltsabrechnung.'
+  : locale === 'fr'
+  ? 'Découvrez 4 calculateurs pratiques pour votre temps de travail et rémunération.'
+  : locale === 'ar'
+  ? 'اكتشف 4 حاسبات مفيدة أخرى لساعات العمل وحساب الأجور.'
+  : 'Explore 4 more useful calculators for your working hours, overtime, and salary calculations.';
+---
+
+<section class="tools-showcase-section" id="tools-showcase" aria-labelledby="tools-showcase-heading">
+  <div class="tools-showcase-container">
+    <div class="tools-showcase-header">
+      <span class="tools-showcase-badge">{showcaseBadge}</span>
+      <h2 id="tools-showcase-heading" class="tools-showcase-title">{showcaseTitle}</h2>
+      <p class="tools-showcase-subtitle">{showcaseSubtitle}</p>
+    </div>
+
+    <div class="tools-showcase-grid">
+      {displayedTools.map((tool) => (
+        <a 
+          href={`${localePath}/tools/${tool.slug}/`} 
+          class="tools-showcase-card" 
+          style={`--tool-color: ${tool.meta.color}; --tool-gradient: ${tool.meta.gradient};`}
+          title={tool.name}
+        >
+          <div class="tools-showcase-top">
+            <div class="tools-showcase-icon" set:html={tool.meta.icon} />
+            <div class="tools-showcase-arrow" aria-hidden="true">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M5 12h14M12 5l7 7-7 7" />
+              </svg>
+            </div>
+          </div>
+          <div class="tools-showcase-body">
+            <h3 class="tools-showcase-name">{tool.name}</h3>
+            <p class="tools-showcase-desc">{tool.subtitle}</p>
+          </div>
+        </a>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .tools-showcase-section {
+    padding: var(--sp-12) var(--sp-6);
+    background: linear-gradient(180deg, var(--gray-50) 0%, var(--white) 100%);
+    border-top: 1px solid var(--gray-200);
+    border-bottom: 1px solid var(--gray-200);
+    margin: var(--sp-8) 0;
+  }
+
+  .tools-showcase-container {
+    max-width: var(--max-w);
+    margin: 0 auto;
+  }
+
+  .tools-showcase-header {
+    text-align: center;
+    margin-bottom: var(--sp-8);
+  }
+
+  .tools-showcase-badge {
+    display: inline-block;
+    padding: var(--sp-1) var(--sp-4);
+    background: var(--blue-100);
+    color: var(--blue-800);
+    border-radius: var(--radius-full);
+    font-size: var(--text-xs);
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    margin-bottom: var(--sp-2);
+  }
+
+  .tools-showcase-title {
+    font-size: var(--text-2xl);
+    font-weight: 800;
+    color: var(--gray-900);
+    margin: 0 0 var(--sp-2) 0;
+    line-height: 1.25;
+    letter-spacing: -0.02em;
+  }
+
+  .tools-showcase-subtitle {
+    font-size: var(--text-sm);
+    color: var(--gray-600);
+    margin: 0;
+    max-width: 580px;
+    margin-inline: auto;
+    line-height: 1.5;
+  }
+
+  /* 4-Column Grid */
+  .tools-showcase-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--sp-4);
+  }
+
+  /* Card */
+  .tools-showcase-card {
+    display: flex;
+    flex-direction: column;
+    padding: var(--sp-5);
+    background: var(--white);
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius-xl);
+    text-decoration: none;
+    color: inherit;
+    transition: all var(--dur) var(--ease);
+    position: relative;
+    overflow: hidden;
+    box-shadow: var(--shadow-xs);
+  }
+
+  .tools-showcase-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--tool-gradient);
+    opacity: 0;
+    transition: opacity var(--dur) var(--ease);
+  }
+
+  .tools-showcase-card:hover {
+    border-color: color-mix(in srgb, var(--tool-color) 40%, var(--gray-300));
+    box-shadow: var(--shadow-md), 0 0 0 1px color-mix(in srgb, var(--tool-color) 20%, transparent);
+    transform: translateY(-3px);
+  }
+
+  .tools-showcase-card:hover::before {
+    opacity: 1;
+  }
+
+  .tools-showcase-card:hover .tools-showcase-arrow {
+    opacity: 1;
+    transform: translateX(0);
+    color: var(--tool-color);
+  }
+
+  .tools-showcase-card:hover .tools-showcase-icon {
+    transform: scale(1.06);
+  }
+
+  /* Top row of card */
+  .tools-showcase-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: var(--sp-4);
+  }
+
+  .tools-showcase-icon {
+    flex-shrink: 0;
+    width: 44px;
+    height: 44px;
+    padding: 8px;
+    border-radius: var(--radius-lg);
+    background: color-mix(in srgb, var(--tool-color) 12%, transparent);
+    color: var(--tool-color);
+    transition: transform var(--dur) var(--ease);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .tools-showcase-icon :global(svg) {
+    width: 100%;
+    height: 100%;
+  }
+
+  .tools-showcase-arrow {
+    flex-shrink: 0;
+    opacity: 0.4;
+    transform: translateX(-4px);
+    transition: all var(--dur) var(--ease);
+    color: var(--gray-400);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Card Body */
+  .tools-showcase-body {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+  }
+
+  .tools-showcase-name {
+    font-size: var(--text-base);
+    font-weight: 700;
+    color: var(--gray-900);
+    margin: 0 0 var(--sp-1) 0;
+    line-height: 1.35;
+  }
+
+  .tools-showcase-desc {
+    font-size: var(--text-xs);
+    color: var(--gray-600);
+    margin: 0;
+    line-height: 1.5;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  /* ── Responsive Breakpoints ── */
+  @media (max-width: 1024px) {
+    .tools-showcase-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--sp-4);
+    }
+  }
+
+  @media (max-width: 640px) {
+    .tools-showcase-section {
+      padding: var(--sp-8) var(--sp-4);
+      margin: var(--sp-6) 0;
+    }
+
+    .tools-showcase-grid {
+      grid-template-columns: 1fr;
+      gap: var(--sp-3);
+    }
+
+    .tools-showcase-title {
+      font-size: var(--text-xl);
+    }
+
+    .tools-showcase-card {
+      padding: var(--sp-4);
+    }
+
+    .tools-showcase-icon {
+      width: 40px;
+      height: 40px;
+      padding: 7px;
+    }
+
+    .tools-showcase-arrow {
+      opacity: 0.8;
+      transform: translateX(0);
+    }
+  }
+</style>
